@@ -7,8 +7,7 @@ percentiles, and quality trends per project.
 
 **Live:** https://eval-production-fd70.up.railway.app
 
-![Dashboard overview](<img width="2552" height="1256" alt="image" src="https://github.com/user-attachments/assets/3c1b88ff-6988-40e5-b6db-440a311ffd51" />
-)
+![Dashboard overview](docs/dashboard.png)
 
 ---
 
