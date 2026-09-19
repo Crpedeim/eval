@@ -7,7 +7,7 @@ percentiles, and quality trends per project.
 
 **Live:** https://eval-production-fd70.up.railway.app
 
-![Dashboard overview](docs/dashboard.png)
+![Dashboard overview](docs/Screenshot 2026-09-19 233320.png
 
 ---
 
@@ -374,6 +374,10 @@ and completely unrelated to the input — only the judge catches that.
 ---
 
 ## Screenshots
+
+(docs/Screenshot 2026-09-19 233540.png)
+----
+(docs/Screenshot 2026-09-19 233553.png)
 
 | | |
 |---|---|
