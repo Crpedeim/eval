@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String       @id @default(cuid())
+  email         String?      @unique
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime     @default(now())
+  memberships   Membership[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+model Organization {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  createdAt   DateTime     @default(now())
+  memberships Membership[]
+  projects    Project[]
+}
+
+enum Role { 
+  owner 
+  admin 
+  member 
+}
+
+model Membership {
+  id        String       @id @default(cuid())
+  userId    String
+  orgId     String
+  role      Role         @default(member)
+  createdAt DateTime     @default(now())
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+  @@index([orgId])
+}
+
+model Project {
+  id         String      @id @default(cuid())
+  orgId      String
+  name       String
+  createdAt  DateTime    @default(now())
+  org        Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  apiKeys    ApiKey[]
+  traces     Trace[]
+  evaluators Evaluator[]
+
+  @@index([orgId])
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  projectId  String
+  hashedKey  String    @unique
+  prefix     String    // non-secret, for lookup/display, e.g. "evp_live_ab12"
+  name       String?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+model Trace {
+  id               String    @id @default(cuid())
+  projectId        String
+  name             String
+  input            String
+  output           String
+  model            String
+  promptTokens     Int       @default(0)
+  completionTokens Int       @default(0)
+  costUsd          Decimal   @default(0) @db.Decimal(12, 6)
+  latencyMs        Int?
+  status           String    @default("ok")
+  metadata         Json?
+  createdAt        DateTime  @default(now())
+  project          Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  evalRuns         EvalRun[]
+
+  @@index([projectId, createdAt])
+  @@index([projectId, model])
+}
+
+enum EvaluatorType { 
+  llm_judge 
+  assertion 
+} 
+
+model Evaluator {
+  id        String        @id @default(cuid())
+  projectId String
+  name      String
+  type      EvaluatorType
+  config    Json
+  active    Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  evalRuns  EvalRun[]
+
+  @@index([projectId])
+}
+
+enum EvalStatus { 
+  queued 
+  running 
+  done 
+  failed 
+}
+
+model EvalRun {
+  id          String     @id @default(cuid())
+  traceId     String
+  evaluatorId String
+  status      EvalStatus @default(queued)
+  score       Float?
+  passed      Boolean?
+  reasoning   String?
+  attempts    Int        @default(0)
+  error       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  trace       Trace      @relation(fields: [traceId], references: [id], onDelete: Cascade)
+  evaluator   Evaluator  @relation(fields: [evaluatorId], references: [id], onDelete: Cascade)
+
+  @@unique([traceId, evaluatorId])
+  @@index([traceId])
+  @@index([evaluatorId])
+}

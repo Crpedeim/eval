@@ -1,0 +1,10 @@
+{
+  "name": "summarize",
+  "input": "long article",
+  "output": "short summary",
+  "model": "claude-sonnet-4-6",
+  "promptTokens": 1200,
+  "completionTokens": 80,
+  "latencyMs": 950,
+  "metadata": { "simulate": "transient" }
+}

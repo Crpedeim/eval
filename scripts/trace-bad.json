@@ -1,0 +1,9 @@
+{
+  "name": "summarize",
+  "input": "The Apollo program ran from 1961 to 1972. It landed twelve astronauts on the Moon across six missions. Apollo 11 was the first, in July 1969, with Armstrong and Aldrin walking on the surface while Collins orbited above.",
+  "output": "The weather in Delhi is quite pleasant this time of year and I enjoy mangoes.",
+  "model": "claude-sonnet-4-6",
+  "promptTokens": 1200,
+  "completionTokens": 80,
+  "latencyMs": 950
+}
