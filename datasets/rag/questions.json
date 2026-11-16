@@ -1,0 +1,42 @@
+{
+  "name": "project-docs-v1",
+  "description": "Questions over this repository's own docs: README.md (markdown), source-inventory.csv (structured rows), rag-design.pdf (PDF). Each question is labelled with verbatim evidence span(s); a retrieved chunk is relevant if it contains one.",
+  "questions": [
+    { "id": "r01", "source": "README.md", "question": "Why does the platform run as two services on Railway rather than on a serverless platform?", "evidence": ["The worker is a long-lived process that polls the queue"] },
+    { "id": "r02", "source": "README.md", "question": "What does a forced failure mid-transaction leave behind in the Trace, EvalRun and pgboss.job tables?", "evidence": ["leaves zero rows in `Trace`, zero in `EvalRun`"] },
+    { "id": "r03", "source": "README.md", "question": "Why is an EvalRun in the running state still claimable by the worker?", "evidence": ["`running` is deliberately claimable"] },
+    { "id": "r04", "source": "README.md", "question": "What happens when duplicate jobs are sent for an EvalRun that is already settled?", "evidence": ["produces `skip (already settled)`"] },
+    { "id": "r05", "source": "README.md", "question": "How are errors of an unknown kind classified, and why that choice?", "evidence": ["Unknown errors **default to permanent**"] },
+    { "id": "r06", "source": "README.md", "question": "What backoff strategy and delay settings do retries use?", "evidence": ["exponential with equal jitter (`retryDelay: 2`, capped at 60s)"] },
+    { "id": "r07", "source": "README.md", "question": "Why does the worker process jobs with batchSize 1?", "evidence": ["if one job in a batch of five throws, all five are marked failed and retried"] },
+    { "id": "r08", "source": "README.md", "question": "How are API keys stored, and why is a fast hash acceptable instead of bcrypt?", "evidence": ["API keys are stored as SHA-256 hashes"] },
+    { "id": "r09", "source": "README.md", "question": "What status code does a cross-tenant request receive, and why not 403?", "evidence": ["Cross-tenant requests return 404, not 403."] },
+    { "id": "r10", "source": "README.md", "question": "Why does the judge prompt ask for reasoning before the score?", "evidence": ["following the G-Eval finding"] },
+    { "id": "r11", "source": "README.md", "question": "How does the judge rubric mitigate verbosity bias?", "evidence": ["instructs the judge to ignore output length"] },
+    { "id": "r12", "source": "README.md", "question": "What actually caused the 15-second transactions in development?", "evidence": ["Roughly 300ms round-trip latency"] },
+    { "id": "r13", "source": "README.md", "question": "How many connections did pg_stat_activity show when connection exhaustion was suspected?", "evidence": ["8 total connections"] },
+    { "id": "r14", "source": "README.md", "question": "Why are there separate pooled and direct database URLs?", "evidence": ["connection poolers don't support the prepared statements"] },
+    { "id": "r15", "source": "README.md", "question": "What HTTP status does POST /api/v1/traces return on success?", "evidence": ["Returns **202 Accepted**, not 200"] },
+    { "id": "r16", "source": "README.md", "question": "Why are sessions JWT-based, and what is the downside?", "evidence": ["JWT sessions, so no instant revocation"] },
+    { "id": "r17", "source": "README.md", "question": "What is the first item on the list of things the author would add next?", "evidence": ["Judge calibration harness"] },
+    { "id": "r18", "source": "README.md", "question": "Which rules does the deterministic assertion evaluator support?", "evidence": ["`non_empty`, `json_valid`, `contains`, `regex`, `max_length`"] },
+
+    { "id": "c01", "source": "source-inventory.csv", "question": "Which source file classifies thrown errors as transient or permanent?", "evidence": ["path: src/lib/errors.ts"] },
+    { "id": "c02", "source": "source-inventory.csv", "question": "What connection pool size and transaction timeouts does the Prisma client use?", "evidence": ["pool of 5 connections"] },
+    { "id": "c03", "source": "source-inventory.csv", "question": "What is the format of a generated API key?", "evidence": ["evp_live_ plus 24 random bytes"] },
+    { "id": "c04", "source": "source-inventory.csv", "question": "Which file contains the Recharts chart components?", "evidence": ["path: src/components/charts.tsx"] },
+    { "id": "c05", "source": "source-inventory.csv", "question": "Which route file serves the session-authenticated project metrics JSON?", "evidence": ["path: src/app/projects/[projectId]/metrics/route.ts"] },
+    { "id": "c06", "source": "source-inventory.csv", "question": "Which file contains the RFC 4180 CSV parser?", "evidence": ["path: src/lib/rag/chunking.ts"] },
+    { "id": "c07", "source": "source-inventory.csv", "question": "How does the RAG query API map upstream model errors to HTTP status codes?", "evidence": ["map to 503 when transient and 502 otherwise"] },
+    { "id": "c08", "source": "source-inventory.csv", "question": "How does API key authentication update lastUsedAt?", "evidence": ["updates lastUsedAt without awaiting it"] },
+
+    { "id": "p01", "source": "rag-design.pdf", "question": "What chunk window size and overlap does the RAG pipeline use?", "evidence": ["1200 character window and a 150 character overlap"] },
+    { "id": "p02", "source": "rag-design.pdf", "question": "Why can the embeddings be truncated to 768 dimensions?", "evidence": ["trained with Matryoshka representation learning"] },
+    { "id": "p03", "source": "rag-design.pdf", "question": "Which embedding task types are used for documents and for questions?", "evidence": ["RETRIEVAL_DOCUMENT task type and questions with RETRIEVAL_QUERY"] },
+    { "id": "p04", "source": "rag-design.pdf", "question": "What kind of index serves the vector similarity search?", "evidence": ["HNSW index using `vector_cosine_ops`"] },
+    { "id": "p05", "source": "rag-design.pdf", "question": "In the RAG evaluation, when does a retrieved chunk count as relevant?", "evidence": ["counts as relevant when it contains an evidence span after normalisation"] },
+    { "id": "p06", "source": "rag-design.pdf", "question": "Why does the tokens per second figure include time to first token?", "evidence": ["because generation is not streamed"] },
+    { "id": "p07", "source": "rag-design.pdf", "question": "How are the faithfulness and answer relevance judges restricted to RAG traces?", "evidence": ["are scoped with `traceName = rag.answer`"] },
+    { "id": "p08", "source": "rag-design.pdf", "question": "What should the model reply when the retrieved passages do not contain the answer?", "evidence": ["I don't know based on the provided documents."] }
+  ]
+}

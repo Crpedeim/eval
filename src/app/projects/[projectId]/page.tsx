@@ -47,6 +47,9 @@ export default async function ProjectDashboard({
           <Link href={`/projects/${projectId}/traces`} className="rounded border border-gray-300 px-3 py-1">
             Traces →
           </Link>
+          <Link href={`/projects/${projectId}/rag`} className="rounded border border-gray-300 px-3 py-1">
+            RAG →
+          </Link>
         </div>
       </div>
 

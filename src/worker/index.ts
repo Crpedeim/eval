@@ -1,9 +1,16 @@
 import "dotenv/config";
-import { getBoss, EVAL_QUEUE, EVAL_DLQ } from "../lib/queue";
+import {
+  getBoss, EVAL_QUEUE, EVAL_DLQ, INGEST_QUEUE, INGEST_DLQ, RAG_EVAL_QUEUE, RAG_EVAL_DLQ,
+} from "../lib/queue";
 import { db } from "../lib/db";
 import type { EvalJobData } from "../lib/enqueue-evals";
 import { getEvaluator } from "../lib/evaluators";
 import { log } from "../lib/logger";
+import type { IngestJobData } from "../lib/rag/documents";
+import type { RagEvalJobData } from "../lib/rag/eval";
+import {
+  handleIngestJob, handleIngestDeadLetter, handleRagEvalJob, handleRagEvalDeadLetter,
+} from "../lib/rag/jobs";
 
 
 import { classify, TransientError, PermanentError } from "../lib/errors";
@@ -101,7 +108,18 @@ await boss.work<EvalJobData>(EVAL_DLQ, { batchSize: 1 }, async (jobs) => {
         log.error("eval.dead_lettered", { traceId, evaluatorId });
   });
 
+  // RAG queues — batchSize 1 for the same failure-isolation reason as eval-run.
+  await boss.work<IngestJobData>(INGEST_QUEUE, { batchSize: 1, pollingIntervalSeconds: 2 },
+    async (jobs) => handleIngestJob(jobs[0].data));
+  await boss.work<IngestJobData>(INGEST_DLQ, { batchSize: 1 },
+    async (jobs) => handleIngestDeadLetter(jobs[0].data));
+  await boss.work<RagEvalJobData>(RAG_EVAL_QUEUE, { batchSize: 1, pollingIntervalSeconds: 2 },
+    async (jobs) => handleRagEvalJob(jobs[0].data));
+  await boss.work<RagEvalJobData>(RAG_EVAL_DLQ, { batchSize: 1 },
+    async (jobs) => handleRagEvalDeadLetter(jobs[0].data));
+
   console.log(`[worker] listening on "${EVAL_QUEUE}" and "${EVAL_DLQ}"`);
+  console.log(`[worker] listening on "${INGEST_QUEUE}" and "${RAG_EVAL_QUEUE}" (+ dead-letter queues)`);
 
   console.log(`[worker] listening on "${EVAL_QUEUE}"`);
 }

@@ -17,6 +17,21 @@ const TraceInput = z.object({
   latencyMs: z.number().int().nonnegative().optional(),
   status: z.string().optional(),
 metadata: z.record(z.string(), z.unknown()).optional(),
+  // Optional nested steps (retrieve, generate, tool calls, ...).
+  spans: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        model: z.string().optional(),
+        startedAt: z.coerce.date().optional(),
+        latencyMs: z.number().int().nonnegative(),
+        promptTokens: z.number().int().nonnegative().default(0),
+        completionTokens: z.number().int().nonnegative().default(0),
+        metadata: z.record(z.string(), z.unknown()).optional(),
+      })
+    )
+    .max(100)
+    .optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -60,10 +75,27 @@ export async function POST(req: NextRequest) {
         latencyMs: d.latencyMs,
         status: d.status ?? "ok",
         ...(d.metadata ? { metadata: d.metadata as Prisma.InputJsonValue } : {}),
+        ...(d.spans?.length
+          ? {
+              spans: {
+                create: d.spans.map((s) => ({
+                  name: s.name,
+                  model: s.model,
+                  startedAt: s.startedAt ?? new Date(),
+                  latencyMs: s.latencyMs,
+                  promptTokens: s.promptTokens,
+                  completionTokens: s.completionTokens,
+                  // cost is computed server-side, never accepted from the caller
+                  costUsd: s.model ? computeCostUsd(s.model, s.promptTokens, s.completionTokens) : 0,
+                  ...(s.metadata ? { metadata: s.metadata as Prisma.InputJsonValue } : {}),
+                })),
+              },
+            }
+          : {}),
       },
     });
 
-    const enqueued = await createEvalRunsAndEnqueue(tx, trace.id, auth.project.id);
+    const enqueued = await createEvalRunsAndEnqueue(tx, trace.id, auth.project.id, d.name);
 
     if (simulateFailure) {
       throw new Error("simulated crash after writes, before commit");

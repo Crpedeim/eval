@@ -16,10 +16,17 @@ export type EvalJobData = {
 export async function createEvalRunsAndEnqueue(
   tx: Prisma.TransactionClient,
   traceId: string,
-  projectId: string
+  projectId: string,
+  traceName?: string
 ) {
+  // Evaluators scoped to a trace name (e.g. RAG judges on "rag.answer") only run on
+  // those traces; unscoped evaluators run on every trace, as before.
   const evaluators = await tx.evaluator.findMany({
-    where: { projectId, active: true },
+    where: {
+      projectId,
+      active: true,
+      OR: [{ traceName: null }, ...(traceName ? [{ traceName }] : [])],
+    },
     select: { id: true },
   });
 

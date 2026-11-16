@@ -7,8 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-      "postinstall": "prisma generate",
-  "worker": "tsx src/worker/index.ts"
+    "postinstall": "prisma generate",
+    "worker": "tsx src/worker/index.ts",
+    "test": "node --import tsx --test --test-concurrency=1 \"src/**/*.test.ts\"",
+    "rag:ingest": "tsx scripts/rag-ingest.ts",
+    "rag:eval": "tsx scripts/rag-eval.ts",
+    "rag:check": "tsx scripts/rag-check-dataset.ts datasets/rag/questions.json datasets/rag/corpus"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
@@ -23,6 +27,7 @@
     "react-dom": "19.2.8",
     "recharts": "^3.10.1",
     "tsx": "^4.23.12",
+    "unpdf": "^1.9.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

@@ -87,6 +87,9 @@ model Project {
   apiKeys    ApiKey[]
   traces     Trace[]
   evaluators Evaluator[]
+  documents  Document[]
+  chunks     Chunk[]
+  ragEvals   RagEvalRun[]
 
   @@index([orgId])
 }
@@ -120,6 +123,8 @@ model Trace {
   createdAt        DateTime  @default(now())
   project          Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   evalRuns         EvalRun[]
+  spans            Span[]
+  ragEvalItems     RagEvalItem[]
 
   @@index([projectId, createdAt])
   @@index([projectId, model])
@@ -137,6 +142,8 @@ model Evaluator {
   type      EvaluatorType
   config    Json
   active    Boolean       @default(true)
+  /// Only run on traces with this name; null = every trace in the project.
+  traceName String?
   createdAt DateTime      @default(now())
   project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   evalRuns  EvalRun[]
@@ -169,4 +176,109 @@ model EvalRun {
   @@unique([traceId, evaluatorId])
   @@index([traceId])
   @@index([evaluatorId])
+}
+
+/// One step inside a trace (e.g. RAG "retrieve" and "generate").
+model Span {
+  id               String   @id @default(cuid())
+  traceId          String
+  name             String
+  model            String?
+  startedAt        DateTime
+  latencyMs        Int
+  promptTokens     Int      @default(0)
+  completionTokens Int      @default(0)
+  costUsd          Decimal  @default(0) @db.Decimal(14, 8)
+  metadata         Json?
+  createdAt        DateTime @default(now())
+  trace            Trace    @relation(fields: [traceId], references: [id], onDelete: Cascade)
+
+  @@index([traceId])
+}
+
+enum DocumentKind {
+  markdown
+  text
+  pdf
+  csv
+}
+
+enum DocumentStatus {
+  queued
+  running
+  ready
+  failed
+}
+
+model Document {
+  id         String         @id @default(cuid())
+  projectId  String
+  name       String
+  kind       DocumentKind
+  status     DocumentStatus @default(queued)
+  content    String?        // raw text for markdown / text / csv
+  bytes      Bytes?         // raw bytes for pdf
+  sizeBytes  Int
+  chunkCount Int            @default(0)
+  attempts   Int            @default(0)
+  error      String?
+  stats      Json?          // parse / chunk / embed timings, char counts
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  project    Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  chunks     Chunk[]
+
+  @@index([projectId, createdAt])
+}
+
+model Chunk {
+  id         String                     @id
+  documentId String
+  projectId  String
+  idx        Int
+  content    String
+  metadata   Json?
+  embedding  Unsupported("vector(768)")
+  createdAt  DateTime                   @default(now())
+  document   Document                   @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  project    Project                    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, idx])
+  @@index([projectId])
+}
+
+model RagEvalRun {
+  id         String        @id @default(cuid())
+  projectId  String
+  dataset    String
+  k          Int
+  config     Json?
+  createdAt  DateTime      @default(now())
+  project    Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  items      RagEvalItem[]
+
+  @@index([projectId, createdAt])
+}
+
+model RagEvalItem {
+  id               String     @id @default(cuid())
+  runId            String
+  questionId       String
+  question         String
+  evidence         Json       // string[] of verbatim spans that mark a relevant chunk
+  status           EvalStatus @default(queued)
+  attempts         Int        @default(0)
+  traceId          String?
+  retrievedIds     Json?      // chunk ids in rank order
+  relevantRanks    Json?      // 1-based ranks of relevant chunks
+  recallAtK        Float?
+  reciprocalRank   Float?
+  error            String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  run              RagEvalRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  trace            Trace?     @relation(fields: [traceId], references: [id], onDelete: SetNull)
+
+  @@unique([runId, questionId])
+  @@index([runId])
 }

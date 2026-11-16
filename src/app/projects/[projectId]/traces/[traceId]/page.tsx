@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { getScope, UnauthorizedError, ForbiddenError } from "@/lib/tenancy";
 import { Badge, Card } from "@/components/ui";
+import { SpansCard, CitationsCard } from "@/components/spans";
 
 export default async function TraceDetail({ params }: { params: Promise<{ traceId: string }> }) {
   const { traceId } = await params;
@@ -28,6 +29,9 @@ export default async function TraceDetail({ params }: { params: Promise<{ traceI
         <span>{t.promptTokens} in / {t.completionTokens} out</span>
         <span>{new Date(t.createdAt).toLocaleString()}</span>
       </div>
+
+      <SpansCard spans={t.spans} />
+      <CitationsCard metadata={t.metadata} />
 
       <Card title="Input">
         <pre className="whitespace-pre-wrap text-sm text-gray-800">{t.input}</pre>

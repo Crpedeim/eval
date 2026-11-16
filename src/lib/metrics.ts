@@ -114,3 +114,63 @@ export async function retryHealth(projectId: string, days = 14): Promise<RetryHe
   `;
   return row ?? { totalRuns: 0, firstTry: 0, retried: 0, deadLettered: 0 };
 }
+export type RagSpanStats = {
+  name: string;
+  count: number;
+  p50: number | null;
+  p95: number | null;
+  avgPromptTokens: number | null;
+  avgCompletionTokens: number | null;
+  medianTokensPerSec: number | null;
+  avgCostUsd: number | null;
+};
+
+export type RagRequestStats = {
+  requests: number;
+  avgCostUsd: number | null;
+  totalCostUsd: number | null;
+  p50: number | null;
+  p95: number | null;
+};
+
+/** Per-step latency, tokens, tokens/sec and cost across RAG traces. */
+export async function ragSpanStats(projectId: string, days = 14): Promise<RagSpanStats[]> {
+  return db.$queryRaw<RagSpanStats[]>`
+    select
+      s.name                                                                         as "name",
+      count(*)::int                                                                  as "count",
+      percentile_cont(0.5)  within group (order by s."latencyMs")::float8            as "p50",
+      percentile_cont(0.95) within group (order by s."latencyMs")::float8            as "p95",
+      avg(s."promptTokens")::float8                                                  as "avgPromptTokens",
+      avg(s."completionTokens")::float8                                              as "avgCompletionTokens",
+      percentile_cont(0.5) within group (
+        order by s."completionTokens" * 1000.0 / nullif(s."latencyMs", 0)
+      ) filter (where s."completionTokens" > 0)::float8                              as "medianTokensPerSec",
+      avg(s."costUsd")::float8                                                       as "avgCostUsd"
+    from "Span" s
+    join "Trace" t on t.id = s."traceId"
+    where t."projectId" = ${projectId}
+      and t.name = 'rag.answer'
+      and t."createdAt" >= now() - make_interval(days => ${days})
+    group by s.name
+    order by min(s."startedAt" - t."createdAt"), s.name
+  `;
+}
+
+/** Per-request (whole trace) cost and latency for RAG answers. */
+export async function ragRequestStats(projectId: string, days = 14): Promise<RagRequestStats> {
+  const [row] = await db.$queryRaw<RagRequestStats[]>`
+    select
+      count(*)::int                                                          as "requests",
+      avg(sp.cost)::float8                                                   as "avgCostUsd",
+      sum(sp.cost)::float8                                                   as "totalCostUsd",
+      percentile_cont(0.5)  within group (order by t."latencyMs")::float8    as "p50",
+      percentile_cont(0.95) within group (order by t."latencyMs")::float8    as "p95"
+    from "Trace" t
+    join lateral (select sum("costUsd") as cost from "Span" where "traceId" = t.id) sp on true
+    where t."projectId" = ${projectId}
+      and t.name = 'rag.answer'
+      and t."createdAt" >= now() - make_interval(days => ${days})
+  `;
+  return row ?? { requests: 0, avgCostUsd: null, totalCostUsd: null, p50: null, p95: null };
+}

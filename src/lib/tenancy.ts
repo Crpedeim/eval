@@ -1,6 +1,12 @@
 import { auth } from "@/auth";
 import { db } from "./db";
-import { timeSeries, evalSummary, latencyStats, retryHealth } from "./metrics";
+import {
+  timeSeries, evalSummary, latencyStats, retryHealth, ragSpanStats, ragRequestStats,
+} from "./metrics";
+import { getBoss } from "./queue";
+import { createDocumentAndEnqueue, type DocumentUpload } from "./rag/documents";
+import { answerQuestion } from "./rag/pipeline";
+import { ragEvalReport } from "./rag/report";
 
 export class UnauthorizedError extends Error {}
 export class ForbiddenError extends Error {}
@@ -40,7 +46,11 @@ export class TenantScope {
   async trace(traceId: string) {
     const trace = await db.trace.findFirst({
       where: { id: traceId, project: { orgId: { in: this.orgIds } } },
-      include: { evalRuns: { include: { evaluator: true } }, project: true },
+      include: {
+        evalRuns: { include: { evaluator: true } },
+        project: true,
+        spans: { orderBy: { startedAt: "asc" } },
+      },
     });
     if (!trace) throw new ForbiddenError(`trace ${traceId} not accessible`);
     return trace;
@@ -102,6 +112,57 @@ export class TenantScope {
       distinct: ["model"],
     });
     return rows.map((r) => r.model);
+  }
+
+  // ---- RAG ---------------------------------------------------------------
+
+  async documents(projectId: string) {
+    await this.assertProject(projectId);
+    return db.document.findMany({
+      where: { projectId },
+      orderBy: { createdAt: "desc" },
+      // never ship raw content/bytes to a page
+      select: {
+        id: true, name: true, kind: true, status: true, sizeBytes: true,
+        chunkCount: true, attempts: true, error: true, stats: true, createdAt: true,
+      },
+    });
+  }
+
+  async ragOverview(projectId: string, days = 14) {
+    await this.assertProject(projectId);   // tenancy gate for the raw SQL below
+    const [spans, requests, runs] = await Promise.all([
+      ragSpanStats(projectId, days),
+      ragRequestStats(projectId, days),
+      db.ragEvalRun.findMany({
+        where: { projectId },
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        select: { id: true },
+      }),
+    ]);
+    const reports = await Promise.all(runs.map((r) => ragEvalReport(r.id)));
+    return { spans, requests, evalRuns: reports.filter((r) => r !== null) };
+  }
+
+  async ragEvalRun(runId: string) {
+    const run = await db.ragEvalRun.findFirst({
+      where: { id: runId, project: { orgId: { in: this.orgIds } } },
+      select: { id: true, projectId: true },
+    });
+    if (!run) throw new ForbiddenError(`rag eval run ${runId} not accessible`);
+    return { projectId: run.projectId, report: (await ragEvalReport(run.id))! };
+  }
+
+  async createDocument(projectId: string, upload: DocumentUpload) {
+    await this.assertProject(projectId);
+    await getBoss();
+    return db.$transaction((tx) => createDocumentAndEnqueue(tx, projectId, upload));
+  }
+
+  async askRag(projectId: string, question: string, k?: number) {
+    await this.assertProject(projectId);
+    return answerQuestion(projectId, question, { k, metadata: { via: "ui", userId: this.userId } });
   }
 }
 

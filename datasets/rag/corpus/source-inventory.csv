@@ -1,0 +1,27 @@
+path,layer,purpose,key exports
+src/app/api/v1/traces/route.ts,ingestion API,"Validates a trace with zod, computes cost server-side from token counts, and stores the trace plus its EvalRun rows and queue jobs in one transaction; returns 202 Accepted",POST
+src/app/api/v1/documents/route.ts,ingestion API,"Accepts a RAG document as multipart upload or JSON, stores it and enqueues an ingest-document job in one transaction",POST
+src/app/api/v1/rag/query/route.ts,ingestion API,"Answers a question over the project's documents and returns the answer, citations, spans and cost; upstream model errors map to 503 when transient and 502 otherwise",POST
+src/app/projects/[projectId]/metrics/route.ts,application API,"Session-authenticated JSON metrics for a project; the days range is clamped to 90 and cross-tenant access returns 404",GET
+src/lib/api-key.ts,auth,"Generates API keys as evp_live_ plus 24 random bytes in base64url and stores only a SHA-256 hash with a short non-secret prefix","generateApiKey, hashApiKey"
+src/lib/authenticate-request.ts,auth,"Resolves a Bearer API key to its project by hash lookup and updates lastUsedAt without awaiting it",authenticateApiKey
+src/auth.ts,auth,"Auth.js configuration with the GitHub provider, the Prisma adapter and JWT sessions; the user id is copied into the session in callbacks","handlers, auth, signIn, signOut"
+src/lib/tenancy.ts,data access,"TenantScope: every application-plane query carries the organization filter, and raw SQL aggregations sit behind assertProject","TenantScope, getScope"
+src/lib/db.ts,data access,"Prisma client on the pg driver adapter with a pool of 5 connections and transaction maxWait of 20 seconds and timeout of 30 seconds",db
+src/lib/metrics.ts,data access,"Raw SQL aggregations: daily volume and cost with empty days filled by generate_series, per-evaluator pass rates, latency percentiles with percentile_cont, and retry health","timeSeries, evalSummary, latencyStats, retryHealth, ragSpanStats"
+src/lib/queue.ts,queue,"Creates one cached pg-boss instance in the pgboss schema on the direct connection and creates the eval, ingestion and RAG eval queues with their dead-letter queues","getBoss, EVAL_QUEUE, INGEST_QUEUE, RAG_EVAL_QUEUE"
+src/lib/enqueue-evals.ts,queue,"Creates one EvalRun per active evaluator and sends one job each through fromPrisma(tx) with retryLimit 3, retryDelay 2 seconds, exponential backoff capped at 60 seconds and a dead-letter queue",createEvalRunsAndEnqueue
+src/lib/errors.ts,worker,"Classifies thrown errors: 429, 5xx and network codes such as ECONNRESET are transient; everything else, including unknown errors, defaults to permanent","TransientError, PermanentError, classify"
+src/worker/index.ts,worker,"Long-lived queue consumer with batchSize 1; claims an EvalRun with a conditional update, runs the evaluator, settles it, and marks dead-lettered jobs as failed",handleJob
+src/lib/evaluators/assertion.ts,evaluators,"Deterministic checks: non_empty, json_valid, contains, regex and max_length; each returns a score of 1 or 0",assertionEvaluator
+src/lib/evaluators/llm-judge.ts,evaluators,"LLM-as-judge with a rubric and a pass threshold defaulting to 0.7; the judge writes reasoning before the score and the response is validated with zod",llmJudgeEvaluator
+src/lib/evaluators/index.ts,evaluators,"Registry mapping an evaluator type to its implementation; adding a type is one file plus one registry line",getEvaluator
+src/lib/providers/gemini.ts,providers,"Gemini implementations of the judge (JSON responseSchema, temperature 0), the RAG generator and the embedder","GeminiProvider, GeminiGenerator, GeminiEmbedder"
+src/lib/pricing.ts,providers,"Model price table in USD per million tokens; unknown models cost 0",computeCostUsd
+src/lib/rag/chunking.ts,rag,"Markdown, plain text, PDF page and CSV row chunking plus an RFC 4180 CSV parser","chunkMarkdown, chunkCsv, parseCsv"
+src/lib/rag/documents.ts,rag,"Validates uploads, enqueues ingestion, and runs the parse, chunk, embed and write steps of the ingestion job","createDocumentAndEnqueue, ingestDocument"
+src/lib/rag/retrieve.ts,rag,"Embeds the question and returns the top-k chunks of a project by pgvector cosine distance","retrieve, searchByVector"
+src/lib/rag/pipeline.ts,rag,"Retrieve then generate, parse citations, and record the answer as a rag.answer trace with retrieve and generate spans",answerQuestion
+src/lib/rag/metrics.ts,rag,"Evidence-span relevance, recall@k, reciprocal rank, percentiles, tokens per second and citation parsing","recallAtK, reciprocalRank, parseCitations"
+src/components/charts.tsx,ui,"Recharts client components for trace volume, cost, stacked prompt and completion tokens, and pass rate by evaluator","VolumeChart, CostChart, TokenChart, PassRateChart"
+prisma/schema.prisma,schema,"Data model: User, Membership, Organization, Project, ApiKey, Trace, Evaluator, EvalRun, plus Span, Document, Chunk, RagEvalRun and RagEvalItem for RAG",
