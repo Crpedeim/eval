@@ -22,6 +22,12 @@ export function classify(err: unknown): TransientError | PermanentError {
 
   const msg = String((err as Error)?.message ?? "");
 
+  // Billing exhaustion is reported as 402 with status RESOURCE_EXHAUSTED; unlike a rate
+  // limit it won't clear on its own, so check it before the rate-limit pattern below.
+  if (status === 402 || /"code":\s*402|prepayment credits|billing/i.test(msg)) {
+    return new PermanentError("judge provider billing/credits exhausted", err);
+  }
+
   // Gemini surfaces these in the message when not on a `status` field.
   if (/RESOURCE_EXHAUSTED|rate.?limit|429/i.test(msg)) {
     return new TransientError("judge rate limited", err);

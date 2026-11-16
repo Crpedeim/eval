@@ -144,14 +144,18 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
 ## 4. Measured numbers
 
 ### Tests **[ran: `npm test`]**
-- **37 tests in 12 suites, 37 passing, ~1.2 s.** 16 chunking tests, 15 metric tests, and
-  6 retrieval/pipeline integration tests against a real PostgreSQL 16.15 + pgvector 0.6.0.
+- **40 tests in 12 suites, 40 passing, ~1.2 s.** 16 chunking tests, 15 metric tests,
+  3 error-classification tests, and 6 retrieval/pipeline integration tests against a real PostgreSQL 16.15 + pgvector 0.6.0.
   The integration tests use a deterministic feature-hashing embedder, so they need no API
   key. They cover ingestion chunk counts, idempotent re-ingestion, ranking order, CSV row
   retrieval, k-limit and cross-project isolation, and trace + span + scoped-evaluator
   recording.
 - First test run found one real bug (generation latency was rounded to whole ms before
   computing tokens/sec, which gave `null` for sub-millisecond calls). Fixed, then all 37 passed.
+- A live call found a second real bug: Gemini reports billing exhaustion as
+  `402 … RESOURCE_EXHAUSTED`. The existing classifier matched `RESOURCE_EXHAUSTED` as a rate
+  limit and would have retried it. It is now classified permanent before the rate-limit check,
+  and 3 tests were added (402 → permanent, 429 → still transient, invalid key → permanent).
 - `next build` succeeds: 16 routes. `eslint`: 0 errors.
 
 ### Eval corpus and label check **[ran: `npm run rag:check`]**
@@ -169,9 +173,11 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
 - 1,989 lines before this work → 4,839 lines after (generated Prisma client excluded).
 
 ### RAG eval results, latency, tokens/sec, cost per request
-- **Not yet measured.** The run needs a Gemini API key, and none was configured in the
-  sandbox; the first live call returned `400 API_KEY_INVALID`. This section will be filled
-  with numbers from `npm run rag:eval` once the key is available. Nothing here is estimated.
+- **Not yet measured.** Every Gemini call (gemini-2.5-flash, gemini-2.5-flash-lite,
+  gemini-2.0-flash, gemini-embedding-001) returned `402: Your prepayment credits are
+  depleted` for the configured key (before that: `400 API_KEY_INVALID` with no key). The run
+  is `npm run rag:ingest` + `npm run rag:eval` once the Google project has credits. Nothing
+  in this section is estimated.
 
 ---
 
