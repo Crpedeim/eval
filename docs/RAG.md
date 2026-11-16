@@ -41,7 +41,8 @@ Vectors live in a `vector(768)` column on the Chunk table with an HNSW index usi
 `vector_cosine_ops`. Retrieval orders chunks by cosine distance with the `<=>` operator and
 always filters by project id, so a query can never return another tenant's chunks.
 
-The generator is gemini-2.5-flash with temperature 0 and a thinking budget of 0. The prompt
+The generator uses the platform's judge model (gemini-3.8-flash in the measured run) with
+temperature 0 and the lowest thinking setting the model accepts. The prompt
 numbers the retrieved passages and instructs the model to cite them in square brackets and to
 reply "I don't know based on the provided documents." when the passages lack the answer.
 Citation markers are parsed back to chunk ids; numbers outside the retrieved range are dropped.

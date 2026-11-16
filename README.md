@@ -329,6 +329,39 @@ and completely unrelated to the input — only the judge catches that.
 
 ---
 
+## RAG
+
+Document ingestion into pgvector, cited question answering, per-step tracing and a labelled
+evaluation harness, built on the same queue, worker and judge machinery. Design:
+[docs/RAG.md](docs/RAG.md). Measured results and caveats: [RESUME_FACTS.md](RESUME_FACTS.md).
+
+- `POST /api/v1/documents`: upload `.md`, `.txt`, `.csv` or `.pdf` (multipart `file`, max 5MB).
+  It is chunked and embedded by the worker (`ingest-document` queue).
+- `POST /api/v1/rag/query` `{ "question": "...", "k": 5 }`: answer with citations, recorded as a
+  `rag.answer` trace with `retrieve` and `generate` spans.
+- `/projects/:id/rag`: upload, ask, per-step latency / tokens/sec / cost, eval runs.
+
+```bash
+npx prisma migrate deploy                    # needs the pgvector extension (Neon has it)
+npx tsx scripts/add-rag-evaluators.ts        # faithfulness + relevance judges, scoped to rag.answer
+BASE_URL=http://localhost:3000 API_KEY=<key> npm run rag:ingest -- datasets/rag/corpus/*
+npm run rag:eval -- <projectId> datasets/rag/questions.json 5
+npm test
+```
+
+First run (34 questions over this repo's docs, k=5, `gemini-3.8-flash`): recall@5 1.000,
+MRR 0.941, faithfulness 1.00, relevance 1.00, p95 latency 3.4s, 21 tok/s median,
+$0.00093 per request. The set is small and easy; see RESUME_FACTS.md for how each number
+was measured.
+
+| Variable | Purpose |
+|---|---|
+| `RAG_MODEL` | Generator model (defaults to `JUDGE_MODEL`) |
+| `RAG_THINKING_LEVEL` / `RAG_THINKING_BUDGET` | Thinking for Gemini 3 (default `LOW`) / Gemini 2.x (default `0`) |
+| `EMBEDDING_MODEL` | Default `gemini-embedding-001` (768-d, fixed by the schema) |
+
+---
+
 ## Known limitations
 
 - **Evaluators are configured via seed script**; there's no management UI yet.

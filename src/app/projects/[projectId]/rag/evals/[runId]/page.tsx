@@ -47,7 +47,7 @@ export default async function RagEvalRunPage({ params }: { params: Promise<{ run
       </div>
 
       <Card title="Questions">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm [&_td]:pr-4 [&_th]:pr-4">
           <thead>
             <tr className="border-b text-left text-gray-500">
               <th className="py-2">ID</th><th>Question</th><th>Recall</th><th>RR</th>

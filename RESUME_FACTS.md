@@ -83,7 +83,9 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
 - Registry of `{ type, configSchema (zod), run }`. Types: `assertion` (`non_empty`,
   `json_valid`, `contains`, `regex`, `max_length`, score 1/0) and `llm_judge` (rubric +
   threshold, default 0.7).
-- Judge: Gemini `gemini-2.5-flash` by default (`JUDGE_MODEL`), temperature 0, JSON output
+- Judge: Gemini, model from `JUDGE_MODEL` (code default `gemini-2.5-flash`; the measured run
+  used `gemini-3.8-flash` because Google returned "`gemini-2.5-flash` is no longer available
+  to new users" for this key **[ran]**), temperature 0, JSON output
   forced with `responseSchema` with `reasoning` before `score`, response validated with zod.
   The provider sits behind a 3-member `JudgeProvider` interface selected by `JUDGE_PROVIDER`.
 
@@ -127,7 +129,10 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
   `RETRIEVAL_DOCUMENT` and `RETRIEVAL_QUERY`, in batches of 50.
 - **Retrieval:** pgvector cosine distance (`<=>`) over the HNSW index, always filtered by
   project id.
-- **Generation:** `gemini-2.5-flash`, temperature 0, thinking budget 0, numbered passages,
+- **Generation:** the judge's model unless `RAG_MODEL` is set (measured: `gemini-3.8-flash`),
+  temperature 0. Thinking is kept minimal: `thinkingBudget: 0` on Gemini 2.x, and
+  `thinkingLevel: LOW` on Gemini 3. Gemini 3 silently ignored `thinkingBudget: 0` (a test call
+  still used 166 thinking tokens) and rejects `MINIMAL` **[ran]**. Numbered passages;
   told to cite `[n]` or say "I don't know based on the provided documents." Citations are
   parsed back to chunk ids; out-of-range numbers are dropped.
 - **Tracing:** each answer is a `rag.answer` trace with a `retrieve` span (query-embedding
@@ -156,28 +161,86 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
   `402 … RESOURCE_EXHAUSTED`. The existing classifier matched `RESOURCE_EXHAUSTED` as a rate
   limit and would have retried it. It is now classified permanent before the rate-limit check,
   and 3 tests were added (402 → permanent, 429 → still transient, invalid key → permanent).
-- `next build` succeeds: 16 routes. `eslint`: 0 errors.
+- `next build` succeeds: 16 routes. `eslint` on all new/changed files: 0 problems (4 errors
+  + 1 warning remain in pre-existing, untouched files: `scripts/check-models.ts`, `src/worker/index.ts`).
 
 ### Eval corpus and label check **[ran: `npm run rag:check`]**
 | File | Kind | Bytes | Extracted chars | Chunks |
 |---|---|---|---|---|
 | README.md (snapshot) | markdown | 16,525 | 16,425 | 25 |
-| rag-design.pdf (docs/RAG.md printed to PDF, 2 pages) | pdf | 23,628 | 4,358 | 4 |
+| rag-design.pdf (docs/RAG.md printed to PDF, 2 pages) | pdf | 23,861 | 4,432 | 4 |
 | source-inventory.csv (26 rows) | csv | 4,949 | 4,949 | 26 |
-| **Total** | | **45,102** | **25,732** | **55** |
+| **Total** | | **45,335** | **25,806** | **55** |
 
 - 34 labelled questions (18 README, 8 CSV, 8 PDF), 34 evidence spans; **0 spans fail to
   land in some chunk** of their expected source file.
 
 ### Code size **[ran: line count of .ts/.tsx/.prisma/.sql under src, scripts, prisma]**
-- 1,989 lines before this work → 4,839 lines after (generated Prisma client excluded).
+- 1,989 lines before this work → 4,980 lines after (generated Prisma client excluded).
 
-### RAG eval results, latency, tokens/sec, cost per request
-- **Not yet measured.** Every Gemini call (gemini-2.5-flash, gemini-2.5-flash-lite,
-  gemini-2.0-flash, gemini-embedding-001) returned `402: Your prepayment credits are
-  depleted` for the configured key (before that: `400 API_KEY_INVALID` with no key). The run
-  is `npm run rag:ingest` + `npm run rag:eval` once the Google project has credits. Nothing
-  in this section is estimated.
+### Ingestion (real run) **[ran: `npm run rag:ingest`, through `POST /api/v1/documents` → worker]**
+| File | Status | Chunks | Parse ms | Embed ms | Write ms | Attempts |
+|---|---|---|---|---|---|---|
+| README.md | ready | 25 | 1 | 778 | 81 | 1 |
+| source-inventory.csv | ready | 26 | 1 | 451 | 40 | 1 |
+| rag-design.pdf | ready | 4 | 133 | 295 | 12 | 1 |
+
+- 3 documents → **55 chunks / 768-d vectors** in pgvector; all settled **5.2 s** after the first
+  upload. Estimated embedding input: 7,361 tokens (chars/4).
+
+### RAG eval (real run) **[ran: `npm run rag:eval`, run `cmwjing4s00003y7da1wrebfo`, 2026-11-16]**
+Setup: 34 questions, k = 5, generator and judge `gemini-3.8-flash` (thinking level LOW for
+generation), embedder `gemini-embedding-001` (768-d), local PostgreSQL 16.15 + pgvector 0.6.0.
+Full report: `datasets/rag/results/project-docs-v1-cmwjing4s00003y7da1wrebfo.{md,json}`.
+
+| Metric | Value | How it was measured |
+|---|---|---|
+| Answered | 34 / 34, 0 failed, 0 retries | `RagEvalItem.status`, `attempts` |
+| **Recall@5** | **1.000** (34/34) | evidence span found in top-5 chunks |
+| **MRR@5** | **0.941** | mean 1/rank of first relevant chunk; 30 questions rank 1, 4 rank 2 (p04, r05, r13, r18) (README 0.917, PDF 0.938, CSV 1.000) |
+| **Faithfulness (LLM judge)** | **1.00 mean, 34/34 pass** @0.7 | existing `llm_judge` evaluator, scoped to `rag.answer` |
+| **Answer relevance (LLM judge)** | **1.00 mean, 34/34 pass** @0.7 | same |
+| Answers with ≥1 citation | 34 / 34 | parsed `[n]` markers |
+| Citation precision | 0.875 | share of cited chunks that contain the labelled evidence |
+| "I don't know" refusals | 0 | whole answer equals the refusal sentence |
+| **Request latency** | **p50 2,045 ms, p95 3,442 ms** (mean 2,856) | `Trace.latencyMs`, wall clock retrieve→generate |
+| retrieve step | p50 259 ms, p95 369 ms | query embedding (Gemini API) + pgvector search |
+| generate step | p50 1,780 ms, p95 3,070 ms (mean 2,577) | Gemini `generateContent`, non-streaming |
+| Tokens per request | 1,030 prompt / 42 output (means) | Gemini `usageMetadata` |
+| **Tokens/sec (generate)** | **median 21.0**, mean 22.9, aggregate 16.3 | output tokens ÷ generate wall-clock s |
+| **Cost per request** | **$0.000932** mean; $0.0317 for all 34 | sum of span costs: $0.75/$3.75 per 1M (gemini-3.8-flash), $0.15/1M embedding |
+| Eval throughput | answers all settled in 101 s; all 136 evaluator runs settled 480 s after start | DB timestamps |
+
+- 136 evaluator runs = 34 traces × 4 evaluators: the 2 RAG judges, plus the project's 2
+  pre-existing unscoped evaluators (`output-not-empty`, `helpfulness-judge`), which also run on
+  every trace and scored 1.00 too. The judge queue (single worker, `batchSize: 1`) was the
+  bottleneck: 101 s for answers vs 480 s until every judge run settled.
+- Single ad-hoc query via `POST /api/v1/rag/query` ("Why does the worker use batchSize 1?"):
+  correct answer citing README chunk 8, 2,660 ms total (retrieve 619 ms, generate 2,041 ms,
+  38.7 tok/s), $0.00108. **[ran]**
+
+### Judge negative control **[ran: `scripts/rag-judge-control.ts`, 80 judge calls]**
+All judges scoring 1.00 could mean a judge that never says no, so the same two RAG judges
+(same configs) re-scored 10 of the real eval items (c01, c04, c07, p02, p05, p08, r03, r06,
+r09, r12) with deliberately bad outputs:
+
+| Output variant | Faithfulness | Relevance |
+|---|---|---|
+| original answer | 1.00 | 1.00 |
+| swapped (another question's answer) | 0.10 | 0.00 |
+| fabricated (real answer + one invented claim) | 0.52 | 0.50 |
+| refusal ("I don't know…") despite answerable context | 0.10 | 0.00 |
+
+The judges do discriminate. The 1.00 scores reflect an easy dataset, not a judge that
+always passes. Raw rows: `datasets/rag/results/judge-negative-control-cmwjing4s00003y7da1wrebfo.json`.
+
+### UI **[ran: production build + Playwright screenshots, signed in via a locally minted session]**
+- `docs/rag-rag.png`: RAG page (3 documents / 55 chunks, 35 requests, $0.000937/request,
+  p95 3,356 ms, 21.0 tok/s, per-step table, eval-run row, documents table).
+- `docs/rag-eval.png`: eval-run page with metric tiles and per-question scores.
+- `docs/rag-trace.png`: trace detail with span waterfall, citations, retrieved passages and
+  the 4 judge verdicts with reasoning.
+- (The RAG page counts 35 requests: the 34 eval answers plus the single API query.)
 
 ---
 
@@ -188,14 +251,27 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
   not the production Neon database: the sandbox had no Neon credentials and no network
   route to it. The migration is Neon-compatible (`CREATE EXTENSION vector`), but Neon latency
   was not measured.
-- The question set is small (34) and was written by the same agent that built the pipeline,
-  over the project's own docs. Recall@k uses one evidence span per question, so it equals
-  hit rate.
+- **The dataset is easy and small, so the scores are near the ceiling.** 34 questions over
+  a 55-chunk corpus, written by the same agent that built the pipeline, with evidence phrased
+  close to the question. Recall@5 = 1.0 and judge = 1.0 say the pipeline works end to end. They
+  do not show how it does on a hard or large corpus. Recall@k uses one evidence span per
+  question, so it equals hit rate.
+- The generator and the judge are the same model (`gemini-3.8-flash`), so self-preference bias
+  is possible. The negative control shows the judges reject bad answers, but it does not rule
+  that bias out. Relevance also dropped (0.5) for fabricated answers, though its rubric says to
+  ignore accuracy, so the two judges are not fully independent.
+- One run only: no repeated runs, so no variance or confidence intervals. Latency includes
+  network round-trips from this sandbox to Google's API.
+- The `gemini-3.8-flash` price ($0.75 / $3.75 per 1M) comes from third-party pricing pages,
+  not confirmed on Google's own page; one source says it rises after 2026-12-31.
+- In this sandbox, Node's built-in `fetch` (used by the Gemini SDK) only went through the
+  HTTPS proxy with `NODE_USE_ENV_PROXY=1`. That is an environment setting, not a code change.
 
 **Of the RAG feature**
 - Embedding token counts and costs are estimates (chars / 4): Gemini's embedding API
   returns no usage. Generation tokens come from Gemini's `usageMetadata`.
-- Judge calls are not costed: `JudgeProvider` returns only parsed JSON, not usage.
+- Judge calls are not costed: `JudgeProvider` returns only parsed JSON, not usage. Cost per
+  request above therefore excludes the 2–4 judge calls made per eval answer.
 - Tokens/sec is non-streaming end-to-end throughput (includes time to first token).
 - Chunking is character-based, not token-based. An evidence span that straddles a chunk
   boundary can be missed even when retrieval is good.

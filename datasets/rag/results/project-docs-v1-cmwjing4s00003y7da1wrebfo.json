@@ -1,0 +1,1396 @@
+{
+  "models": {
+    "generator": "gemini-3.8-flash",
+    "embedder": "gemini-embedding-001",
+    "judge": "gemini-3.8-flash"
+  },
+  "wallSeconds": 481.421,
+  "run": {
+    "id": "cmwjing4s00003y7da1wrebfo",
+    "dataset": "project-docs-v1",
+    "k": 5,
+    "createdAt": "2026-11-16T17:07:09.292Z",
+    "config": {
+      "judge": "gemini-3.8-flash",
+      "embedder": "gemini-embedding-001",
+      "generator": "gemini-3.8-flash",
+      "thinkingLevel": null,
+      "thinkingBudget": null
+    }
+  },
+  "items": {
+    "total": 34,
+    "done": 34,
+    "failed": 0,
+    "pending": 0
+  },
+  "retrieval": {
+    "recallAtK": 1,
+    "mrr": 0.9411764705882353,
+    "hitRate": 1
+  },
+  "judges": [
+    {
+      "evaluator": "helpfulness-judge",
+      "judged": 34,
+      "errored": 0,
+      "pending": 0,
+      "meanScore": 1,
+      "passRate": 1
+    },
+    {
+      "evaluator": "output-not-empty",
+      "judged": 34,
+      "errored": 0,
+      "pending": 0,
+      "meanScore": 1,
+      "passRate": 1
+    },
+    {
+      "evaluator": "rag-answer-relevance",
+      "judged": 34,
+      "errored": 0,
+      "pending": 0,
+      "meanScore": 1,
+      "passRate": 1
+    },
+    {
+      "evaluator": "rag-faithfulness",
+      "judged": 34,
+      "errored": 0,
+      "pending": 0,
+      "meanScore": 1,
+      "passRate": 1
+    }
+  ],
+  "citations": {
+    "answersWithCitation": 34,
+    "citationRate": 1,
+    "citationPrecision": 0.875,
+    "idk": 0
+  },
+  "latency": {
+    "request": {
+      "p50Ms": 2045,
+      "p95Ms": 3441.7999999999965,
+      "meanMs": 2856.323529411765
+    },
+    "retrieve": {
+      "p50Ms": 259,
+      "p95Ms": 368.8499999999999,
+      "meanMs": 279.38235294117646
+    },
+    "generate": {
+      "p50Ms": 1780,
+      "p95Ms": 3069.949999999996,
+      "meanMs": 2576.9117647058824
+    }
+  },
+  "tokens": {
+    "meanPrompt": 1029.9117647058824,
+    "meanOutput": 42,
+    "tokensPerSecMedian": 20.982206268075767,
+    "tokensPerSecMean": 22.948311404292536,
+    "tokensPerSecAggregate": 16.29857901044342
+  },
+  "cost": {
+    "meanPerRequestUsd": 0.0009324411764705885,
+    "totalUsd": 0.0317037,
+    "meanPerRequestFromSpansUsd": 0.0009324617647058824
+  },
+  "rows": [
+    {
+      "id": "cmwjing5p000j3y7dr7vzd187",
+      "questionId": "c01",
+      "question": "Which source file classifies thrown errors as transient or permanent?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjip0800043yw7djygwdgeq",
+      "answer": "The source file `src/lib/errors.ts` classifies thrown errors as transient or permanent [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1562,
+      "costUsd": 0.000649,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000k3y7d5gk3nhmj",
+      "questionId": "c02",
+      "question": "What connection pool size and transaction timeouts does the Prisma client use?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjio8cd0034yw7dyj1wajmx",
+      "answer": "The Prisma client uses a pool of 5 connections [1]. It has a transaction `maxWait` of 20 seconds and a timeout of 30 seconds [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2024,
+      "costUsd": 0.0009,
+      "judges": {
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000l3y7d4jy8p67c",
+      "questionId": "c03",
+      "question": "What is the format of a generated API key?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipixz0061yw7donai5b8n",
+      "answer": "A generated API key is formatted as `evp_live_` followed by 24 random bytes in base64url [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2026,
+      "costUsd": 0.000665,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000m3y7d2kuv63ji",
+      "questionId": "c04",
+      "question": "Which file contains the Recharts chart components?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinyon001yyw7d4bzlf370",
+      "answer": "The Recharts chart components are contained in `src/components/charts.tsx` [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1651,
+      "costUsd": 0.000483,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000n3y7drzl8659i",
+      "questionId": "c05",
+      "question": "Which route file serves the session-authenticated project metrics JSON?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjiov7m003iyw7d9gfffueg",
+      "answer": "The route file that serves session-authenticated project metrics JSON is `src/app/projects/[projectId]/metrics/route.ts` [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2844,
+      "costUsd": 0.00054,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000o3y7dv5qlr5zl",
+      "questionId": "c06",
+      "question": "Which file contains the RFC 4180 CSV parser?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjio0lr0025yw7ddw8eh182",
+      "answer": "The RFC 4180 CSV parser is contained in `src/lib/rag/chunking.ts` [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2137,
+      "costUsd": 0.00051,
+      "judges": {
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000p3y7dep3brm84",
+      "questionId": "c07",
+      "question": "How does the RAG query API map upstream model errors to HTTP status codes?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipdzh005gyw7d1cx3nmqb",
+      "answer": "Upstream model errors map to a 503 HTTP status code when transient and to a 502 status code otherwise [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2024,
+      "costUsd": 0.001094,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000q3y7di46r7yyg",
+      "questionId": "c08",
+      "question": "How does API key authentication update lastUsedAt?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjip920004vyw7d9n0pqmc0",
+      "answer": "API key authentication updates `lastUsedAt` without awaiting the operation [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2364,
+      "costUsd": 0.000545,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000r3y7dozpl7cz5",
+      "questionId": "p01",
+      "question": "What chunk window size and overlap does the RAG pipeline use?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinnkq000lyw7du50q09rg",
+      "answer": "The RAG pipeline uses a character-based chunking method with a 1200 character window and a 150 character overlap [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1795,
+      "costUsd": 0.001104,
+      "judges": {
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000s3y7dh73riyvt",
+      "questionId": "p02",
+      "question": "Why can the embeddings be truncated to 768 dimensions?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinpht000syw7dqk22abb3",
+      "answer": "The embeddings can be truncated to 768 dimensions because the `gemini-embedding-001` model was trained with Matryoshka representation learning [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2283,
+      "costUsd": 0.001017,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000t3y7dyrdxhu53",
+      "questionId": "p03",
+      "question": "Which embedding task types are used for documents and for questions?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipc700059yw7dyfkvo9g1",
+      "answer": "Documents are embedded with the `RETRIEVAL_DOCUMENT` task type, while questions are embedded with the `RETRIEVAL_QUERY` task type [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1707,
+      "costUsd": 0.000969,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing63000u3y7d2v4cva0x",
+      "questionId": "p04",
+      "question": "What kind of index serves the vector similarity search?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjioszw003byw7dwk3c1km4",
+      "answer": "Vector similarity search is served by an HNSW index using `vector_cosine_ops` on a `vector(768)` column [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2
+      ],
+      "latencyMs": 26747,
+      "costUsd": 0.000959,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing63000v3y7df4trfun3",
+      "questionId": "p05",
+      "question": "In the RAG evaluation, when does a retrieved chunk count as relevant?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinivp0000yw7dybzf0z9o",
+      "answer": "A retrieved chunk counts as relevant when it contains an evidence span after normalisation [1]. Normalisation includes converting to lowercase, removing markdown markers, and collapsing whitespace [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2411,
+      "costUsd": 0.000957,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing63000w3y7dsphhchhd",
+      "questionId": "p06",
+      "question": "Why does the tokens per second figure include time to first token?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipkjv0068yw7dm6sjjz9d",
+      "answer": "The tokens per second figure includes time to first token because generation is not streamed [1]. As a result, it is calculated as output tokens divided by the generation wall-clock time [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2064,
+      "costUsd": 0.000794,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing64000x3y7diu9ljk5a",
+      "questionId": "p07",
+      "question": "How are the faithfulness and answer relevance judges restricted to RAG traces?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjio27q002cyw7dm7bwaoh8",
+      "answer": "The faithfulness and answer relevance evaluators are scoped with `traceName = rag.answer`, which ensures they run only on RAG traces [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2046,
+      "costUsd": 0.001017,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing64000y3y7dso2aev1g",
+      "questionId": "p08",
+      "question": "What should the model reply when the retrieved passages do not contain the answer?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjiphd3005uyw7dogawodje",
+      "answer": "When the retrieved passages lack the answer, the model is instructed to reply: \"I don't know based on the provided documents.\" [1]",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2110,
+      "costUsd": 0.001109,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5j00013y7dvnsjf73h",
+      "questionId": "r01",
+      "question": "Why does the platform run as two services on Railway rather than on a serverless platform?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjiox2j003pyw7dfsyz4l9p",
+      "answer": "The platform is split into a web service that answers HTTP requests and a worker service that is a long-lived process polling a queue with no HTTP surface [1]. It runs on Railway because a serverless platform can host the web service, but it cannot host the long-lived worker process [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2387,
+      "costUsd": 0.001131,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00023y7d602wj2wp",
+      "questionId": "r02",
+      "question": "What does a forced failure mid-transaction leave behind in the Trace, EvalRun and pgboss.job tables?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinxe4001ryw7ddkqcja42",
+      "answer": "A forced failure mid-transaction leaves zero rows in `Trace`, zero rows in `EvalRun`, and zero rows in `pgboss.job` [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1908,
+      "costUsd": 0.001144,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00033y7ddtye1d2j",
+      "questionId": "r03",
+      "question": "Why is an EvalRun in the running state still claimable by the worker?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipfpt005nyw7dvan9gvl7",
+      "answer": "An `EvalRun` in the `running` state is deliberately claimable so that if a worker dies mid-job, the row does not remain stranded [1]. Excluding the `running` state would deadlock that evaluation forever [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2212,
+      "costUsd": 0.00109,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00043y7d2r5zytmb",
+      "questionId": "r04",
+      "question": "What happens when duplicate jobs are sent for an EvalRun that is already settled?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipm2d006fyw7d9my4gang",
+      "answer": "When duplicate jobs are sent for an already settled `EvalRun`, the conditional update matches zero rows because terminal statuses (`done` and `failed`) are excluded from claiming [1]. The redelivered job acts as a clean no-op without causing a duplicate write or error [1]. As verified, this produces `skip (already settled)` and leaves exactly one row with `attempts` unchanged [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1942,
+      "costUsd": 0.00124,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00053y7djpak08yp",
+      "questionId": "r05",
+      "question": "How are errors of an unknown kind classified, and why that choice?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjio6rj002xyw7d7v9il6aj",
+      "answer": "Unknown errors default to being classified as permanent [1][2]. This choice was made because the costs are asymmetric: wrongly retrying creates a storm against an already broken system, whereas wrongly failing only requires one evaluation to be re-run manually [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2
+      ],
+      "latencyMs": 1929,
+      "costUsd": 0.000983,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00063y7dygakrxue",
+      "questionId": "r06",
+      "question": "What backoff strategy and delay settings do retries use?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinkht0007yw7d3n2n50g3",
+      "answer": "Retries use exponential backoff with equal jitter to prevent simultaneous failures from synchronizing [1]. The delay settings use a `retryDelay` of 2 seconds and are capped at a maximum of 60 seconds [1][3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2060,
+      "costUsd": 0.001129,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00073y7d29i1zed6",
+      "questionId": "r07",
+      "question": "Why does the worker process jobs with batchSize 1?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjipauy0052yw7dc7d2px5m",
+      "answer": "The worker uses `batchSize: 1` for failure isolation because pg-boss treats a batch as a single unit of work [1]. If one job in a batch fails, all jobs in that batch are marked as failed and retried, which causes healthy evaluations to be counted as failures and consume retry budget for another job's error [1]. Throughput is deliberately traded to ensure correct failure attribution [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2316,
+      "costUsd": 0.001107,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00083y7d4fysp95e",
+      "questionId": "r08",
+      "question": "How are API keys stored, and why is a fast hash acceptable instead of bcrypt?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinrao000zyw7dkxztm265",
+      "answer": "API keys are stored as SHA-256 hashes accompanied by a short, non-secret prefix used for lookup [1][2]. A fast hash is acceptable instead of bcrypt because the keys consist of 24 random bytes, meaning the high-entropy threat model that necessitates slow hashing for passwords does not apply [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2293,
+      "costUsd": 0.000966,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n00093y7df90cq2y4",
+      "questionId": "r09",
+      "question": "What status code does a cross-tenant request receive, and why not 403?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinsq40016yw7dyzos60d7",
+      "answer": "A cross-tenant request receives a 404 status code instead of a 403 [1][2]. It does not return a 403 because a 403 confirms that the resource exists, which is itself considered an information leak [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 1823,
+      "costUsd": 0.001046,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n000a3y7dmsfl5v8r",
+      "questionId": "r10",
+      "question": "Why does the judge prompt ask for reasoning before the score?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjip77o004oyw7d0g8ech6x",
+      "answer": "The judge prompt puts reasoning before the score following the G-Eval finding that models score better after reasoning than when emitting a number cold [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 4552,
+      "costUsd": 0.000906,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5n000b3y7d6i25d96i",
+      "questionId": "r11",
+      "question": "How does the judge rubric mitigate verbosity bias?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinm5v000eyw7d73wli7vy",
+      "answer": "The judge rubric mitigates verbosity bias by explicitly instructing the judge to ignore output length [1]. This serves as a direct mitigation for the bias documented in the MT-Bench paper [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2127,
+      "costUsd": 0.000962,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000c3y7d1xykt8fa",
+      "questionId": "r12",
+      "question": "What actually caused the 15-second transactions in development?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjio3pp002jyw7dso737o2q",
+      "answer": "The actual cause was roughly 300ms of round-trip latency between the developer's location and the database region, multiplied across approximately 20 sequential statements inside a single transaction [1]. The transaction forced these statements to serialize and held a database connection for the entire duration, causing subsequent requests to time out while waiting to acquire a connection [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1916,
+      "costUsd": 0.001106,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000d3y7du4f2on57",
+      "questionId": "r13",
+      "question": "How many connections did pg_stat_activity show when connection exhaustion was suspected?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinucq001dyw7dfu6jpijw",
+      "answer": "When connection exhaustion was suspected, `pg_stat_activity` showed 8 total connections against a much higher limit [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2
+      ],
+      "latencyMs": 1935,
+      "costUsd": 0.000764,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000e3y7dc6j7x1se",
+      "questionId": "r14",
+      "question": "Why are there separate pooled and direct database URLs?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjioz00003wyw7d1av5h16y",
+      "answer": "The separate pooled and direct database URLs are required because connection poolers do not support the prepared statements that Prisma's migration engine and pg-boss's schema setup rely on [1]. Consequently, the pooled connection (`DATABASE_URL`) is used for the application runtime, while the direct connection (`DIRECT_URL`) handles migrations and pg-boss schema setup [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2474,
+      "costUsd": 0.000974,
+      "judges": {
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000f3y7dh45o44qw",
+      "questionId": "r15",
+      "question": "What HTTP status does POST /api/v1/traces return on success?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjio547002qyw7d08q4u8di",
+      "answer": "On success, `POST /api/v1/traces` returns **202 Accepted** [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1795,
+      "costUsd": 0.000931,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000g3y7dkmckfcxh",
+      "questionId": "r16",
+      "question": "Why are sessions JWT-based, and what is the downside?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjip251004ayw7dgrt3jogr",
+      "answer": "Sessions are JWT-based because Prisma cannot run in Next.js's edge runtime, which would be required for a database-backed session strategy [1]. The downside of this approach is that there is no instant revocation [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2044,
+      "costUsd": 0.001012,
+      "judges": {
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000h3y7dhy6hyhpm",
+      "questionId": "r17",
+      "question": "What is the first item on the list of things the author would add next?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjinvpw001kyw7dnbog19rb",
+      "answer": "The first item on the list of things the author would add next is a \"Judge calibration harness\" [1]. It involves using human labels on a sample, measuring Cohen's kappa against the judge, and tracking agreement over time to determine if the judge is effective [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1745,
+      "costUsd": 0.001101,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwjing5p000i3y7drymc06md",
+      "questionId": "r18",
+      "question": "Which rules does the deterministic assertion evaluator support?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwjip3lf004hyw7dx23cqpli",
+      "answer": "The deterministic assertion evaluator supports the rules `non_empty`, `json_valid`, `contains`, `regex`, and `max_length` [1][2]. Each of these checks returns a score of 1 or 0 [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2
+      ],
+      "latencyMs": 1862,
+      "costUsd": 0.000799,
+      "judges": {
+        "output-not-empty": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "helpfulness-judge": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    }
+  ]
+}

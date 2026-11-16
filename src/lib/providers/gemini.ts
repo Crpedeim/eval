@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel, type ThinkingConfig } from "@google/genai";
 import type {
   JudgeProvider, JudgeRequest,
   GenerationProvider, GenerationRequest, GenerationResult,
@@ -34,10 +34,22 @@ export class GeminiProvider implements JudgeProvider {
 
 export class GeminiGenerator implements GenerationProvider {
   readonly name = "gemini";
-  readonly model = process.env.RAG_MODEL ?? "gemini-2.5-flash";
-  // 0 disables Gemini 2.5 "thinking" — grounded QA over retrieved context doesn't need it,
-  // and it keeps latency and tokens/sec about the answer the user actually sees.
-  private readonly thinkingBudget = Number(process.env.RAG_THINKING_BUDGET ?? 0);
+  // Defaults to the judge's model: one model for the whole platform unless overridden.
+  readonly model = process.env.RAG_MODEL ?? process.env.JUDGE_MODEL ?? "gemini-2.5-flash";
+
+  /**
+   * Keep hidden reasoning low: grounded QA over retrieved context doesn't need it, and it
+   * keeps latency and tokens/sec about the answer the user sees. Gemini 2.5 takes a token
+   * budget (0 = off); Gemini 3 ignores that field and takes a level instead (lowest
+   * accepted by gemini-3.8-flash is LOW — MINIMAL is rejected).
+   */
+  private thinkingConfig(): ThinkingConfig {
+    if (this.model.startsWith("gemini-2")) {
+      return { thinkingBudget: Number(process.env.RAG_THINKING_BUDGET ?? 0) };
+    }
+    const level = (process.env.RAG_THINKING_LEVEL ?? "LOW").toUpperCase() as ThinkingLevel;
+    return { thinkingLevel: level };
+  }
 
   async generate(req: GenerationRequest): Promise<GenerationResult> {
     const res = await client().models.generateContent({
@@ -46,7 +58,7 @@ export class GeminiGenerator implements GenerationProvider {
       config: {
         systemInstruction: req.system,
         temperature: 0,
-        thinkingConfig: { thinkingBudget: this.thinkingBudget },
+        thinkingConfig: this.thinkingConfig(),
       },
     });
 

@@ -1,0 +1,596 @@
+{
+  "runId": "cmwjing4s00003y7da1wrebfo",
+  "judgeModel": "gemini-3.8-flash",
+  "sample": [
+    "c01",
+    "c04",
+    "c07",
+    "p02",
+    "p05",
+    "p08",
+    "r03",
+    "r06",
+    "r09",
+    "r12"
+  ],
+  "summary": {
+    "original": {
+      "rag-faithfulness": 1,
+      "rag-answer-relevance": 1
+    },
+    "swapped": {
+      "rag-faithfulness": 0.1,
+      "rag-answer-relevance": 0
+    },
+    "fabricated": {
+      "rag-faithfulness": 0.5199999999999999,
+      "rag-answer-relevance": 0.5
+    },
+    "refusal": {
+      "rag-faithfulness": 0.1,
+      "rag-answer-relevance": 0
+    }
+  },
+  "rows": [
+    {
+      "questionId": "c01",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and completely answers the question asking which source file classifies thrown errors as transient or permanent, identifying `src/lib/errors.ts` without any irrelevant information."
+    },
+    {
+      "questionId": "c01",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The single claim made in the output—that the source file `src/lib/errors.ts` classifies thrown errors as transient or permanent—is directly supported by passage [1]."
+    },
+    {
+      "questionId": "c01",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first claim, stating that 'src/lib/errors.ts' classifies thrown errors as transient or permanent, is directly supported by passage [1]. However, the second sentence claims that it was benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019, which is completely unsupported by and absent from the context passages."
+    },
+    {
+      "questionId": "c01",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output does not address the question at all. Instead of identifying a source file or even answering the question directly, it makes a meta-statement about the system prompt instructions."
+    },
+    {
+      "questionId": "c01",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output makes a claim about model instructions and cites passage [1], but none of the context passages contain this statement. The claim is completely unsupported by the provided context."
+    },
+    {
+      "questionId": "c01",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The response directly answers the question by naming the source file (`src/lib/errors.ts`). However, half of the response consists of an irrelevant claim about benchmarking on a Raspberry Pi, which constitutes substantial off-topic content."
+    },
+    {
+      "questionId": "c04",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and completely answers the question about which file contains the Recharts chart components."
+    },
+    {
+      "questionId": "c04",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The single claim in the output states that the Recharts chart components are contained in src/components/charts.tsx, which is directly supported by passage [1]."
+    },
+    {
+      "questionId": "c01",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric specifies evaluating answer relevance only, explicitly stating that declining to answer warrants a score of 0.0. The output declines to answer ('I don't know based on the provided documents.'), so it receives a 0.0."
+    },
+    {
+      "questionId": "c04",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output contains claims regarding an `EvalRun` in the `running` state, workers dying mid-job, and deadlocks, none of which appear anywhere in the provided context passages. Every factual claim is completely unsupported by the context."
+    },
+    {
+      "questionId": "c04",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The question asks which file contains the Recharts chart components. The output discusses worker claimability and the state of an EvalRun, completely failing to address the question asked."
+    },
+    {
+      "questionId": "c01",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The provided context explicitly contains the answer to the question in passage [1], which states that `src/lib/errors.ts` classifies thrown errors as transient or permanent. The rubric specifies that stating the documents do not contain the answer only receives a 1.0 if the passages indeed lack it. Since the passages do contain the answer, this claim is contradicted by the text."
+    },
+    {
+      "questionId": "c04",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first claim that Recharts chart components are in `src/components/charts.tsx` is supported by passage [1]. However, the second claim stating that it was benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019 is completely unsupported and hallucinated."
+    },
+    {
+      "questionId": "c04",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric specifies scoring answer relevance only, and explicitly states that declining to answer warrants a score of 0.0. The output declines to answer with 'I don't know based on the provided documents.'"
+    },
+    {
+      "questionId": "c07",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The output directly states what is explicitly confirmed in passage [1], which notes that upstream model errors map to 503 when transient and 502 otherwise."
+    },
+    {
+      "questionId": "c07",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and completely answers the question by stating how upstream model errors map to HTTP status codes (503 when transient, 502 otherwise)."
+    },
+    {
+      "questionId": "c04",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The output directly answers the question identifying the file containing the Recharts chart components, but it also includes substantial off-topic content regarding benchmark performance that was not asked for."
+    },
+    {
+      "questionId": "c04",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output states that the answer cannot be known based on the provided documents. However, context passage [1] explicitly states that 'src/components/charts.tsx' contains Recharts client components. According to the rubric, claiming the documents do not contain the answer is only awarded 1.0 if the passages indeed lack it."
+    },
+    {
+      "questionId": "c07",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric explicitly specifies that declining to answer counts as not addressing the question and receives a score of 0.0. The output responded with \"I don't know based on the provided documents.\", which declines to answer."
+    },
+    {
+      "questionId": "c07",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first claim regarding the mapping of upstream model errors to 503 (transient) and 502 (otherwise) is directly supported by passage [1]. However, the second claim about benchmarking 50,000 requests per second on a Raspberry Pi is completely fabricated and unsupported by any of the context passages."
+    },
+    {
+      "questionId": "c07",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output does not address the question about how upstream model errors map to HTTP status codes. Instead, it discusses retry backoff settings and jitter."
+    },
+    {
+      "questionId": "c07",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The response directly answers how upstream model errors are mapped to HTTP status codes (503 when transient, 502 otherwise). However, half of the response includes completely unrelated, off-topic benchmark information, warranting a score of 0.5 under the rubric."
+    },
+    {
+      "questionId": "c07",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The rubric instructs to evaluate faithfulness only and ignore completeness, question relevance, style, and citation markers. Every factual claim made in the output (regarding exponential backoff with equal jitter, preventing synchronized failures, retryDelay of 2 seconds, and capping at 60 seconds) is supported by passage [5]."
+    },
+    {
+      "questionId": "c07",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output states that the answer cannot be known based on the provided documents, but Passage [1] explicitly answers the question ('upstream model errors map to 503 when transient and 502 otherwise'). The rubric specifies that stating the documents do not contain the answer receives a 1.0 only if the passages indeed lack it."
+    },
+    {
+      "questionId": "p02",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and fully answers the question by explaining why embeddings can be truncated to 768 dimensions (it notes that the model was trained with Matryoshka representation learning)."
+    },
+    {
+      "questionId": "p02",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first claim that the embeddings can be truncated because gemini-embedding-001 was trained with Matryoshka representation learning is fully supported by Passage [1]. However, the second claim stating it was benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019 is completely fabricated and unsupported by the context."
+    },
+    {
+      "questionId": "p02",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The output directly answers the question based on context passage [1], stating that the model supports truncation to 768 dimensions because it was trained with Matryoshka representation learning. Every claim is fully supported by the context."
+    },
+    {
+      "questionId": "p02",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output makes factual claims about cross-tenant requests receiving 404 status codes to prevent information leaks, which is completely unsupported by and absent from all provided context passages."
+    },
+    {
+      "questionId": "p02",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output does not address the question at all; it talks about cross-tenant requests and 404 status codes instead of why embeddings can be truncated to 768 dimensions."
+    },
+    {
+      "questionId": "p02",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The response directly answers the question in the first sentence by explaining that the model was trained with Matryoshka representation learning. However, roughly half of the response contains completely irrelevant, off-topic benchmark claims, meeting the criterion for 'substantial off-topic content'."
+    },
+    {
+      "questionId": "p02",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric explicitly states that declining to answer counts as not addressing the question and should receive a score of 0.0."
+    },
+    {
+      "questionId": "p05",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and fully answers the question by stating the exact conditions under which a retrieved chunk is considered relevant in the RAG evaluation."
+    },
+    {
+      "questionId": "p02",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The provided context explicitly answers the question in passage [1], stating that the model supports truncation to 768 dimensions 'because it was trained with Matryoshka representation learning.' Therefore, the claim that the documents do not contain the answer is false."
+    },
+    {
+      "questionId": "p05",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output contains factual claims regarding database round-trip latency, sequential statements inside a transaction, and connection timeouts that are completely absent from and unsupported by the provided context passages."
+    },
+    {
+      "questionId": "p05",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "Every factual claim in the output is directly and accurately supported by passage [1]."
+    },
+    {
+      "questionId": "p05",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output talks about database round-trip latency, transaction serialization, and connection timeouts, completely failing to address the question of when a retrieved chunk counts as relevant in the RAG evaluation."
+    },
+    {
+      "questionId": "p08",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and completely answers the question asking what the model should reply when the retrieved passages do not contain the answer."
+    },
+    {
+      "questionId": "p08",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The output directly states what the prompt instructs the model to reply when retrieved passages lack the answer, which is entirely supported by passage [1]."
+    },
+    {
+      "questionId": "p05",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output declines to answer ('I don't know based on the provided documents.'). The rubric explicitly states that declining to answer receives a score of 0.0."
+    },
+    {
+      "questionId": "p05",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first two claims regarding when a chunk counts as relevant and what normalisation entails are fully supported by passage [1]. However, the claim that it was benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019 is completely unsupported and fabricated."
+    },
+    {
+      "questionId": "p05",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The output directly answers the question in the first two sentences by explaining when a retrieved chunk counts as relevant. However, the final sentence adds completely unrelated, off-topic content (benchmarking on a Raspberry Pi), which constitutes substantial off-topic content under the rubric."
+    },
+    {
+      "questionId": "p05",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The provided context explicitly contains the answer to the question in passage [1]: 'A retrieved chunk counts as relevant when it contains an evidence span after normalisation (lowercase, markdown markers removed, whitespace collapsed).' The output claims that the documents do not contain the answer, which directly contradicts the context."
+    },
+    {
+      "questionId": "p08",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first claim stating that the model is instructed to reply 'I don't know based on the provided documents.' when retrieved passages lack the answer is directly supported by passage [1]. However, the second claim stating it was benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019 is completely unsupported and fabricated."
+    },
+    {
+      "questionId": "p08",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The output directly answers the question in the first sentence by stating the exact required reply. However, half of the response consists of an irrelevant, off-topic claim about Raspberry Pi benchmarking. Under the rubric, including substantial off-topic content warrants a score of 0.5."
+    },
+    {
+      "questionId": "p08",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output talks about error classification in a source file, which does not address the question about what the model should reply when passages lack the answer at all."
+    },
+    {
+      "questionId": "p08",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The single claim made in the output regarding the source file `src/lib/errors.ts` classifying thrown errors as transient or permanent is completely absent from and unsupported by the provided context passages (including passage [1], which is cited)."
+    },
+    {
+      "questionId": "p08",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "The context states in passage [1] that the prompt instructs the model to reply \"I don't know based on the provided documents.\" when the passages lack the answer. The output correctly provides this exact reply to answer the question, making it fully faithful and supported by the text."
+    },
+    {
+      "questionId": "p08",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric specifies that declining to answer receives a score of 0.0. The output is the exact fallback refusal string ('I don't know based on the provided documents.') rather than directly answering what the model should reply."
+    },
+    {
+      "questionId": "r03",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "Every claim in the output is directly supported by passage [1], which states that running is deliberately claimable because if the worker dies mid-job, the row is stranded in running, and excluding it would deadlock that evaluation forever."
+    },
+    {
+      "questionId": "r03",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output does not address the question at all. The question asks why an EvalRun in the running state is claimable by the worker, but the output talks about Recharts chart components."
+    },
+    {
+      "questionId": "r03",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output makes a claim about Recharts chart components in 'src/components/charts.tsx', which is completely absent from and unsupported by the provided context passages."
+    },
+    {
+      "questionId": "r03",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and fully answers the question, explaining why an EvalRun in the running state is claimable (to prevent evaluations from being stranded and deadlocked forever if a worker dies mid-job)."
+    },
+    {
+      "questionId": "r03",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The first two sentences are directly supported by passage [1], explaining that 'running' is claimable to prevent a deadlock if a worker dies mid-job. However, the final sentence claiming that it was 'benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019' is completely unsupported and fabricated."
+    },
+    {
+      "questionId": "r03",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The output directly and fully answers why an EvalRun in the running state is claimable (to avoid stranding the row and deadlocking if a worker dies mid-job). However, it includes a completely unrelated claim at the end (benchmarking on a Raspberry Pi), which introduces substantial off-topic content."
+    },
+    {
+      "questionId": "r03",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric explicitly specifies that declining to answer warrants a score of 0.0. The model replied with a refusal (\"I don't know based on the provided documents.\"), so it does not address the question."
+    },
+    {
+      "questionId": "r06",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and fully answers the question by stating the specific backoff strategy (exponential backoff with equal jitter) and the delay settings (retryDelay of 2 seconds, capped at 60 seconds)."
+    },
+    {
+      "questionId": "r06",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output talks about HTTP status codes for upstream model errors, completely failing to address the question regarding backoff strategy and delay settings."
+    },
+    {
+      "questionId": "r03",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output states that the provided documents do not contain the answer, but Passage [1] explicitly answers the question: '`running` is deliberately claimable: if the worker dies mid-job the row is stranded in `running`, and excluding it would deadlock that evaluation forever.' Because the passages do contain the answer, claiming that they lack it is unfaithful."
+    },
+    {
+      "questionId": "r06",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output claims that upstream model errors map to a 503 HTTP status code when transient and to a 502 status code otherwise, citing [1]. However, none of the provided context passages mention 502 status codes or mapping upstream model errors to 503/502. The claim is completely unsupported by the provided context."
+    },
+    {
+      "questionId": "r06",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "All factual claims made in the output regarding exponential backoff with equal jitter, preventing synchronized failures, a retryDelay of 2 seconds, and the 60-second cap are directly supported by context passages [1] and [3]."
+    },
+    {
+      "questionId": "r09",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and fully answers both parts of the question: it identifies the 404 status code and explains that 403 is avoided because confirming the resource exists is an information leak."
+    },
+    {
+      "questionId": "r06",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric states that a score of 0.0 should be given if the output does not address the question, specifically noting 'including declining to answer'. The model output declined to answer with 'I don't know based on the provided documents.', so it receives a score of 0.0."
+    },
+    {
+      "questionId": "r09",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "Every claim in the output is directly supported by context passages [1] and [2]."
+    },
+    {
+      "questionId": "r06",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The response directly answers the question regarding the backoff strategy and delay settings. However, it also includes a full sentence of completely unrelated, off-topic content about benchmarking on a Raspberry Pi, which constitutes substantial off-topic content under the rubric."
+    },
+    {
+      "questionId": "r06",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.6,
+      "reasoning": "The claims regarding exponential backoff with equal jitter and the retryDelay of 2 seconds capped at 60 seconds are supported by passages [1] and [3]. However, the claim that it was benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019 is completely unsupported by the provided context."
+    },
+    {
+      "questionId": "r06",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The provided context explicitly answers the question in passages [1] and [3] (exponential backoff with equal jitter, retryDelay of 2 seconds, capped at 60 seconds). The output claims that the answer is not in the documents ('I don't know based on the provided documents'), which is contradicted by the text."
+    },
+    {
+      "questionId": "r09",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output contains claims about embeddings, dimensions, and the 'gemini-embedding-001' model with Matryoshka representation learning, none of which appear anywhere in the provided context passages. The factual claims are completely unsupported by the context."
+    },
+    {
+      "questionId": "r09",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The model declined to answer by stating that it does not know based on the provided documents. According to the rubric, declining to answer scores a 0.0 for answer relevance."
+    },
+    {
+      "questionId": "r09",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output does not address the question at all. It discusses embedding truncation and Matryoshka representation learning, completely ignoring the question about cross-tenant request status codes."
+    },
+    {
+      "questionId": "r09",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.5,
+      "reasoning": "The claims that cross-tenant requests receive a 404 status code and that a 403 is avoided because confirming the resource's existence is considered a leak are directly supported by passages [1] and [2]. However, the claim that it 'was also benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019' is completely unsupported and hallucinated from outside the context."
+    },
+    {
+      "questionId": "r09",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The output directly answers both parts of the question (stating that the status code is 404 and explaining that a 403 leaks that the resource exists). However, it also includes an unrelated, off-topic claim about benchmarking performance on a Raspberry Pi, which constitutes substantial off-topic content under the rubric."
+    },
+    {
+      "questionId": "r09",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The provided context explicitly and directly answers the question in passages [1] and [2] ('Cross-tenant requests return 404, not 403. A 403 confirms the resource exists, which is itself a leak.'). The rubric states: 'If the OUTPUT says the documents do not contain the answer and the passages indeed lack it, score 1.0.' Because the passages do contain the answer, claiming that the information is unknown based on the provided documents is unsupported and contradicts the text."
+    },
+    {
+      "questionId": "r12",
+      "variant": "original",
+      "judge": "rag-answer-relevance",
+      "score": 1,
+      "reasoning": "The output directly and fully answers the question by explaining the actual cause of the 15-second transactions in development without introducing off-topic information."
+    },
+    {
+      "questionId": "r12",
+      "variant": "original",
+      "judge": "rag-faithfulness",
+      "score": 1,
+      "reasoning": "Every factual claim in the output is directly supported by context passage [1]."
+    },
+    {
+      "questionId": "r12",
+      "variant": "swapped",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The output contains claims about retrieved chunks, relevance, and text normalisation, none of which appear in or are supported by the provided context passages. The claims are completely hallucinated relative to the provided text."
+    },
+    {
+      "questionId": "r12",
+      "variant": "swapped",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The output does not address the question at all. The question asks what caused the 15-second transactions in development, but the output discusses criteria for retrieved chunk relevance and text normalisation."
+    },
+    {
+      "questionId": "r12",
+      "variant": "fabricated",
+      "judge": "rag-faithfulness",
+      "score": 0.6,
+      "reasoning": "The first two sentences accurately reflect the actual cause of the 15-second transactions as described in passage [1]. However, the third sentence ('It was also benchmarked at 50,000 requests per second on a single Raspberry Pi in 2019') is completely fabricated and unsupported by any of the context passages."
+    },
+    {
+      "questionId": "r12",
+      "variant": "fabricated",
+      "judge": "rag-answer-relevance",
+      "score": 0.5,
+      "reasoning": "The response directly and fully explains what caused the 15-second transactions (network latency multiplied by sequential statements in a transaction holding connections open). However, it includes substantial off-topic content in the final sentence regarding an unrelated benchmark on a Raspberry Pi, warranting a score of 0.5 according to the rubric."
+    },
+    {
+      "questionId": "r12",
+      "variant": "refusal",
+      "judge": "rag-answer-relevance",
+      "score": 0,
+      "reasoning": "The rubric specifies that declining to answer results in a score of 0.0. The output states 'I don't know based on the provided documents.', failing to address the question."
+    },
+    {
+      "questionId": "r12",
+      "variant": "refusal",
+      "judge": "rag-faithfulness",
+      "score": 0,
+      "reasoning": "The context passages explicitly state the actual cause of the 15-second transactions in passage [1] under the 'Actual cause' heading (roughly 300ms round-trip latency multiplied by ~20 sequential statements inside a single transaction). The output claims that the documents do not contain the answer, which directly contradicts the provided passages."
+    }
+  ]
+}

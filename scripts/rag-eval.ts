@@ -52,7 +52,28 @@ function markdown(r: RagEvalReport, wallSeconds: number, models: Record<string, 
   return lines.join("\n") + "\n";
 }
 
+async function writeReport(report: RagEvalReport, name: string, wall: number, models: Record<string, string>) {
+  mkdirSync("datasets/rag/results", { recursive: true });
+  const base = `datasets/rag/results/${name}-${report.run.id}`;
+  writeFileSync(`${base}.json`, JSON.stringify({ models, wallSeconds: wall, ...report }, null, 2));
+  writeFileSync(`${base}.md`, markdown(report, wall, models));
+  console.log(readFileSync(`${base}.md`, "utf8").split("## Per question")[0]);
+  console.log(`wrote ${base}.json and ${base}.md`);
+}
+
 async function main() {
+  // Recompute the report of an existing run from the database (no model calls):
+  //   npx tsx scripts/rag-eval.ts --report <runId>
+  if (process.argv[2] === "--report") {
+    const runId = process.argv[3];
+    const report = await ragEvalReport(runId);
+    if (!report) throw new Error(`no run ${runId}`);
+    const base = `datasets/rag/results/${report.run.dataset}-${runId}.json`;
+    const prev = JSON.parse(readFileSync(base, "utf8"));
+    await writeReport(report, report.run.dataset, prev.wallSeconds, prev.models);
+    return;
+  }
+
   const [projectId, datasetPath, kArg] = process.argv.slice(2);
   if (!projectId || !datasetPath) throw new Error("usage: rag-eval.ts <projectId> <dataset.json> [k]");
   const dataset = RagDataset.parse(JSON.parse(readFileSync(datasetPath, "utf8")));
@@ -65,7 +86,12 @@ async function main() {
 
   const started = Date.now();
   const { runId, items } = await createRagEvalRun(projectId, dataset, {
-    k, config: { ...models, thinkingBudget: Number(process.env.RAG_THINKING_BUDGET ?? 0) },
+    k,
+    config: {
+      ...models,
+      thinkingBudget: process.env.RAG_THINKING_BUDGET ?? null,
+      thinkingLevel: process.env.RAG_THINKING_LEVEL ?? null,
+    },
   });
   console.log(`run ${runId}: enqueued ${items} questions (k=${k}) — the worker must be running`);
 
@@ -83,12 +109,7 @@ async function main() {
   }
   const wall = (Date.now() - started) / 1000;
 
-  mkdirSync("datasets/rag/results", { recursive: true });
-  const base = `datasets/rag/results/${dataset.name}-${runId}`;
-  writeFileSync(`${base}.json`, JSON.stringify({ models, wallSeconds: wall, ...report }, null, 2));
-  writeFileSync(`${base}.md`, markdown(report, wall, models));
-  console.log(readFileSync(`${base}.md`, "utf8").split("## Per question")[0]);
-  console.log(`wrote ${base}.json and ${base}.md`);
+  await writeReport(report!, dataset.name, wall, models);
 }
 
 main()

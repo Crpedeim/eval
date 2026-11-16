@@ -106,7 +106,8 @@ export async function ragEvalReport(runId: string) {
       answersWithCitation,
       citationRate: done.length ? answersWithCitation / done.length : null,
       citationPrecision: cited ? citedRelevant / cited : null,
-      idk: traces.filter((t) => /I don't know based on the provided documents/i.test(t.output)).length,
+      // The refusal is the whole answer; quoting the phrase (e.g. when asked about it) isn't one.
+      idk: traces.filter((t) => /^\s*I don't know based on the provided documents\.?\s*$/i.test(t.output)).length,
     },
     latency: {
       request: summarize(traces.map((t) => t.latencyMs ?? 0)),

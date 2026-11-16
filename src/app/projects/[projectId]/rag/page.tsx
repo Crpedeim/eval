@@ -99,7 +99,7 @@ export default async function RagPage({
       </Card>
 
       <Card title="Evaluation runs">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm [&_td]:pr-4 [&_th]:pr-4">
           <thead>
             <tr className="border-b text-left text-gray-500">
               <th className="py-2">Dataset</th><th>k</th><th>Questions</th><th>Recall@k</th><th>MRR</th>
@@ -114,9 +114,9 @@ export default async function RagPage({
                 <td>{r.items.done}/{r.items.total}{r.items.pending ? ` (${r.items.pending} pending)` : ""}</td>
                 <td>{num(r.retrieval.recallAtK, 3)}</td>
                 <td>{num(r.retrieval.mrr, 3)}</td>
-                <td className="space-x-2">
+                <td>
                   {r.judges.map((j) => (
-                    <span key={j.evaluator}>{j.evaluator}: {num(j.meanScore)}</span>
+                    <div key={j.evaluator} className="whitespace-nowrap">{j.evaluator}: {num(j.meanScore)}</div>
                   ))}
                 </td>
                 <td>{ms(r.latency.request.p95Ms)}</td>

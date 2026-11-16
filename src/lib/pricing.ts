@@ -4,6 +4,7 @@ const PRICING: Record<string, { input: number; output: number }> = {
   "claude-sonnet-4-6": { input: 3, output: 15 },
   "gpt-4o": { input: 2.5, output: 10 },
   "gemini-2.5-flash": { input: 0.3, output: 2.5 },
+  "gemini-3.8-flash": { input: 0.75, output: 3.75 },
   "gemini-embedding-001": { input: 0.15, output: 0 },
 };
 
