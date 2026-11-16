@@ -15,7 +15,7 @@ export type JudgeSummary = {
 
 export type SpanSummary = { p50Ms: number | null; p95Ms: number | null; meanMs: number | null };
 
-export type RagEvalReport = Awaited<ReturnType<typeof ragEvalReport>>;
+export type RagEvalReport = NonNullable<Awaited<ReturnType<typeof ragEvalReport>>>;
 
 /**
  * Every number shown for an eval run, computed in one place so the UI and the CLI

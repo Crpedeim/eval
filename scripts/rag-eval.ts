@@ -69,7 +69,7 @@ async function main() {
   });
   console.log(`run ${runId}: enqueued ${items} questions (k=${k}) — the worker must be running`);
 
-  let report: RagEvalReport = null;
+  let report: RagEvalReport | null = null;
   for (;;) {
     await new Promise((r) => setTimeout(r, 5000));
     report = await ragEvalReport(runId);
@@ -86,7 +86,7 @@ async function main() {
   mkdirSync("datasets/rag/results", { recursive: true });
   const base = `datasets/rag/results/${dataset.name}-${runId}`;
   writeFileSync(`${base}.json`, JSON.stringify({ models, wallSeconds: wall, ...report }, null, 2));
-  writeFileSync(`${base}.md`, markdown(report!, wall, models));
+  writeFileSync(`${base}.md`, markdown(report, wall, models));
   console.log(readFileSync(`${base}.md`, "utf8").split("## Per question")[0]);
   console.log(`wrote ${base}.json and ${base}.md`);
 }
