@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { getScope, UnauthorizedError, ForbiddenError } from "@/lib/tenancy";
 import { Badge, Card, Stat } from "@/components/ui";
+import { AutoRefresh } from "@/components/auto-refresh";
 
 const num = (v: number | null, d = 3) => (v === null ? "—" : v.toFixed(d));
 const ms = (v: number | null) => (v === null ? "—" : `${Math.round(v)}ms`);
@@ -19,14 +20,17 @@ export default async function RagEvalRunPage({ params }: { params: Promise<{ run
     throw e;
   }
 
+  const settling = r.items.pending > 0 || r.judges.some((j) => j.pending > 0);
+
   return (
     <main className="mx-auto max-w-6xl space-y-6 p-8">
+      {settling && <AutoRefresh />}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Eval · {r.run.dataset}</h1>
         <Link href={`/projects/${projectId}/rag`} className="text-sm underline">← RAG</Link>
       </div>
       <p className="text-sm text-gray-500">
-        k={r.run.k} · {r.items.done}/{r.items.total} answered · {r.items.failed} failed · {r.items.pending} pending ·{" "}
+        k={r.run.k} · {r.items.done}/{r.items.total} answered · {r.items.failed} failed · {r.items.pending} pending{settling ? " (refreshing every 5 s)" : ""} ·{" "}
         {new Date(r.run.createdAt).toLocaleString()}
       </p>
 
@@ -77,7 +81,7 @@ export default async function RagEvalRunPage({ params }: { params: Promise<{ run
                   );
                 })}
                 <td>{ms(row.latencyMs)}</td>
-                <td>{row.traceId && <Link href={`/traces/${row.traceId}`} className="underline">trace</Link>}</td>
+                <td>{row.traceId && <Link href={`/projects/${projectId}/traces/${row.traceId}`} className="underline">trace</Link>}</td>
               </tr>
             ))}
           </tbody>

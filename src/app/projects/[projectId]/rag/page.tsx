@@ -2,7 +2,8 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { getScope, UnauthorizedError, ForbiddenError } from "@/lib/tenancy";
 import { Badge, Card, Stat } from "@/components/ui";
-import { uploadDocumentAction, askAction } from "./actions";
+import { bundledDatasets } from "@/lib/rag/datasets";
+import { uploadDocumentAction, askAction, runEvalAction } from "./actions";
 
 const num = (v: number | null, d = 2) => (v === null ? "—" : v.toFixed(d));
 const ms = (v: number | null) => (v === null ? "—" : `${Math.round(v)}ms`);
@@ -28,6 +29,7 @@ export default async function RagPage({
     throw e;
   }
 
+  const datasets = bundledDatasets();
   const gen = overview.spans.find((s) => s.name === "generate");
   const chunks = docs.reduce((a, d) => a + d.chunkCount, 0);
 
@@ -70,6 +72,33 @@ export default async function RagPage({
           </form>
         </Card>
       </div>
+
+      <Card title="Run evaluation">
+        <form action={runEvalAction.bind(null, projectId)} className="flex flex-wrap items-center gap-2 text-sm">
+          <label className="flex items-center gap-2">
+            Dataset
+            <select name="dataset" className="rounded border px-2 py-1" defaultValue={datasets[0]?.name}>
+              {datasets.map((d) => (
+                <option key={d.name} value={d.name}>{d.name} ({d.questions} questions)</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex items-center gap-2 text-gray-600">
+            or upload JSON
+            <input type="file" name="file" accept=".json,application/json" className="text-sm" />
+          </label>
+          <label className="flex items-center gap-2">
+            k
+            <input name="k" type="number" min={1} max={20} defaultValue={5} className="w-14 rounded border px-2 py-1" />
+          </label>
+          <button type="submit" className="rounded bg-black px-3 py-1 text-white">Run evaluation</button>
+        </form>
+        <p className="mt-2 text-xs text-gray-500">
+          Each question is answered by the worker through the live pipeline, then judged for faithfulness and
+          relevance. The project must already contain the documents the dataset was written against.
+          Uploaded files use the format of <code>datasets/rag/questions.json</code> (max 500 questions).
+        </p>
+      </Card>
 
       <Card title="Steps (rag.answer traces)">
         <table className="w-full text-sm">
@@ -125,7 +154,7 @@ export default async function RagPage({
               </tr>
             ))}
             {overview.evalRuns.length === 0 && (
-              <tr><td colSpan={9} className="py-2 text-gray-500">No eval runs. Start one with <code>npm run rag:eval</code>.</td></tr>
+              <tr><td colSpan={9} className="py-2 text-gray-500">No eval runs yet. Start one with Run evaluation above.</td></tr>
             )}
           </tbody>
         </table>

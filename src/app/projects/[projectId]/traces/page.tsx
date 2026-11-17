@@ -79,7 +79,7 @@ export default async function TracesPage({
                   </Badge>
                 ))}
               </td>
-              <td><Link href={`/traces/${t.id}`} className="underline">view</Link></td>
+              <td><Link href={`/projects/${projectId}/traces/${t.id}`} className="underline">view</Link></td>
             </tr>
           ))}
         </tbody>

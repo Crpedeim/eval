@@ -7,7 +7,7 @@
 import "dotenv/config";
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { db } from "../src/lib/db";
-import { createRagEvalRun, RagDataset } from "../src/lib/rag/eval";
+import { createRagEvalRun, RagDataset, ragModelConfig } from "../src/lib/rag/eval";
 import { ragEvalReport, type RagEvalReport } from "../src/lib/rag/report";
 import { getEmbeddingProvider, getGenerationProvider, getJudgeProvider } from "../src/lib/providers";
 

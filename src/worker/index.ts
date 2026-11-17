@@ -13,7 +13,7 @@ import {
 } from "../lib/rag/jobs";
 
 
-import { classify, TransientError, PermanentError } from "../lib/errors";
+import { classify, PermanentError } from "../lib/errors";
 
 async function handleJob(data: EvalJobData) {
   const { traceId, evaluatorId } = data;

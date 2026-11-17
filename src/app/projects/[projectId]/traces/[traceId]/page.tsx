@@ -4,13 +4,15 @@ import { getScope, UnauthorizedError, ForbiddenError } from "@/lib/tenancy";
 import { Badge, Card } from "@/components/ui";
 import { SpansCard, CitationsCard } from "@/components/spans";
 
-export default async function TraceDetail({ params }: { params: Promise<{ traceId: string }> }) {
-  const { traceId } = await params;
+export default async function TraceDetail({ params }: { params: Promise<{ projectId: string; traceId: string }> }) {
+  const { projectId, traceId } = await params;
 
   let t;
   try {
     const scope = await getScope();
     t = await scope.trace(traceId);
+    // One canonical URL: a trace is only served under its own project.
+    if (t.projectId !== projectId) throw new ForbiddenError(`trace ${traceId} not in project ${projectId}`);
   } catch (e) {
     if (e instanceof UnauthorizedError) redirect("/login");
     if (e instanceof ForbiddenError) notFound();

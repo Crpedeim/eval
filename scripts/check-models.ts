@@ -1,8 +1,9 @@
 import "dotenv/config";
 import { db } from "../src/lib/db";
 
-console.log("account:", typeof (db as any).account);
-console.log("session:", typeof (db as any).session);
-console.log("user:", typeof (db as any).user);
-console.log("verificationToken:", typeof (db as any).verificationToken);
+// Sanity check that the generated client exposes the Auth.js adapter models.
+const client = db as unknown as Record<string, unknown>;
+for (const model of ["account", "session", "user", "verificationToken"]) {
+  console.log(`${model}:`, typeof client[model]);
+}
 process.exit(0);

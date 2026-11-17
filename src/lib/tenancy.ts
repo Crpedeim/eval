@@ -7,9 +7,11 @@ import { getBoss } from "./queue";
 import { createDocumentAndEnqueue, type DocumentUpload } from "./rag/documents";
 import { answerQuestion } from "./rag/pipeline";
 import { ragEvalReport } from "./rag/report";
+import { createRagEvalRun, ragModelConfig, type RagDataset } from "./rag/eval";
 
 export class UnauthorizedError extends Error {}
 export class ForbiddenError extends Error {}
+export class EvalInProgressError extends Error {}
 
 export class TenantScope {
   constructor(
@@ -158,6 +160,22 @@ export class TenantScope {
     await this.assertProject(projectId);
     await getBoss();
     return db.$transaction((tx) => createDocumentAndEnqueue(tx, projectId, upload));
+  }
+
+  /**
+   * Start a RAG eval run from the UI. Refuses while another run in this project still has
+   * unsettled questions, so a double click can't double the model spend.
+   */
+  async startRagEval(projectId: string, dataset: RagDataset, k: number) {
+    await this.assertProject(projectId);
+    const inFlight = await db.ragEvalItem.count({
+      where: { run: { projectId }, status: { in: ["queued", "running"] } },
+    });
+    if (inFlight > 0) throw new EvalInProgressError(`${inFlight} questions from an earlier run are still running`);
+    return createRagEvalRun(projectId, dataset, {
+      k,
+      config: { ...ragModelConfig(), startedBy: this.userId, via: "ui" },
+    });
   }
 
   async askRag(projectId: string, question: string, k?: number) {

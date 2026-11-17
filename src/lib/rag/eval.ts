@@ -5,6 +5,7 @@ import { db } from "../db";
 import { getBoss, RAG_EVAL_QUEUE, RAG_EVAL_DLQ } from "../queue";
 import { PermanentError } from "../errors";
 import type { EmbeddingProvider, GenerationProvider } from "../providers/types";
+import { getEmbeddingProvider, getGenerationProvider, getJudgeProvider } from "../providers";
 import { answerQuestion, DEFAULT_K, RAG_TRACE_NAME } from "./pipeline";
 import { recallAtK, reciprocalRank, relevantRanks } from "./metrics";
 
@@ -24,6 +25,17 @@ export const RagDataset = z.object({
     .min(1),
 });
 export type RagDataset = z.infer<typeof RagDataset>;
+
+/** Models and settings recorded on every run, so a report says exactly what produced it. */
+export function ragModelConfig() {
+  return {
+    generator: getGenerationProvider().model,
+    embedder: getEmbeddingProvider().model,
+    judge: getJudgeProvider().model,
+    thinkingBudget: process.env.RAG_THINKING_BUDGET ?? null,
+    thinkingLevel: process.env.RAG_THINKING_LEVEL ?? null,
+  };
+}
 
 export type RagEvalJobData = { itemId: string; projectId: string };
 
