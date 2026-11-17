@@ -1,0 +1,12 @@
+# Never upload local secrets or build output to Cloud Build.
+.env*
+node_modules/
+.next/
+.git/
+src/generated/
+datasets/rag/results/
+.claude/
+.agents/
+.windsurf/
+Screenshot*.png
+*.dump

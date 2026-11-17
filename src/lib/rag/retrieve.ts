@@ -24,8 +24,12 @@ export type RetrievalMode = "vector" | "hybrid";
 export const RETRIEVAL_MODES: RetrievalMode[] = ["vector", "hybrid"];
 
 /**
- * Default retrieval mode, chosen by the public benchmark (PHASES.md, Phase 2); overridable
- * with RAG_RETRIEVAL. An eval run records its mode, so the worker honours the run's mode.
+ * Default retrieval mode, chosen by the public benchmark (PHASES.md, Phase 2): on 150
+ * HotpotQA questions vector-only scored recall@5 0.974 / MRR 0.972 vs hybrid 0.774 / 0.784.
+ * Full-text search ranks the second-hop paragraph low (it shares few words with the
+ * question) and the TF-IDF-picked distractors high, and equal-weight RRF lets that pull
+ * distractors above gold chunks. Overridable with RAG_RETRIEVAL; an eval run records its
+ * mode and the worker honours the run's mode.
  */
 export const DEFAULT_RETRIEVAL: RetrievalMode = "vector";
 

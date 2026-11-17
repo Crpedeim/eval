@@ -1,0 +1,4594 @@
+{
+  "models": {
+    "generator": "gemini-3.8-flash",
+    "embedder": "gemini-embedding-001",
+    "judge": "gemini-3.8-flash"
+  },
+  "wallSeconds": 961.143,
+  "run": {
+    "id": "cmwkovirq0000kwmkdursvn6i",
+    "dataset": "hotpotqa-dev-distractor-150",
+    "k": 5,
+    "createdAt": "2026-11-17T12:49:09.830Z",
+    "config": {
+      "via": "cli",
+      "judge": "gemini-3.8-flash",
+      "embedder": "gemini-embedding-001",
+      "generator": "gemini-3.8-flash",
+      "retrieval": "vector",
+      "thinkingLevel": null,
+      "thinkingBudget": null
+    }
+  },
+  "items": {
+    "total": 150,
+    "done": 150,
+    "failed": 0,
+    "pending": 0
+  },
+  "retrieval": {
+    "recallAtK": 0.9744444444444446,
+    "mrr": 0.9722222222222221,
+    "hitRate": 1
+  },
+  "judges": [
+    {
+      "evaluator": "rag-answer-relevance",
+      "judged": 150,
+      "errored": 0,
+      "pending": 0,
+      "meanScore": 0.9133333333333333,
+      "passRate": 0.9133333333333333,
+      "costUsd": 0.24654974999999987,
+      "costed": 150
+    },
+    {
+      "evaluator": "rag-faithfulness",
+      "judged": 150,
+      "errored": 0,
+      "pending": 0,
+      "meanScore": 0.9966666666666667,
+      "passRate": 0.9933333333333333,
+      "costUsd": 0.28701225000000014,
+      "costed": 150
+    }
+  ],
+  "citations": {
+    "answersWithCitation": 138,
+    "citationRate": 0.92,
+    "citationPrecision": 0.9522058823529411,
+    "idk": 12
+  },
+  "latency": {
+    "request": {
+      "p50Ms": 2692.5,
+      "p95Ms": 3757.749999999998,
+      "meanMs": 2812.1266666666666
+    },
+    "retrieve": {
+      "p50Ms": 642.5,
+      "p95Ms": 971.7499999999999,
+      "meanMs": 675.0866666666667
+    },
+    "generate": {
+      "p50Ms": 2030.5,
+      "p95Ms": 3064.749999999999,
+      "meanMs": 2136.98
+    }
+  },
+  "tokens": {
+    "meanPrompt": 819.76,
+    "meanOutput": 56.03333333333333,
+    "tokensPerSecMedian": 20.71804546065505,
+    "tokensPerSecMean": 24.264918824747,
+    "tokensPerSecAggregate": 26.22080381348133
+  },
+  "cost": {
+    "meanPerRequestUsd": 0.0008283933333333332,
+    "totalUsd": 0.12425550000000003,
+    "meanPerRequestFromSpansUsd": 0.0008283700000000003,
+    "judgeCalls": 300,
+    "judgeTotalUsd": 0.533562,
+    "judgePromptTokens": 316516,
+    "judgeOutputTokens": 78980,
+    "meanJudgePerAnswerUsd": 0.00355708,
+    "meanPerEvalAnswerUsd": 0.00438545,
+    "totalWithJudgesUsd": 0.6578175
+  },
+  "rows": [
+    {
+      "id": "cmwkoviyq000wkwmkz6gmptf3",
+      "questionId": "5a7133fa5542994082a3e660",
+      "question": "What is the relation between current manager of Chinese club Tianjin Quanjian and Paolo Cannavaro?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5fvi009qe0mk0xzdz4cc",
+      "answer": "The current manager of Chinese club Tianjin Quanjian is Fabio Cannavaro [1][2]. He is the older brother of Paolo Cannavaro [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2826,
+      "costUsd": 0.000704,
+      "judgeCostUsd": 0.0029955,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001dkwmkavik1nul",
+      "questionId": "5a727e1b5542991f9a20c497",
+      "question": "In which song was written by singer-songwriter Taylor Swift and shares the optimistic lyrical message to a song called \"Yodel It!\"?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoyhb8002se0mkukplz5ji",
+      "answer": "The song is \"Shake It Off\" [1][2]. It was written by Taylor Swift alongside Max Martin and Shellback, and its optimistic lyrical message was compared to that of \"Yodel It!\" [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2735,
+      "costUsd": 0.000975,
+      "judgeCostUsd": 0.0038625,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002ikwmk8tbqvnuh",
+      "questionId": "5a728fbd5542992359bc30f8",
+      "question": "Who was convicted of murdering the director of Schoolboy Crush?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoyq3e002x0smkubme5nep",
+      "answer": "Harlow Cuadra and Joseph Kerekes were convicted of murdering Bryan Kocis, the director of *Schoolboy Crush* [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3035,
+      "costUsd": 0.001029,
+      "judgeCostUsd": 0.0033090000000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000mkwmkca3lo4pl",
+      "questionId": "5a72e28f5542992359bc31ba",
+      "question": "Which technique did the director at Pzena Investment Management outline?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoyuxn00320smkg7twbkeh",
+      "answer": "The director at Pzena Investment Management, Joel Greenblatt, outlined the investment technique known as \"magic formula investing\" [2][3]. This technique utilizes the principles of value investing [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        3
+      ],
+      "latencyMs": 2536,
+      "costUsd": 0.00074,
+      "judgeCostUsd": 0.0034147500000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001mkwmkelt83ov7",
+      "questionId": "5a7324205542994cef4bc478",
+      "question": "Who is a poet, Rumi or Farouk El-Baz?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoym8h002xe0mk90e1235d",
+      "answer": "Rumi was a 13th-century Persian poet [1][3]. In contrast, Farouk El-Baz is an Egyptian American space scientist who worked with NASA [2]. Therefore, Rumi is the poet [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2609,
+      "costUsd": 0.000847,
+      "judgeCostUsd": 0.00368775,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003pkwmkl91phff5",
+      "questionId": "5a73cf5e55429978a71e909f",
+      "question": "After coaching the red raiders to several winning seasons, where does Mike Leach currently coach at?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp39bk007d0smk9s45ch12",
+      "answer": "Mike Leach is the head coach of the Washington State Cougars football team [1].",
+      "recallAtK": 0.3333333333333333,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2731,
+      "costUsd": 0.000757,
+      "judgeCostUsd": 0.0030765,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003rkwmkwsamwcw6",
+      "questionId": "5a75176a5542993748c897b6",
+      "question": "Which 1994 British romantic comedy featured the song \"Love Is All Around\"?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozuio0046e0mkkcmyse8n",
+      "answer": "The 1994 British romantic comedy film that featured the song \"Love Is All Around\" is *Four Weddings and a Funeral* [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2688,
+      "costUsd": 0.000669,
+      "judgeCostUsd": 0.0029542500000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000hkwmkek3qsuhn",
+      "questionId": "5a7543d555429916b01642ce",
+      "question": "Who was born more recently, Flula Borg, or Dirk Nowitzki?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp03y2004ge0mkad67mfj4",
+      "answer": "Flula Borg was born more recently, having been born on March 28, 1982 [1]. In comparison, Dirk Nowitzki was born earlier, on June 19, 1978 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2430,
+      "costUsd": 0.000776,
+      "judgeCostUsd": 0.00314925,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001gkwmkoofygj9q",
+      "questionId": "5a7555215542996c70cfaee1",
+      "question": "Which came to market first, \"Hey Pa! There's a Goat on the Roof\" or \"Poleconomy\"",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoyrmy0032e0mkhuhg49tn",
+      "answer": "\"Hey Pa! There's a Goat on the Roof\" came to market first, having been issued in 1966 [1]. In contrast, \"Poleconomy\" was first published in 1980 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3219,
+      "costUsd": 0.000888,
+      "judgeCostUsd": 0.00376275,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0022kwmkqkalhy2i",
+      "questionId": "5a7568175542992d0ec05f88",
+      "question": "This French comedy directed by Philippe de Chauveron starred actress Julia Piaton. ",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxltg001t0smknwzr1d9f",
+      "answer": "The film is *Serial (Bad) Weddings* [1][2]. It is a French comedy directed by Philippe de Chauveron and features Julia Piaton as Odile [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2423,
+      "costUsd": 0.000563,
+      "judgeCostUsd": 0.003327,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000ckwmknqk7t9hr",
+      "questionId": "5a762a645542992d0ec0603d",
+      "question": "Where was the builder of the Hyundai Stellar located?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp34wd007de0mkg038xcya",
+      "answer": "The Hyundai Stellar was produced by the Hyundai Motor Company [1]. The Hyundai Motor Company is headquartered in Seoul, South Korea [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2502,
+      "costUsd": 0.000716,
+      "judgeCostUsd": 0.00322125,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003gkwmkgiqknk24",
+      "questionId": "5a7631cd5542994ccc91870c",
+      "question": "Where is the seminar Jeanne Marie Beaumont directed in 2007-2010 located?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp52en00960smkp9ezrkg5",
+      "answer": "Jeanne Marie Beaumont directed The Frost Place Advanced Seminar from 2007 to 2010 [1]. The Frost Place is located at Robert Frost's former home in Franconia, New Hampshire, United States [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2652,
+      "costUsd": 0.000971,
+      "judgeCostUsd": 0.00401175,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003zkwmkl06zzrf9",
+      "questionId": "5a76dc2d55429972597f13eb",
+      "question": "What song included on the 59th edition of Now That's What I Call Music was written and recorded by an Australian recording artist?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3z7x0087e0mkhwtuqjqu",
+      "answer": "The song included on the 59th edition of *Now That's What I Call Music!* is \"Cheap Thrills\" [2]. It was written and recorded by Australian recording artist Sia [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2530,
+      "costUsd": 0.000832,
+      "judgeCostUsd": 0.0037507499999999997,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000fkwmkti2kku3h",
+      "questionId": "5a7796e05542992a6e59df0f",
+      "question": "What country is the theme park served by the Huis Ten Bosch train service themed on?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4sps008w0smkqemb9040",
+      "answer": "The theme park served by the Huis Ten Bosch train service recreates the Netherlands [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3435,
+      "costUsd": 0.000913,
+      "judgeCostUsd": 0.00328875,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0041kwmk4kpvbg85",
+      "questionId": "5a77a7565542995d83181249",
+      "question": "Between the two film makers Fabián Bielinsky and Murdock MacQuarrie, who was born earlier?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4dtl008me0mkbppv1omy",
+      "answer": "Murdock MacQuarrie was born earlier, having been born on 25 August 1878 [2]. In comparison, Fabián Bielinsky was born on 3 February 1959 [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3005,
+      "costUsd": 0.000608,
+      "judgeCostUsd": 0.003195,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0006kwmk6b84q6lg",
+      "questionId": "5a77aa095542995d83181260",
+      "question": "Which aircraft engine powers a General Dynamics aircraft of which over 4500 have been built?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxxkp0028e0mk5mi00dkf",
+      "answer": "The aircraft is the General Dynamics F-16 Fighting Falcon, of which over 4,500 have been built [1]. It is powered by the Pratt & Whitney F100 afterburning turbofan engine [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3643,
+      "costUsd": 0.000854,
+      "judgeCostUsd": 0.00387075,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0026kwmkr05xye7b",
+      "questionId": "5a77ba6c55429967ab10524c",
+      "question": "When was the director of an American short slasher film with French-speaking serial killers that was released on October 31, 2011 born?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4dje008h0smkatvfk5ja",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 0.6666666666666666,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 4204,
+      "costUsd": 0.001397,
+      "judgeCostUsd": 0.00369075,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0043kwmkpae7f2vg",
+      "questionId": "5a77c15f5542997042120b1c",
+      "question": "In the British experimental jazz band Polar Bear, who handles digital devices?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoykys002s0smkj6ymq2cg",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 0.5,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 1990,
+      "costUsd": 0.000342,
+      "judgeCostUsd": 0.0044835,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003fkwmk37dtp6q4",
+      "questionId": "5a78b386554299148911f949",
+      "question": "What book did the president and CEO of Tracinda Corporation buy?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2h8b006te0mko4ok1g78",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        4
+      ],
+      "latencyMs": 2897,
+      "costUsd": 0.001199,
+      "judgeCostUsd": 0.00382425,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002ekwmklj22anol",
+      "questionId": "5a78ce79554299029c4b5ea1",
+      "question": "Jacques Coghen is a direct ancestor to the spouse of which Belgian Queen?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkox22u00190smklpwoomck",
+      "answer": "Jacques Coghen is a direct ancestor of Philippe of Belgium [1]. King Philippe is married to Queen Mathilde [2]. Therefore, Jacques Coghen is a direct ancestor to the spouse of Queen Mathilde [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2942,
+      "costUsd": 0.000844,
+      "judgeCostUsd": 0.0037335,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002rkwmkr7ivnu0n",
+      "questionId": "5a78f1b555429970f5fffde9",
+      "question": "What year was the singer of \"Orange\" born?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2sv60073e0mkt36pj0kv",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 0.5,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 5040,
+      "costUsd": 0.001192,
+      "judgeCostUsd": 0.0037072499999999996,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003kkwmklpjdkfhz",
+      "questionId": "5a78f8e555429970f5fffe01",
+      "question": "The British diver featured in Splash! specializes in what event?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxc53001j0smk12mtowk5",
+      "answer": "The British diver featured in *Splash!* is Tom Daley [2]. He specialises in the 10-metre platform event [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2485,
+      "costUsd": 0.000651,
+      "judgeCostUsd": 0.00333375,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0037kwmk7br0qok5",
+      "questionId": "5a79186f55429907847277af",
+      "question": "Where is stadium that was named after Rodney Cline Carew?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowotp000ze0mk2zirsm37",
+      "answer": "The stadium named after Rodney Cline Carew, known as the Rod Carew Stadium (or Estadio Nacional de Panamá), is located in Panama City, Panama [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2170,
+      "costUsd": 0.000778,
+      "judgeCostUsd": 0.00392025,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002bkwmkldz56l1m",
+      "questionId": "5a7943ea5542994bb9456fd3",
+      "question": "What did Pioneer 4 fly by before inserting into the type orbit that planets of the Solar System are in around the sun?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3npq007s0smk59hj0r9c",
+      "answer": "Planets of the Solar System are in heliocentric orbits around the barycenter of the Solar System near the Sun [1]. Before entering a heliocentric orbit, Pioneer 4 was on a lunar flyby trajectory and passed within 58,983 km of the Moon's surface [2]. Therefore, Pioneer 4 flew by the Moon [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2394,
+      "costUsd": 0.000958,
+      "judgeCostUsd": 0.004137,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0008kwmkb9ydwhh4",
+      "questionId": "5a7a5aea5542996c55b2dd6f",
+      "question": "What country is the Selun located in?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1rvz0064e0mkvo6ddame",
+      "answer": "The Selun is located in the canton of St. Gallen, which is a canton of Switzerland [1][4]. Therefore, it is located in Switzerland [1][4].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 3038,
+      "costUsd": 0.000777,
+      "judgeCostUsd": 0.003384,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002qkwmkgrociko5",
+      "questionId": "5a7b895c5542997c3ec97206",
+      "question": "The head writer for which show also wrote a Simpsons' episode narrated by James Earl Jones?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp01lz00460smk94htcq7s",
+      "answer": "David S. Cohen (David X. Cohen) wrote the Simpsons' episode \"Das Bus\", which was narrated by James Earl Jones [1][2]. Cohen served as the head writer and executive producer of \"Futurama\" [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3267,
+      "costUsd": 0.000684,
+      "judgeCostUsd": 0.00326175,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0028kwmk8gwqmf53",
+      "questionId": "5a7c3178554299683c1c62e1",
+      "question": "The Fast On-orbit Rapid Recording of Transient Events (FORTE) was co-developed and launched by this lab located a short distance northwest of Santa Fe, New Mexico that was involved with which nuclear weapon program during World War II?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0x8h005ae0mkljlm881t",
+      "answer": "FORTE was co-developed and launched by Los Alamos National Laboratory, which is located a short distance northwest of Santa Fe, New Mexico [1][2]. During World War II, the laboratory was involved with the Manhattan Project [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2354,
+      "costUsd": 0.00091,
+      "judgeCostUsd": 0.003624,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001kkwmkafzc0rv6",
+      "questionId": "5a7c96e55542990527d554d9",
+      "question": "How did Pre's Trail's namesake die?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoywt10037e0mkogul8kvr",
+      "answer": "Pre's Trail was named after Steve Prefontaine [1]. He died in an automobile accident in Eugene, Oregon, in May 1975 at the age of 24 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3071,
+      "costUsd": 0.000829,
+      "judgeCostUsd": 0.00359775,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0032kwmkhbprpey9",
+      "questionId": "5a7c9d2e55429935c91b5261",
+      "question": "What legend that lends its name to a modern medical term, inspired the plot of the horror film Ghostkeeper?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozw9n00410smk8q63mvpz",
+      "answer": "The horror film *Ghostkeeper* was inspired by the Windigo (Wendigo) legend of North America [1]. This legend lends its name to the modern medical term Wendigo psychosis [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3387,
+      "costUsd": 0.000607,
+      "judgeCostUsd": 0.0031537500000000003,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002ckwmkzbb81kav",
+      "questionId": "5a7cb5f0554299452d57b9b5",
+      "question": "What year was the essay which Henry Louis Gates and Cornel West criticized in their book, \"The Future of the Race\" first published?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5m62009q0smk3pfu472t",
+      "answer": "In their book *The Future of the Race*, Henry Louis Gates and Cornel West criticized W. E. B. Du Bois' essay \"The Talented Tenth\" [1]. That essay was first published in September 1903 [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2952,
+      "costUsd": 0.000744,
+      "judgeCostUsd": 0.0035009999999999998,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002tkwmkeeccy0wg",
+      "questionId": "5a7cdc1b55429907fabef04d",
+      "question": "Getting Married in Buffalo Jump stars an actor who was born in what city?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5r4m009v0smktp7ffidc",
+      "answer": "*Getting Married in Buffalo Jump* stars actor Paul Gross [1], who was born in Calgary, Alberta [5].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        5
+      ],
+      "latencyMs": 2611,
+      "costUsd": 0.000584,
+      "judgeCostUsd": 0.0031537500000000003,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001fkwmkbaj9r541",
+      "questionId": "5a7cef6955429909bec768ad",
+      "question": "Which municipality of Gunnison County, Colorado is now called \"the last great Colorado ski town\" and is located near the Lucky Jack mine?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp171o005a0smksi7ftnqn",
+      "answer": "The municipality is Crested Butte, Colorado [1][2]. It is now called \"the last great Colorado ski town\" and is located east of the Lucky Jack mine in Gunnison County [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3175,
+      "costUsd": 0.000701,
+      "judgeCostUsd": 0.0039405,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0018kwmkzu50nd3h",
+      "questionId": "5a7d1d825542995ed0d165f5",
+      "question": "In what city did Charlie Spiller play college football?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2m23006ye0mkyjt9w9if",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 0.5,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2486,
+      "costUsd": 0.000718,
+      "judgeCostUsd": 0.00334425,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002zkwmktakgh0gz",
+      "questionId": "5a7d26fd554299452d57bb2a",
+      "question": "What was the significance of the lions, about whom a fictionalized account provided the basis of the film, The Ghost and the Darkness?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0o3o0050e0mk93gg9ngj",
+      "answer": "The film *The Ghost and the Darkness* is a fictionalized account of the Tsavo Man-Eaters [2]. The significance of this pair of lions was their unusual behavior, which included the number of men they killed and the manner of their attacks [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2753,
+      "costUsd": 0.000829,
+      "judgeCostUsd": 0.004401,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0021kwmkt4eviqzy",
+      "questionId": "5a7d54165542995f4f402256",
+      "question": "A medieval fortress in Dirleton, East Lothian, Scotland borders on the south side of what coastal area?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoygin002n0smkn67g0arz",
+      "answer": "Dirleton Castle borders the south side of Yellowcraig (also known as Yellowcraigs or Broad Sands Bay) [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3451,
+      "costUsd": 0.001027,
+      "judgeCostUsd": 0.00316575,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000nkwmkgrhf5zbm",
+      "questionId": "5a7de14a5542991319bc93fc",
+      "question": "What rule-class city of 26,595 contains the neighborhood Plainview?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoy1ga00280smk53hixzek",
+      "answer": "The neighborhood Plainview is located in Jeffersontown, Kentucky [2]. Jeffersontown is a home rule-class city that had a population of 26,595 at the 2010 U.S. census [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2345,
+      "costUsd": 0.000609,
+      "judgeCostUsd": 0.0032182499999999998,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002fkwmk7egb99g1",
+      "questionId": "5a7e19e655429965cec5ea58",
+      "question": "Blackamoor, Lancashire lies near the banks of what river?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowr1p000z0smku89hiinp",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3835,
+      "costUsd": 0.001346,
+      "judgeCostUsd": 0.00375975,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001xkwmklz04qsb2",
+      "questionId": "5a7e1a2955429965cec5ea5d",
+      "question": "The Cinematic Orchestra was signed to the record label based in what city?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3x3q00820smkmjvz496b",
+      "answer": "The Cinematic Orchestra is signed to Ninja Tune, which is based in London [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2544,
+      "costUsd": 0.000737,
+      "judgeCostUsd": 0.0026235,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000rkwmk6o7b9xms",
+      "questionId": "5a7e3117554299495941991b",
+      "question": "Are the mountains known as Trivor and The Crown both found in Asia?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowb58000ke0mkc6tmgzsx",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 4893,
+      "costUsd": 0.002019,
+      "judgeCostUsd": 0.00467775,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0030kwmk1bdo860c",
+      "questionId": "5a7f0c4b5542993067513600",
+      "question": "WHICH GROUP OF PEOPLE NICKNAMED THE US ARMYS REGIMENT \"BUFFALO SOLDIERS\" IN WHICH THOMAS SHAW WON THE MEDAL OF HONOR DURING THE INDIAN WARS?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4xkr00910smkh88jsyyg",
+      "answer": "The nickname \"Buffalo Soldiers\" was given to the troops by Native American tribes they fought in the Indian Wars [2][4]. Thomas Shaw, who won the Medal of Honor for his actions in the Indian Wars, served as a Buffalo Soldier in the United States Army [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2545,
+      "costUsd": 0.000824,
+      "judgeCostUsd": 0.0039795,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002hkwmkh2eilsht",
+      "questionId": "5a7f650755429969796c1a2c",
+      "question": "In addition to Richard Strauss, Luigi Nono, Krzysztof Penderecki, Joaquín Rodrigo, and the German composer whose known for \"Das Marienleben\", what other composers have been represented by ESZ since the 1950s?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowz5w0019e0mkpn1mxh80",
+      "answer": "As the Italian agent of Schott Music since the 1950s, ESZ has also represented Igor Stravinsky and Carl Orff [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2425,
+      "costUsd": 0.000886,
+      "judgeCostUsd": 0.004281,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003ekwmkw1hgna38",
+      "questionId": "5a7f9cb55542995d8a8ddec1",
+      "question": "IN what year were both Franz Ferdinand and Sunrise Avenue formed?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozksu003we0mkk8i921if",
+      "answer": "Both Franz Ferdinand and Sunrise Avenue were formed in 2002 [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2547,
+      "costUsd": 0.000821,
+      "judgeCostUsd": 0.00323775,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0009kwmka6thw9g2",
+      "questionId": "5a7faa215542995d8a8ddee8",
+      "question": "Who is the mother of the princess who opened Middleton Grange Shopping Centre in 1970?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3ixx007n0smks4ajqnar",
+      "answer": "The Middleton Grange Shopping Centre was opened in 1970 by Princess Anne [1]. Princess Anne's mother is Queen Elizabeth II [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2439,
+      "costUsd": 0.000645,
+      "judgeCostUsd": 0.0028432500000000003,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0034kwmkojqhe0qb",
+      "questionId": "5a8078d85542995d8a8ddf78",
+      "question": "Which of the following rock bands is from Chicago: Kill Hannah or Louis XIV?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp48lz008he0mki3cugokk",
+      "answer": "Kill Hannah is from Chicago, having formed there in 1993 [2][3]. In contrast, Louis XIV is from San Diego, California [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2190,
+      "costUsd": 0.000763,
+      "judgeCostUsd": 0.0034920000000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000dkwmkll9dq9l1",
+      "questionId": "5a808f3f5542992097ad2ffd",
+      "question": "\"The Empire Builder\"'s Columbia River Subdivision was part of which line?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozb2h003me0mk2jiatqqz",
+      "answer": "The Columbia River Subdivision was originally built as part of James J. Hill's Great Northern Railway transcontinental railway line [1]. Today, it is operated by BNSF Railway as part of their Northern Transcon [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 2714,
+      "costUsd": 0.000745,
+      "judgeCostUsd": 0.00327525,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001zkwmkulta6gl0",
+      "questionId": "5a81346055429926c1cdad13",
+      "question": "What organization is known for having a president who was convicted of felony charges that was harbored by his brother, another high ranking member?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp30180078e0mkfgwvdmjc",
+      "answer": "The organization is the Fundamentalist Church of Jesus Christ of Latter-Day Saints (FLDS Church) [1][2]. Its president, Warren Jeffs, was convicted of two felony counts of child sexual assault [2]. During a federal manhunt to arrest him, he was harbored by his brother Seth Jeffs, who was also a high-ranking official in the church [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 4185,
+      "costUsd": 0.000956,
+      "judgeCostUsd": 0.0041617500000000005,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000skwmkh9kjmv50",
+      "questionId": "5a81ff62554299676cceb1c4",
+      "question": "What type of profession does Ithu Engal Neethi and Shoba Chandrasekhar have in common?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4mzg008we0mklpkac1q9",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2178,
+      "costUsd": 0.000499,
+      "judgeCostUsd": 0.00303825,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003skwmkh9jfbynw",
+      "questionId": "5a820cb355429903bc27ba2f",
+      "question": "Who helped initially design the Gotha Go 229 and later died in Argentina in 1994?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp50yt009be0mk70vsgw2b",
+      "answer": "Reimar Horten helped initially design the Gotha Go 229 alongside Walter Horten [2]. He later died on 14 March 1994 in Villa General Belgrano, Argentina [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2120,
+      "costUsd": 0.000834,
+      "judgeCostUsd": 0.00406125,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001ckwmkeo4am2h6",
+      "questionId": "5a8220db5542995ce29dccc1",
+      "question": "Which was secretary to President Richard Nixon: Rose Mary Woods or H. R. Haldeman?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkow4cj000fe0mkcilhlrg6",
+      "answer": "Rose Mary Woods was Richard Nixon's secretary from his days in Congress in 1951 through the end of his political career [1]. In contrast, H. R. Haldeman served as White House Chief of Staff to President Richard Nixon [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2697,
+      "costUsd": 0.000818,
+      "judgeCostUsd": 0.00336,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003okwmk67lfhsxw",
+      "questionId": "5a8257fa55429940e5e1a866",
+      "question": "The most famous song of the last monarch of Hawaii was what?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1cbq005f0smk07760109",
+      "answer": "The most famous song of Liliʻuokalani, the last monarch of Hawaii, was \"Aloha ʻOe\" (\"Farewell to Thee\") [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3110,
+      "costUsd": 0.00092,
+      "judgeCostUsd": 0.00402225,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0003kwmkd8txlml7",
+      "questionId": "5a8303c255429954d2e2ec01",
+      "question": "The Plymouth fury produced from 1955 to 1989  was replaced by what for police and fleet applications?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkovzhu000ae0mkt26eoxhh",
+      "answer": "Based on the provided documents, vehicles built on the platform used for police and fleet applications under the Plymouth Fury nameplate were effectively replaced by the Chrysler K platform in standard and stretch sizes [4].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        4
+      ],
+      "latencyMs": 3175,
+      "costUsd": 0.001005,
+      "judgeCostUsd": 0.0043275,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0010kwmkj9kcrjcq",
+      "questionId": "5a8319b255429940e5e1a960",
+      "question": "Who composed the theme music in 1989 of an animated television series which has the current arrangement by a person who  has scored or orchestrated music for more than 30 films and television shows?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0vhg00500smk37eoyp49",
+      "answer": "Danny Elfman composed the theme music in 1989 for the animated television series *The Simpsons* [1]. The theme's current arrangement was created by Alf Clausen, who has scored or orchestrated music for more than 30 films and television shows [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2831,
+      "costUsd": 0.000985,
+      "judgeCostUsd": 0.00394575,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0036kwmk8o56fxqp",
+      "questionId": "5a8327fd5542990548d0b1a3",
+      "question": "Forest Hill, Texas is a suburb of which fifth-largest city in the state?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowui50014e0mkzunu2z5r",
+      "answer": "Forest Hill, Texas is a suburb of Fort Worth, which is the fifth-largest city in the state of Texas [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3700,
+      "costUsd": 0.000687,
+      "judgeCostUsd": 0.0029542500000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001nkwmkv1py3cd0",
+      "questionId": "5a84a8ce5542997175ce1f1c",
+      "question": "Who was the First Prophert to the sixth Pharaoh of the Eighteenth Dynasty?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxh0j001o0smk3kskn6er",
+      "answer": "The sixth Pharaoh of the Eighteenth Dynasty was Thutmose III [1]. The Ancient Egyptian official Khonsu served as the First Prophet of Menkheperre (Thutmose III) [4].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 2473,
+      "costUsd": 0.000907,
+      "judgeCostUsd": 0.004241999999999999,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002dkwmkdapxa13w",
+      "questionId": "5a85e2775542994775f60680",
+      "question": "Just Before I Go stars an actress who plays what character in the series \"24\"?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoz1f1003ce0mklfpqadn4",
+      "answer": "The film *Just Before I Go* stars actress Elisha Cuthbert [1]. In the series \"24\", Cuthbert played the character Kim Bauer [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2264,
+      "costUsd": 0.000889,
+      "judgeCostUsd": 0.0036825,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003tkwmkz0m7e1s6",
+      "questionId": "5a85fb5e5542994775f606df",
+      "question": "What is the nickname of the peninsula that is home to the Calabrian Black Squirrel?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp08ik004le0mksl5e0gda",
+      "answer": "The Calabrian black squirrel is endemic to regions in the south of the Italian Peninsula [1]. The shape of the Italian Peninsula gives it the nickname \"lo Stivale\" (the Boot) [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2163,
+      "costUsd": 0.000805,
+      "judgeCostUsd": 0.00328275,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0039kwmkf755u6he",
+      "questionId": "5a8662da5542991e7718162f",
+      "question": "Who plays the guitar, Denis Bélanger or Max Carl?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4idm008re0mk93bnjy43",
+      "answer": "Max Carl plays the guitar [1]. Denis Bélanger is a vocalist and lyricist [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2298,
+      "costUsd": 0.000489,
+      "judgeCostUsd": 0.0026550000000000002,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0020kwmk6pzufsc5",
+      "questionId": "5a872c3f5542994775f607a8",
+      "question": "Which company is an American petroleum company, EOG Resources Inc. or General Mills Inc.?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozpif0041e0mku4eywqxc",
+      "answer": "EOG Resources, Inc. is an American petroleum and natural gas exploration company [1]. In contrast, General Mills, Inc. is an American manufacturer and marketer of branded consumer foods [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2340,
+      "costUsd": 0.000852,
+      "judgeCostUsd": 0.0036839999999999998,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003mkwmkfuu3e6cd",
+      "questionId": "5a87ab9b5542996e4f3088c2",
+      "question": "In what century did this Native warrior and chief, whose brother Tenskwatawa led the Tippecanoe order of battle, become the primary leader of a large, multi tribal confederacy?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp55gr009ge0mk8fkeegem",
+      "answer": "Tecumseh became the primary leader of a large, multi-tribal confederacy in the early years of the nineteenth century [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        5
+      ],
+      "latencyMs": 2251,
+      "costUsd": 0.000842,
+      "judgeCostUsd": 0.0038632500000000004,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0013kwmkubhmlhho",
+      "questionId": "5a87bd4e5542996432c57279",
+      "question": "Who does the minister at The First Church of Springfield help make teaching evolution illegal?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoz5dp003c0smk94hegp9c",
+      "answer": "The minister at The First Church of Springfield, Reverend Lovejoy, helps Ned Flanders [1][2]. Together, they spread the belief of creationism in Springfield, which leads to teaching evolution being made illegal at a town meeting [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3202,
+      "costUsd": 0.001234,
+      "judgeCostUsd": 0.0040485,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0025kwmkeyyq4qvx",
+      "questionId": "5a87ef2f55429938390d3eb9",
+      "question": "Which airport is further north, Valley International Airport or Aberdeen Regional Airport?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp12a3005fe0mkxq0n754y",
+      "answer": "Aberdeen Regional Airport is located in Aberdeen, South Dakota [1], while Valley International Airport is located in Harlingen, Texas [2]. Therefore, Aberdeen Regional Airport is further north [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2907,
+      "costUsd": 0.000757,
+      "judgeCostUsd": 0.004818,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 0.5,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000ukwmkeuvw9u6j",
+      "questionId": "5a883afc5542994846c1ce48",
+      "question": "What city is the band that recorded Renegade from?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3fbe007ne0mkunvue3xc",
+      "answer": "The band that recorded \"Renegade\" is Styx [1], which is from Chicago [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3022,
+      "costUsd": 0.000898,
+      "judgeCostUsd": 0.0028657500000000002,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0042kwmkho41aazg",
+      "questionId": "5a88b513554299206df2b338",
+      "question": "What type of place does Regency Road, Adelaide and Klemzig, South Australia have in common?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5u5o00a5e0mkts2t239i",
+      "answer": "Both Regency Road and Klemzig are located in the city of Adelaide, in the state of South Australia [1][3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2013,
+      "costUsd": 0.000648,
+      "judgeCostUsd": 0.0034867500000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000zkwmk8ohhcnge",
+      "questionId": "5a88f9555542995153361214",
+      "question": "The Jeep Cherokee was originally sold as a variant of a Jeep model produced during what years?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2fsc006j0smkydpgvqw7",
+      "answer": "The Jeep Cherokee was originally sold as a variant of the Jeep Wagoneer [1]. The Jeep Wagoneer was produced from 1963 to 1991 [4].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 2811,
+      "costUsd": 0.000748,
+      "judgeCostUsd": 0.003321,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000tkwmkzd5g2qhj",
+      "questionId": "5a89019a5542995153361259",
+      "question": "Mazda's Mazda6 belongs to which country's car manufacturer?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowgli000p0smktlpbqm86",
+      "answer": "The Mazda6 is produced by the Japanese car manufacturer Mazda [1].",
+      "recallAtK": 0.5,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 3038,
+      "costUsd": 0.000846,
+      "judgeCostUsd": 0.002625,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002xkwmkw2e2vct8",
+      "questionId": "5a899bf955429946c8d6e959",
+      "question": "When was the New Orleans Pelicans player featured on the NBA 2K16 cover first drafted?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowvxn00140smkyvgiup14",
+      "answer": "The New Orleans Pelicans player featured on the cover of NBA 2K16 is Anthony Davis [2]. Davis was drafted first overall in the 2012 NBA draft [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2731,
+      "costUsd": 0.000948,
+      "judgeCostUsd": 0.00379125,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0031kwmkxe4a27iw",
+      "questionId": "5a89ddf25542992e4fca83ff",
+      "question": "Do singers Lee Donghae and Dappy have the same nationality?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3e56007i0smk8x10nwd7",
+      "answer": "No, they do not have the same nationality. Lee Donghae is South Korean [1], whereas Dappy is English [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2,
+        3
+      ],
+      "latencyMs": 2482,
+      "costUsd": 0.000713,
+      "judgeCostUsd": 0.00338025,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0046kwmkotuu5i1d",
+      "questionId": "5a8a4b9955429930ff3c0d88",
+      "question": "Who wrote the lyrics to the 2016/2017 Australian production that stars Gretel Scarlett as Kathy Selden?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkow61g000f0smkvi0vi3r5",
+      "answer": "Gretel Scarlett starred as Kathy Selden in the 2016/2017 Australian production of \"Singin' in the Rain\" [1]. The lyrics for the musical \"Singin' in the Rain\" were written by Arthur Freed [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2657,
+      "costUsd": 0.000815,
+      "judgeCostUsd": 0.00371475,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001ikwmktsml5ub3",
+      "questionId": "5a8ae0ae55429950cd6afbc2",
+      "question": "What airline was a monopoly with a hub at Sheremetyevo International Airport?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2udi006y0smk4grwjqp2",
+      "answer": "Aeroflot was a Soviet airline monopoly that was dissolved in the early 1990s [5]. It operates mainly from its hub at Sheremetyevo International Airport [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        5
+      ],
+      "latencyMs": 2458,
+      "costUsd": 0.000727,
+      "judgeCostUsd": 0.0036255000000000003,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0038kwmkmic7nbpi",
+      "questionId": "5a8b027e55429950cd6afc45",
+      "question": "The song \"Only a Pawn in Their Game\" was based on a crime whose perpetrator was convicted in this year.",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5pto00a0e0mk1wtkqqle",
+      "answer": "The perpetrator of the crime, Byron De La Beckwith, was convicted in 1994 [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3106,
+      "costUsd": 0.001138,
+      "judgeCostUsd": 0.00330825,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001pkwmkumscqesp",
+      "questionId": "5a8b429f5542995d1e6f132c",
+      "question": "Stella Maxwell has been a model for a famous fashion shown since when?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1mna005ze0mkgy867v7g",
+      "answer": "Stella Maxwell has been one of the Victoria's Secret Angels since 2015 [4]. She was also featured in the Victoria's Secret Fashion Show in 2015 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 2350,
+      "costUsd": 0.000755,
+      "judgeCostUsd": 0.0033915,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0012kwmk0u7e90au",
+      "questionId": "5a8baf775542996e8ac889c8",
+      "question": "Signed with Maybach Music Group in 2011, which artist was featured as a guest in Fire of Zamani?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowfxm000pe0mkt0o6ad2h",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 0.5,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2589,
+      "costUsd": 0.000938,
+      "judgeCostUsd": 0.0066195,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0004kwmkkaxxj4eh",
+      "questionId": "5a8c5bff554299240d9c2139",
+      "question": "How many members exist in the conference represented by the Michigan State Spartans in the 1993 Liberty Bowl?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozg0r003re0mk5dji8xof",
+      "answer": "The Michigan State Spartans represented the Big Ten Conference in the 1993 Liberty Bowl [1]. As of 2016, the Big Ten Conference consists of 14 members [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2661,
+      "costUsd": 0.000876,
+      "judgeCostUsd": 0.00386625,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0040kwmkhlb06h9x",
+      "questionId": "5a8dd13055429917b4a5bcba",
+      "question": "What film studio produced both National Treasure and The Computer Wore Tennis Shoes?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5c47009g0smk2qdgnd8o",
+      "answer": "The provided documents do not name a single film studio that produced both films; *The Computer Wore Tennis Shoes* was produced by Walt Disney Productions [1], while *National Treasure* was produced by Walt Disney Pictures [3]. Consequently, I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2571,
+      "costUsd": 0.000739,
+      "judgeCostUsd": 0.00521775,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0029kwmk9nl7t0sc",
+      "questionId": "5a8dd5f955429917b4a5bcc7",
+      "question": "Other than racing, what sport does the 1998 champion of the Toyota GRand Prix practice?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5vqq00a00smk9f1sd45h",
+      "answer": "The 1998 Toyota Grand Prix of Long Beach was won by Alex Zanardi [1]. In addition to racing, he is a paracyclist [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2290,
+      "costUsd": 0.000747,
+      "judgeCostUsd": 0.0037920000000000002,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002lkwmkls3pmuzi",
+      "questionId": "5a8efef05542997ba9cb3178",
+      "question": "In what city did Jack J. Stephans coach from 1979 to 1980?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoy2lr002de0mku8eln279",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 0.6666666666666666,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1
+      ],
+      "latencyMs": 2633,
+      "costUsd": 0.000765,
+      "judgeCostUsd": 0.0038685000000000004,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001tkwmkbkteh74s",
+      "questionId": "5a8f25d755429924144829ea",
+      "question": "Are Dutch Smoushond and Sussex Spaniel's both dog breeds?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoyce8002ne0mks00mhewo",
+      "answer": "Yes, both are dog breeds. The Sussex Spaniel is a breed of dog developed in southern England [1], and the Dutch Smoushond is a small breed of dog originating from the Netherlands [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2698,
+      "costUsd": 0.000776,
+      "judgeCostUsd": 0.0035475000000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003ikwmkdftxy56i",
+      "questionId": "5a90945755429933b8a2056c",
+      "question": "John Constantine Williams, Sr was cofounder of a Florida city located in what county?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4run0091e0mk7wlxlzdr",
+      "answer": "John Constantine Williams, Sr. was the cofounder of St. Petersburg, Florida [1]. St. Petersburg is located in Pinellas County, Florida [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2715,
+      "costUsd": 0.000606,
+      "judgeCostUsd": 0.0030517499999999998,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001qkwmku3qu5tlf",
+      "questionId": "5a90ad595542990a9849368b",
+      "question": "How many people go through the airport where Darwin Airline's headquarters are located?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3k79007se0mkpaefsfuu",
+      "answer": "The headquarters of Darwin Airline are located at Lugano Airport [1]. Around 200,000 passengers use this airport each year [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2700,
+      "costUsd": 0.00081,
+      "judgeCostUsd": 0.0036885,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0016kwmkzteb1pxx",
+      "questionId": "5ab2a186554299295394677b",
+      "question": "When did the English local newspaper, featuring the sculpture and war memorial in the Forbury gardens, change names?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1hb8005k0smkzcxx70s2",
+      "answer": "The *Reading Post*, which featured the Maiwand Lion sculpture and war memorial on its title page, changed its name from the *Reading Evening Post* in 2009 [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2608,
+      "costUsd": 0.000726,
+      "judgeCostUsd": 0.0036922500000000002,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002jkwmk5t5a6fia",
+      "questionId": "5ab2da99554299194fa93544",
+      "question": "Who aided the Colorado forces in the Uruguayan war?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5zws00aae0mkdb1sps0n",
+      "answer": "In the Uruguayan War, the Colorado forces were allied with and openly supported by the Empire of Brazil [1][3]. They were also covertly aided by Argentina, whose president, Bartolomé Mitre, provided supplies, Argentine volunteers, and river transport for troops [1][3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        5
+      ],
+      "latencyMs": 3695,
+      "costUsd": 0.000967,
+      "judgeCostUsd": 0.0038954999999999997,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000lkwmkje5dr9gh",
+      "questionId": "5ab2f53d5542991669774157",
+      "question": "Larry Mosley and his cousin Shane Mosley both box in which division?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2kig006o0smkg1kzo1ys",
+      "answer": "Larry Mosley and his cousin Shane Mosley both compete in the welterweight division [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2393,
+      "costUsd": 0.000601,
+      "judgeCostUsd": 0.003417,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0027kwmknf7cwrn0",
+      "questionId": "5ab31fea554299194fa9356a",
+      "question": "When was the second album by Jason Daunt's band released?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5h1j009l0smk2esk79xm",
+      "answer": "The band formed by Jason Daunt is Flaw [1]. Their second studio album, *Endangered Species*, was released on May 4, 2004 [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2674,
+      "costUsd": 0.000781,
+      "judgeCostUsd": 0.0032535,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000bkwmkq6pmpkjw",
+      "questionId": "5ab322b1554299194fa93570",
+      "question": "Which type of character is featured by the P.L. Travers's third book and last novel in the \"Mary Poppins\" series?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozh7z003m0smkts59rc21",
+      "answer": "The third book and last novel in P.L. Travers's \"Mary Poppins\" series features the magical English nanny Mary Poppins [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3142,
+      "costUsd": 0.000616,
+      "judgeCostUsd": 0.00294825,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001ekwmkcry5l43b",
+      "questionId": "5ab3c05d55429969a97a81aa",
+      "question": "How many times has the author of Negotiating with the Dead been shortlisted for the Booker Prize ?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoz01g00370smk88y86tj3",
+      "answer": "The author of *Negotiating with the Dead* is Margaret Atwood [1]. She has been shortlisted for the Booker Prize five times [5].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        5
+      ],
+      "latencyMs": 3008,
+      "costUsd": 0.000733,
+      "judgeCostUsd": 0.0031155,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003hkwmkf09e1h5d",
+      "questionId": "5ab5279d5542996a3a96a03f",
+      "question": "When was the female co-founder of the organization that published the \"Daily Word\" devotional born?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0j36004ve0mkvvdrvtq8",
+      "answer": "Mary Caroline \"Myrtle\" Page Fillmore, the female co-founder of Unity, was born on August 6, 1845 [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3628,
+      "costUsd": 0.000939,
+      "judgeCostUsd": 0.0036945,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0017kwmk1qsh0l1f",
+      "questionId": "5ab5e9865542992aa134a3db",
+      "question": "What type of beliefs does Mount Ida and Rhea have in common?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkovw5400050smkbp6oplkm",
+      "answer": "Mount Ida and Rhea are both rooted in Greek mythology [1][3]. In these mythic traditions, they are connected to beliefs surrounding the mother goddess, with Mount Ida in Crete being the sacred site where Rhea placed the infant Zeus to be nursed and protected [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3550,
+      "costUsd": 0.000862,
+      "judgeCostUsd": 0.00510975,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001ykwmkvnqrh7z1",
+      "questionId": "5ab6c94c554299710c8d1f5e",
+      "question": "What New York City–based hip-hop musical group consists of rappers including Darryl Hill?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxwv200230smkzwlb6hoo",
+      "answer": "The New York City–based hip-hop musical group is the Wu-Tang Clan, of which Darryl Hill (known by his stage name Cappadonna) is a member [1][3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3169,
+      "costUsd": 0.001109,
+      "judgeCostUsd": 0.00334875,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003akwmkw97tjeax",
+      "questionId": "5ab761d955429928e1fe3856",
+      "question": "Which Austrian Chancellor does Jörg Leichtfried serve under?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkox3lm001ee0mkbtkegok8",
+      "answer": "Jörg Leichtfried serves under Chancellor Christian Kern [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2098,
+      "costUsd": 0.000521,
+      "judgeCostUsd": 0.0025424999999999996,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002ukwmk0vfezbv9",
+      "questionId": "5ab7d6ec5542995dae37e9b4",
+      "question": "When was the company that owns Bonifacio High Street founded?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp25f000690smkycdfpr08",
+      "answer": "Bonifacio High Street is owned by Ayala Malls [1]. Ayala Malls was founded in 1988 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2864,
+      "costUsd": 0.00078,
+      "judgeCostUsd": 0.003279,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000gkwmkfqppg9lz",
+      "questionId": "5ab7e4dc5542995dae37e9df",
+      "question": "The Polar Bears featuring the voice of Armie Hammer, is also the same voice actor for which character in Cars 3?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4hwx008m0smk8k210flp",
+      "answer": "Armie Hammer voiced the character Jackson Storm in *Cars 3* [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2066,
+      "costUsd": 0.000824,
+      "judgeCostUsd": 0.0032977500000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000akwmk7b6f355x",
+      "questionId": "5ab7f1315542991d322237d1",
+      "question": "\"Look At Us Now\" is a song by American DJs based in which city ?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoz62j003he0mkzdnw02zz",
+      "answer": "\"Look At Us Now\" is a song by Lost Kings [1]. The DJ duo is based in Los Angeles [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2306,
+      "costUsd": 0.00055,
+      "judgeCostUsd": 0.00268425,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000qkwmkpw5gx6ao",
+      "questionId": "5ab8ee035542991b5579f04b",
+      "question": "Are Hot Rod and The Memory of Our People both magazines?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoyb1i002i0smkjvo8wh26",
+      "answer": "Yes, Hot Rod is a monthly American car magazine [2], and The Memory of Our People is a magazine published in Rosario, Argentina [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2294,
+      "costUsd": 0.000619,
+      "judgeCostUsd": 0.003117,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0015kwmk9shwhxr1",
+      "questionId": "5ab900045542991b5579f0c0",
+      "question": "Where is the concert venue which hosted the first US performance of \"Libuše\" located?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxrwj0023e0mkzlth7eim",
+      "answer": "The first US performance of \"Libuše\" was hosted at Carnegie Hall [1]. Carnegie Hall is located at 881 Seventh Avenue, occupying the east side of Seventh Avenue between West 56th Street and West 57th Street, in Midtown Manhattan, New York City, two blocks south of Central Park [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2568,
+      "costUsd": 0.000969,
+      "judgeCostUsd": 0.0033405,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002kkwmkxciy4m5w",
+      "questionId": "5ab90fdd55429916710eb0fc",
+      "question": "Wheelock Whitney is just one member of the Whitney Family. Where did this American family originate from?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0ddy004qe0mkncjmyc9y",
+      "answer": "The Whitney family was founded by John Whitney, who originated from London, England and came to Watertown, Massachusetts in 1635 [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2554,
+      "costUsd": 0.000536,
+      "judgeCostUsd": 0.00311625,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002akwmkxoekignk",
+      "questionId": "5ab9180b5542991b5579f0f3",
+      "question": "The Running Man Brothers is a South Korean pop duo. Kim Jong-kook is one member and he is from what country?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp440l008ce0mkd5n3i1pm",
+      "answer": "Kim Jong-kook is from South Korea [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2623,
+      "costUsd": 0.000582,
+      "judgeCostUsd": 0.00331425,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003lkwmkooqp09hu",
+      "questionId": "5ab930655542991b5579f12a",
+      "question": "Are both Dziga Vertov and Roger Donaldson are involved in the film industry?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0sl90055e0mk2jd9sf0c",
+      "answer": "Yes, both are involved in the film industry. Dziga Vertov was a Soviet pioneer documentary film and newsreel director as well as a cinema theorist [1]. Roger Donaldson is a film director, producer, and writer [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2187,
+      "costUsd": 0.000913,
+      "judgeCostUsd": 0.0037754999999999998,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003vkwmkom53aimm",
+      "questionId": "5ab95a63554299743d22eb06",
+      "question": "Who was a student of Rolls Gracie and ran the Gracie Humaitá school in Rio de Janeiro?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp611y00a50smk99cda3fd",
+      "answer": "Royler Gracie was a student of Rolls Gracie [3] and ran the Gracie Humaitá school in Rio de Janeiro for many years under his father Helio's direction [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        3
+      ],
+      "latencyMs": 3226,
+      "costUsd": 0.000663,
+      "judgeCostUsd": 0.0034582500000000004,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001akwmk12zlktrt",
+      "questionId": "5ab97c0255429970cfb8eb1f",
+      "question": "What football team did Mario Gomez and Javi Martinez both play for?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozqsc003w0smkc3g1k8vs",
+      "answer": "Mario Gómez and Javi Martínez both played for Bayern Munich [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2668,
+      "costUsd": 0.000807,
+      "judgeCostUsd": 0.003471,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000ykwmkorwkllgf",
+      "questionId": "5aba94e355429901930fa845",
+      "question": "Jonathan Groff was 30 years old when he appeared in a historical musical written by whom?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1r66005u0smk956vfw48",
+      "answer": "Jonathan Groff, who was born on March 26, 1985, was 30 years old when he performed in the 2015 musical *Hamilton* [1][2][3]. The musical was written by Lin-Manuel Miranda [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2868,
+      "costUsd": 0.000792,
+      "judgeCostUsd": 0.0038520000000000004,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000jkwmkwemouxeu",
+      "questionId": "5aba9813554299232ef4a357",
+      "question": "Which is a choreographer, Yuen Woo-ping or Basil Dean?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp06m9004b0smk4uvaazym",
+      "answer": "Yuen Woo-ping is a martial arts choreographer [1]. Basil Dean was an actor, writer, and film and theatrical producer and director [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2816,
+      "costUsd": 0.000634,
+      "judgeCostUsd": 0.0031462499999999997,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000ikwmkdbvc7csn",
+      "questionId": "5abaf6865542996cc5e49f3c",
+      "question": "What role did Thomas Doherty play in sitcom based on the Israeli series \"North Star\"?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp34av00780smkbj8yskxr",
+      "answer": "Thomas Doherty played the role of Sean in the British musical drama sitcom *The Lodge*, which is based on the Israeli series \"North Star\" [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2438,
+      "costUsd": 0.000714,
+      "judgeCostUsd": 0.0034679999999999997,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002mkwmkqqkc2c4r",
+      "questionId": "5abccb235542996583600497",
+      "question": "Where does the team coached by someone with the nickname \"Coach K\" play?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoy7i3002ie0mkbjizetvv",
+      "answer": "Mike Krzyzewski, who is nicknamed \"Coach K\", serves as the head men's basketball coach at Duke University [1]. The Duke Blue Devils play their home games at Cameron Indoor Stadium in Durham, North Carolina [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2684,
+      "costUsd": 0.001101,
+      "judgeCostUsd": 0.00386325,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002skwmkqjbdeklv",
+      "questionId": "5abe0e4e55429976d4830a62",
+      "question": "Tim O'Kelly was cast in a film because he resembled a killer nicknamed what?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4wfz0096e0mknzz9c2mu",
+      "answer": "Tim O'Kelly was cast in the film \"Targets\" due to his similarity in appearance to killer Charles Whitman [1]. Whitman was infamous under the nickname the \"Texas Tower Sniper\" [5].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        5
+      ],
+      "latencyMs": 2358,
+      "costUsd": 0.000802,
+      "judgeCostUsd": 0.00349275,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0011kwmk5m3uz619",
+      "questionId": "5abe7f695542993f32c2a12d",
+      "question": "What is the focus of the movie in which Nolan North played the role of Superboy?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozz4w004be0mk08rgiimd",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2224,
+      "costUsd": 0.00071,
+      "judgeCostUsd": 0.004086,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000xkwmk727gzn84",
+      "questionId": "5abff00c5542994516f45537",
+      "question": "What film genre links Baghdad ER and Olympia?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkox7yd001je0mkjheeor67",
+      "answer": "Both *Baghdad ER* and *Olympia* are linked by the documentary film genre [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2025,
+      "costUsd": 0.000729,
+      "judgeCostUsd": 0.0032085,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001vkwmk2hxv6jva",
+      "questionId": "5abffda6554299012d1db55b",
+      "question": "What is the main nickname of the professional association football club where Ewan Fenton spent thirteen seasons?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2anc006e0smk36q9lp5c",
+      "answer": "The club where Ewan Fenton spent thirteen seasons is Blackpool Football Club [1][2]. The club's main nickname is \"the Seasiders\" [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3167,
+      "costUsd": 0.000973,
+      "judgeCostUsd": 0.0036225,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003ukwmkopstr7mf",
+      "questionId": "5ac002705542996f0d89cb05",
+      "question": "In what administrative category are the cities of Beitun, Xinjiang and Wafangdian?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3a0s007ie0mk1iu1e4yc",
+      "answer": "Both Beitun, Xinjiang and Wafangdian are categorized administratively as county-level cities [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2879,
+      "costUsd": 0.000789,
+      "judgeCostUsd": 0.00314475,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001bkwmknhtakbd9",
+      "questionId": "5ac007cc5542996f0d89cb0b",
+      "question": "Who was attempting to regain the British throne until the Raids on Lachaber and Shiramore shut down his operations?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxd2k001oe0mkfr0iksw5",
+      "answer": "Charles Edward Stuart, also known as \"Bonnie Prince Charlie\" or the \"Young Pretender,\" was attempting to regain the British throne for the exiled House of Stuart [1][2]. His operations in the Jacobite rising of 1745 were brought to an end by the British-Hanoverian Government's closing actions, which included the Raids on Lochaber and Shiramore [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2971,
+      "costUsd": 0.001121,
+      "judgeCostUsd": 0.0045375,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002pkwmkg9rofqy1",
+      "questionId": "5ac06191554299294b218fab",
+      "question": "Phoebe Ruguru created a 2014 film on a smartphone marketed by what company?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2bya006oe0mk810pq052",
+      "answer": "Phoebe Ruguru's 2014 winning film \"Saidia\" was shot entirely on an iPhone 4s [1]. The iPhone 4s is a smartphone marketed by Apple Inc. [5].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        5
+      ],
+      "latencyMs": 2290,
+      "costUsd": 0.000702,
+      "judgeCostUsd": 0.003006,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0014kwmk3h1613zz",
+      "questionId": "5ac0b6b15542996f0d89cc1e",
+      "question": "What's the name for the character also known as Holger Danske, from medieval French chansons de geste?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozlui003r0smkynq9fznn",
+      "answer": "The character also known as Holger Danske is named Ogier the Dane [1][2]. In French, he is known as \"Ogier le Danois\" or archaically as \"Ogier de Danemarche\" [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2309,
+      "costUsd": 0.000895,
+      "judgeCostUsd": 0.0038962500000000004,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001skwmkyg8mftb9",
+      "questionId": "5ac258cc554299636651998e",
+      "question": "Ray Roughler Jones single-handedly produced the magazine Roughler, but what Swedish singer-songwriter made contributions to the magazine?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp20eo00640smkl4nakxvd",
+      "answer": "The Swedish singer-songwriter who made contributions to the magazine is Neneh Cherry [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2486,
+      "costUsd": 0.0006,
+      "judgeCostUsd": 0.00322875,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002okwmkrrp437qu",
+      "questionId": "5ac2ffea55429921a00ab0cc",
+      "question": " Jordan's Furniture is a furniture retailer with a location in an enclosed shopping mall on the north side of Interstate 295 near what?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0qfa004v0smkd3im4yrj",
+      "answer": "Jordan's Furniture has a location in the Warwick Mall [2]. This mall is located on the north side of Interstate 295 near the junction with Interstate 95 [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2326,
+      "costUsd": 0.000852,
+      "judgeCostUsd": 0.00372975,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0023kwmkipzzrrvk",
+      "questionId": "5ac3af895542995ef918c1f0",
+      "question": "Janne Kyttanen has had work exhibited at which modern art museum in Amsterdam?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3sb9007x0smkudxvxi9o",
+      "answer": "Janne Kyttanen has had his work exhibited at the Stedelijk Museum, which is a museum for modern art located in Amsterdam [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2234,
+      "costUsd": 0.000755,
+      "judgeCostUsd": 0.0034537500000000002,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001jkwmksbu202x5",
+      "questionId": "5ac3bff15542995ef918c213",
+      "question": "Alexander S. Wadsworth served during the war that was faught between which two countries?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowbf9000k0smk4smkpzd8",
+      "answer": "Alexander S. Wadsworth served in the War of 1812 [2]. That conflict was fought between the United States and the United Kingdom, along with their respective allies [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3350,
+      "costUsd": 0.000783,
+      "judgeCostUsd": 0.00334725,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0033kwmkbkl8kclk",
+      "questionId": "5ac3dc9e5542997ea680c950",
+      "question": "Maria Radu is best known for winning the 3000 meters at which Edmonton, Alberta, sporting event? ",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxrjt001y0smktcu8msla",
+      "answer": "Maria Radu is best known for winning the women's 3000 metres at the 1983 Summer Universiade, which was held in Edmonton, Alberta, Canada [1][2]. This event is also known as the 1983 World University Games or the XII Summer Universiade [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3805,
+      "costUsd": 0.000886,
+      "judgeCostUsd": 0.0037702499999999997,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0035kwmkb4i7esur",
+      "questionId": "5ac439005542995c82c4acf9",
+      "question": "where was the 2006 Commonwealth Games that Mmoloki Nogeng won a bronze medal at held?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp47ec008c0smkpbrj4wt6",
+      "answer": "The 2006 Commonwealth Games, where Mmoloki Nogeng won a bronze medal, were held in Melbourne, Australia [1]. The boxing events specifically took place at the Melbourne Exhibition Centre [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3274,
+      "costUsd": 0.000756,
+      "judgeCostUsd": 0.00318675,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0044kwmki36apiv9",
+      "questionId": "5adbf2805542994650320c15",
+      "question": "when does the role William Vere Reeve King-Fane change?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkozbwn003h0smk3f0irood",
+      "answer": "William Vere Reeve King-Fane served as the High Sheriff of Lincolnshire [1]. The office of the High Sheriff changes every March [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 4778,
+      "costUsd": 0.001131,
+      "judgeCostUsd": 0.0034177499999999998,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001rkwmk2fjwtdnt",
+      "questionId": "5adc02445542994650320c4e",
+      "question": "Ethel Winter worked with which avant-garde theater director?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1m4l005p0smkk3tdq6xg",
+      "answer": "Ethel Winter worked with Jean Erdman [1], who was an avant-garde theater director [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2393,
+      "costUsd": 0.000504,
+      "judgeCostUsd": 0.0026955,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003wkwmkdwicnzt4",
+      "questionId": "5adc398755429947ff173912",
+      "question": "Which genus is native to more continents, Nothoscordum or Callirhoe?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxhp0001te0mksp00hmdh",
+      "answer": "*Nothoscordum* is native to more continents [1][2]. It is native to two continents—North and South America—while *Callirhoe* is native only to North America [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2296,
+      "costUsd": 0.000711,
+      "judgeCostUsd": 0.003534,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001lkwmkwu32w3fb",
+      "questionId": "5add1d435542990d50227de8",
+      "question": "Where is the company, which designed the Glomar Challenger, based?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkovu8f0005e0mkrwq9u935",
+      "answer": "The *Glomar Challenger* was designed by Global Marine Inc., which is now Transocean Inc. [1]. Transocean is based in Vernier, Switzerland [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3282,
+      "costUsd": 0.000673,
+      "judgeCostUsd": 0.00297375,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003ykwmk8bxawrrz",
+      "questionId": "5add3b035542997545bbbcce",
+      "question": "The Gate is a song from the album scheduled for release in what month?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0h69004l0smkt5lz7noo",
+      "answer": "\"The Gate\" is the lead single from Björk's album *Utopia* [1]. The album was scheduled for release in November 2017 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2805,
+      "costUsd": 0.000801,
+      "judgeCostUsd": 0.003702,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0007kwmkf0to8zs8",
+      "questionId": "5addc2b75542997dc7907017",
+      "question": "The Voyage is a wooden roller coaster located at a theme park divided into how many sections ?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1vkm005z0smkbx9gp7n7",
+      "answer": "The Voyage is located at the theme park Holiday World & Splashin' Safari [1][2]. This theme park is divided into four sections [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2105,
+      "costUsd": 0.000945,
+      "judgeCostUsd": 0.0036142500000000003,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002gkwmklv6jky3x",
+      "questionId": "5adde2475542997545bbbdc1",
+      "question": "Who, born February 20, 1983, played for The Monarchs and in the World Series?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2zcj00730smkbkmc31kv",
+      "answer": "Justin Verlander was born on February 20, 1983 [4]. He played for the Old Dominion Monarchs baseball team and has played in the World Series [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 2830,
+      "costUsd": 0.000905,
+      "judgeCostUsd": 0.0037545,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001okwmkbo7cd178",
+      "questionId": "5adf734b5542995ec70e9016",
+      "question": "What show other than Hello Ross did Chelsea Handler appear on in January of 2016",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkow18g000a0smktd9as3do",
+      "answer": "Chelsea Handler appeared on the documentary series *Chelsea Does*, which was released on Netflix on January 22, 2016 [1][3].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        3
+      ],
+      "latencyMs": 2717,
+      "costUsd": 0.000647,
+      "judgeCostUsd": 0.003273,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0045kwmkcvrgc3z0",
+      "questionId": "5adf9dc3554299025d62a2e6",
+      "question": "What is the name of the actress who has received a Drama Desk award and was part of the cast album for the 2007 Broadway production of the hit musical, \"Grease\"?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1d1r005pe0mkhiu4na0u",
+      "answer": "The actress is Laura Osnes [1][2]. She was featured on the cast album for the 2007 Broadway production of \"Grease\" and later received a Drama Desk Award for her starring role in \"Cinderella\" on Broadway [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3198,
+      "costUsd": 0.000916,
+      "judgeCostUsd": 0.00376725,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0002kwmkrniqx9v2",
+      "questionId": "5adface25542995ec70e906c",
+      "question": "Killing You is a song by a band that consists of lead vocalist Danny Worsnop, guitarists Ben Bruce and Cameron Liddell, drummer James Cassells and what bassist?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp225a006ee0mkz7trzuxs",
+      "answer": "The bassist of the band Asking Alexandria is Sam Bettley [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2354,
+      "costUsd": 0.000583,
+      "judgeCostUsd": 0.0026505,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003ckwmk2iz3ocob",
+      "questionId": "5adfeeed55429925eb1afb44",
+      "question": "What is the birthdate of this Uruguayan former footballer, who management team consists of Charlie Oatway?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp4n9z008r0smkacyanist",
+      "answer": "The Uruguayan former footballer whose management team includes Charlie Oatway is Gus Poyet [1][2]. He was born on 15 November 1967 [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3322,
+      "costUsd": 0.000895,
+      "judgeCostUsd": 0.003489,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0019kwmk2ef31o6x",
+      "questionId": "5ae03cd855429924de1b7072",
+      "question": "Were Paul Éluard and Georges Bataille from the same country?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5kjb009ve0mkcolti7zd",
+      "answer": "Yes, Paul Éluard and Georges Bataille were from the same country, as both were French [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2451,
+      "costUsd": 0.000773,
+      "judgeCostUsd": 0.00300825,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000okwmkpt178hl9",
+      "questionId": "5ae0575755429945ae95931f",
+      "question": "The 1958 Pro Bowl was played at the California stadium that is the home for which college?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0c4r004g0smk6sm5c2bh",
+      "answer": "The 1958 Pro Bowl was played at the Los Angeles Memorial Coliseum [2]. That stadium serves as the home to the University of Southern California (USC) [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3256,
+      "costUsd": 0.000898,
+      "judgeCostUsd": 0.00316425,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000ekwmkud5yv45i",
+      "questionId": "5ae083e855429924de1b70fb",
+      "question": "By how many points did Dion Lewis' team trail by, in the third quarter, of the Super Bowl that they won ? ",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1hwp005ue0mkxnrybc4l",
+      "answer": "Dion Lewis won Super Bowl LI with the New England Patriots [2]. During the third quarter of that game, the Patriots trailed by as many as 25 points (28–3) before coming back to defeat the Atlanta Falcons [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.5,
+      "relevantRanks": [
+        2,
+        3
+      ],
+      "latencyMs": 2531,
+      "costUsd": 0.001107,
+      "judgeCostUsd": 0.004392,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002nkwmk35slmx3k",
+      "questionId": "5ae09ce855429924de1b7113",
+      "question": "What was the highest ranking in the United States for a single written by an English multi-instrumentalist?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp1xj30069e0mkoyfftkrs",
+      "answer": "The song \"Magic Bus,\" written by English multi-instrumentalist Pete Townshend, reached number 25 in the United States [3][4].",
+      "recallAtK": 1,
+      "reciprocalRank": 0.3333333333333333,
+      "relevantRanks": [
+        3,
+        4
+      ],
+      "latencyMs": 3686,
+      "costUsd": 0.001382,
+      "judgeCostUsd": 0.004455,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003nkwmkrzjj6yhr",
+      "questionId": "5ae0de1455429924de1b71b4",
+      "question": "The American restaurant chain, the Original House of Pies, is also responsible for an American chain of fruit drink beverage stores with an eponymous beverage consisting of what?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowlb8000u0smk14llezu7",
+      "answer": "The American restaurant chain was started by Al Lapin Jr., who was also responsible for Orange Julius, an American chain of fruit drink beverage stores [1][2]. The eponymous beverage consists of a mixture of ice, orange juice, sweetener, milk, powdered egg whites, and vanilla flavoring [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2496,
+      "costUsd": 0.000741,
+      "judgeCostUsd": 0.00357375,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0005kwmkh7cywf3t",
+      "questionId": "5ae0fe8855429945ae959495",
+      "question": "Were both Tom Gullikson and Jürgen Melzer professional Austrian tennis players?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp0lug004q0smkiczlu96i",
+      "answer": "No, they were not both Austrian. While Jürgen Melzer is an Austrian tennis player [1], Tom Gullikson is a former professional tennis player from the United States [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2378,
+      "costUsd": 0.000618,
+      "judgeCostUsd": 0.0029707500000000003,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq0001kwmk0pudbv2t",
+      "questionId": "5ae12a4b55429920d52342df",
+      "question": "Baraki Barak District is situated in the western part of a province whose capital is what?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp5aq1009le0mkvrvcd5th",
+      "answer": "Baraki Barak District is situated in the western part of Logar Province [1]. The capital of Logar Province is Puli Alam [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3213,
+      "costUsd": 0.000642,
+      "judgeCostUsd": 0.0030555,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000vkwmkmv8t4bx1",
+      "questionId": "5ae26fad554299495565da6f",
+      "question": "Which historical drama filmed in the Winter Palace of the Russian State Hermitage Museum stars Sergey Dreyden?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3p0d007xe0mkwejk6rc9",
+      "answer": "The historical drama is *Russian Ark* [1][2]. It was directed by Alexander Sokurov and filmed entirely in the Winter Palace of the Russian State Hermitage Museum [1]. Sergey Dreyden stars in the film [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2431,
+      "costUsd": 0.000829,
+      "judgeCostUsd": 0.0033682499999999997,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002wkwmkhh2l16oz",
+      "questionId": "5ae3281a5542991a06ce9939",
+      "question": "Are both Frank Lloyd and Olivier Assayas American film directors?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp41y700870smkd9vb771u",
+      "answer": "No, both are not American film directors. While Frank Lloyd was an American film director [1], Olivier Assayas is a French film director [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2615,
+      "costUsd": 0.000562,
+      "judgeCostUsd": 0.00315075,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000kkwmkpkz640bc",
+      "questionId": "5ae377415542992e3233c40a",
+      "question": "Which author was a dentist, Zane Grey or Bhabananda Deka?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkovoxk0000e0mkncbnv8ae",
+      "answer": "Zane Grey was an American dentist and author [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2894,
+      "costUsd": 0.000746,
+      "judgeCostUsd": 0.0028522499999999998,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003jkwmk1uo83ids",
+      "questionId": "5ae46ebc5542995dadf24331",
+      "question": "Which of the systems that uses the RedBoot is a double-deck, wide-body, four-engine jet airliner manufactured by European manufacturer Airbus?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp17nx005ke0mk8dwoeewg",
+      "answer": "The Airbus A380, whose entertainment systems use RedBoot, is a double-deck, wide-body, four-engine jet airliner manufactured by the European manufacturer Airbus [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3206,
+      "costUsd": 0.001213,
+      "judgeCostUsd": 0.00311025,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq001hkwmkdk58gciu",
+      "questionId": "5ae4903855429913cc2044a0",
+      "question": "What do Woodstock and American Dream have in common?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp64ol00afe0mka446p7ve",
+      "answer": "Both *Woodstock* and *American Dream* are documentary films [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2441,
+      "costUsd": 0.000597,
+      "judgeCostUsd": 0.00314175,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003dkwmkl14opask",
+      "questionId": "5ae54c085542992663a4f1c4",
+      "question": "What are some other areas that share a common deer species with the forests of Mara and Mondrem?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoxn3l001ye0mk94p7vi4x",
+      "answer": "The Forests of Mara and Mondrem were home to red, fallow, and roe deer [1]. Red deer are also native to or found in most of Europe, the Caucasus Mountains region, Asia Minor, Iran, western and central Asia, and northwestern Africa, and have been introduced to areas such as Australia, New Zealand, Canada, and the United States [2]. Similarly, fallow deer inhabit western Eurasia and have been introduced to locations including Argentina, South Africa, Peru, Australia, New Zealand, Canada, and the United States [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3302,
+      "costUsd": 0.001069,
+      "judgeCostUsd": 0.0047497500000000005,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyq000pkwmk15ltjtb5",
+      "questionId": "5ae5aba0554299546bf82f17",
+      "question": "Which of Tara Strong major voice role in animated series is an American animated television series based on the DC Comics fictional superhero team, the \"Teen Titans\"?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkovplg00000smkv4r8hug5",
+      "answer": "Tara Strong's major voice roles include *Teen Titans Go!* [2][5], which is an American animated television series based on the DC Comics fictional superhero team, the \"Teen Titans\" [1]. She also voiced a main character in the animated series *Teen Titans* [2][3][4].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2,
+        5
+      ],
+      "latencyMs": 3273,
+      "costUsd": 0.000851,
+      "judgeCostUsd": 0.004629,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002vkwmk5jzoy6py",
+      "questionId": "5ae5b301554299546bf82f2d",
+      "question": "What produces the hormone that promotes sodium retention in the distal nephron?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkowkbm000ue0mkhbd2qpbx",
+      "answer": "The hormone that promotes sodium retention in the distal nephron is aldosterone [2]. Aldosterone is produced by the zona glomerulosa of the adrenal cortex in the adrenal gland [1][2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2068,
+      "costUsd": 0.000913,
+      "judgeCostUsd": 0.00386175,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr002ykwmkv2at65hu",
+      "questionId": "5ae5d7b755429929b08079cd",
+      "question": "What was the last date the creator of  the NOI was seen by Elijah Muhammad?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp3u630082e0mkygxmzual",
+      "answer": "Wallace Fard Muhammad, the founder of the Nation of Islam, was last seen by Elijah Muhammad in 1933, when he took off in an airplane from the Detroit airport [1][4]. The provided documents do not specify a more exact date beyond the year 1933 [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 2929,
+      "costUsd": 0.000911,
+      "judgeCostUsd": 0.00420375,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003bkwmkt16k54bh",
+      "questionId": "5ae608f2554299546bf83026",
+      "question": "Which system of mountains in eastern North America is Hamburg Mountains a range region of",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkox7ev001e0smkyjrzrrv0",
+      "answer": "The Hamburg Mountains are a range of the New York-New Jersey Highlands region of the Appalachian Mountains [1]. The Appalachian Mountains are a system of mountains in eastern North America [2].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 3202,
+      "costUsd": 0.000804,
+      "judgeCostUsd": 0.0033225,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001ukwmkdy24fi8q",
+      "questionId": "5ae618325542996de7b71b56",
+      "question": "Gerald Grosvenor, 6th Duke of Westminster was succeeded by the British aristocrat who is estimated to be worth how much?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp579v009b0smkr0nask9s",
+      "answer": "Gerald Grosvenor, 6th Duke of Westminster, was succeeded by his son, Hugh Grosvenor, 7th Duke of Westminster [1][2]. Hugh Grosvenor is estimated to be worth US$13 billion [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 2602,
+      "costUsd": 0.000855,
+      "judgeCostUsd": 0.0033457499999999998,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003xkwmk371ek1a2",
+      "questionId": "5ae6d3345542996d980e7c85",
+      "question": "What is the company that currently recognizes the sprinting records set by Leni Junker and Florence Griffith-Joyner?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp11r100550smkn5nd8t1t",
+      "answer": "I don't know based on the provided documents.",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        2
+      ],
+      "latencyMs": 4305,
+      "costUsd": 0.001766,
+      "judgeCostUsd": 0.003894,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 0,
+          "passed": false
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr0024kwmkb5t3zrmo",
+      "questionId": "5ae731ae5542991bbc9761c1",
+      "question": "Where do the team that John Grant joined after the 1972 World Cup now play their games ?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkoy6ga002d0smkcxkdc0n4",
+      "answer": "Following the 1972 World Cup, John Grant joined the English club Warrington [1]. Warrington Wolves now play their games at the Halliwell Jones Stadium [3].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 2833,
+      "costUsd": 0.000725,
+      "judgeCostUsd": 0.00299475,
+      "judges": {
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr003qkwmkkotlbrk7",
+      "questionId": "5ae74fc45542997b22f6a6b4",
+      "question": "What is the full name of the viral respiratory disease in which Yi Guan's research helped to prevent the outbreak of?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp2pom006t0smkr1j8u2d2",
+      "answer": "The full name of the viral respiratory disease is severe acute respiratory syndrome (SARS) [1][2]. Yi Guan's research on SARS enabled the Chinese government to successfully avert the 2004 outbreak [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        4
+      ],
+      "latencyMs": 3091,
+      "costUsd": 0.00069,
+      "judgeCostUsd": 0.0032025,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cmwkoviyr001wkwmkjiil61yy",
+      "questionId": "5ae819ac55429952e35eaa16",
+      "question": "What station broadcast the episode \"Marry Me a Little, Marry Me a Little More\" , of the series created by Max Mutchnick and David Kohan?",
+      "status": "done",
+      "error": null,
+      "traceId": "cmwkp27dj006je0mkqpi7etxu",
+      "answer": "The episode \"Marry Me a Little, Marry Me a Little More\" originally aired on the National Broadcasting Company (NBC) [1].",
+      "recallAtK": 1,
+      "reciprocalRank": 1,
+      "relevantRanks": [
+        1,
+        3
+      ],
+      "latencyMs": 3149,
+      "costUsd": 0.001184,
+      "judgeCostUsd": 0.0034005,
+      "judges": {
+        "rag-answer-relevance": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        },
+        "rag-faithfulness": {
+          "status": "done",
+          "score": 1,
+          "passed": true
+        }
+      }
+    }
+  ]
+}
