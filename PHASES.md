@@ -232,3 +232,79 @@ status; the worker step refuses to run without `RAILWAY_WORKER_STOPPED=yes`),
 gracefully on SIGTERM; a redeploy showed the old revision log `worker.stopping` 9 s after the
 new one started listening (two Cloud Run revisions overlapping briefly is safe: pg-boss
 hands each job to one consumer and every handler claims its row idempotently).
+
+## Phase 5: verify live
+
+Live URL: **https://eval-web-827630707333.us-central1.run.app**
+
+Checked on the live deployment (production Neon, Cloud Run web + worker pool):
+
+| Check | Result |
+|---|---|
+| Sign in with GitHub on the live URL | works (after adding the Cloud Run redirect URI to the GitHub App) |
+| Create a project and an API key in the UI | works; the key is shown once, only its prefix is listed |
+| Doc's multi-agent `curl` example (`docs/TRACING_API.md`) | `202 {"id":…,"evalsQueued":2,"costUsd":0.0108,"spans":5}`, exactly as documented; the trace page draws the span tree |
+| Documented error bodies | 400 `{"error":"invalid json"}`, 401 `{"error":"invalid api key"}`, 422 with the documented `fieldErrors.spans` message: byte for byte |
+| Evaluators run on the Cloud Run worker | 80 evaluator runs from the latency tests + 136 from the eval run: all `done`, 0 retries, 0 failures; worker pool logs show `eval.done` |
+| Upload documents (`POST /api/v1/documents`) | 3 files → 55 chunks, all `ready` on attempt 1, 7.8 s after the first upload |
+| Ask a RAG question in the UI | answered with a correct citation: 3,055 ms (retrieve 243, generate 2,811), $0.001139 |
+| Run evaluation **button** (project-docs-v1, 34 questions, vector, k=5) | 34/34 answered, 136/136 evaluator runs settled, 0 errors; recall@5 1.000, MRR 0.941, all judges 1.00; p50 / p95 2,211 / 2,906 ms; $0.000941 per answer, $0.006704 per evaluated answer incl. 3 LLM judge calls; answers done in 94 s, all evaluations in 488 s (`datasets/rag/results/live-project-docs-v1-cmwkq9ong003y01s6jwziguon.json`) |
+
+`POST /api/v1/traces` latency (`scripts/live-trace-bench.ts` + Cloud Run request logs):
+
+| | p50 | p95 | notes |
+|---|---|---|---|
+| Server-side (Cloud Run request log, 31 requests) | **258 ms** | 595 ms | max 1,574 ms = first request on an instance (pg-boss start) |
+| Client, this machine, 30 back-to-back | 547 ms | 806 ms | includes the network from here to us-central1 |
+| Client, 10 requests 20 s apart | 947 ms | 1,161 ms | new connection each time |
+
+The server-side figure is mostly database round trips from us-central1 to Neon in AWS
+us-east-1 (auth lookup, then BEGIN, insert trace and spans, select evaluators, insert eval
+runs, one pg-boss insert, COMMIT).
+
+Trace sent → all evaluations settled (2 evaluators: assertion + LLM judge; DB timestamps):
+
+| | p50 | p95 | max |
+|---|---|---|---|
+| 10 traces, 20 s apart (idle worker) | **6.5 s** | 12.2 s | 15.8 s |
+| 30 traces back to back | 89 s | 170 s | 180 s; queueing behind one worker that runs one job at a time (judge calls 2.4–4.3 s, assertions 57 ms) |
+
+Cold start of the web service (min instances 0):
+
+| Build | First request on a new instance, server-side (Cloud Run log) | Client TTFB from this machine | container listening after |
+|---|---|---|---|
+| `next start` (revision 00001/00002) | 14.09 s | 14.85 s | 6.6 s ("Ready in 5.2s"), then 2.1 s to load `next.config.ts` on the first request |
+| **standalone `server.js`** (revision 00003), 2 cold starts | **3.71 s and 1.94 s** | **2.51 s** (2nd cold start) | 2.5 s and 1.3 s, config loads in 18–20 ms |
+
+The first API request on a fresh instance took 2.4–2.5 s client-side (2.17 s server-side:
+pg-boss start and database connections), the next one 0.75–0.79 s (0.44 s server-side). One standalone client measurement was discarded: this
+machine's network failed during it (9 s to connect, then curl errors, and gcloud's own API
+call failed), while Cloud Run's log shows it served the request in 3.71 s.
+
+Budget configuration in force:
+- Web: min 0, max 3 instances; costs nothing while idle (request-based billing).
+- Worker: worker pool, 1 instance, 1 vCPU (the minimum the API accepts) / 512 MiB: about
+  **$30.75 per 30 days** at list price; **the only always-on cost**. An always-on service with
+  the same size would be $49.25.
+- Artifact Registry cleanup policy keeps the 3 newest images (~460 MB each).
+- Not done: a billing budget alert (account setting, left to the owner).
+
+### An incident during verification, and the fix
+
+Near the end, a plain `npm test` loaded `.env`, whose `DATABASE_URL` is production, so the 8
+pgvector integration tests ran against **production** once. They create an organization
+`rag-test-<timestamp>` with two projects and delete it (cascade) when done. Checked right
+after: no `rag-test-*` organization left; the 5,016 pre-existing traces and 15,030 eval runs,
+3 organizations and 4 users unchanged; no queued, active or failed pg-boss jobs. Fix: the
+integration suite now only runs with explicit `TEST_DATABASE_URL` / `TEST_DIRECT_URL` and
+never reads `DATABASE_URL` / `DIRECT_URL` (no `dotenv` import). Verified: with production's
+`.env` loaded, `npm test` → 48 pass, suite skipped; with `TEST_*` = the bench branch → 56 pass.
+
+### Final state
+
+- Web `eval-web` revision `eval-web-00003` (image `15942a0`, standalone server); worker pool
+  `eval-worker` revision `eval-worker-00002` (image `d4bd368`; nothing the worker runs changed
+  after it).
+- Neon: production (migrated), the user's pre-migration backup branch, and the `bench`
+  branch with the HotpotQA project (safe to delete once the reports are no longer needed).
+- Railway: both services offline, worker auto-deploy off.

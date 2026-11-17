@@ -349,6 +349,9 @@ The worker is the only thing that costs money while the site is idle.
   **p50 6.5 s, p95 12.2 s** with traces 20 s apart; with 30 traces sent back to back,
   p50 89 s / max 180 s, because one worker runs one job at a time (judge calls 2.4–4.3 s each).
   80 evaluator runs, 0 retries, 0 failures.
+- Web cold start (min 0, after 16+ min idle), first request on a new instance, server-side
+  from the Cloud Run request log: **14.09 s with `next start` → 1.94–3.71 s with the
+  Next.js standalone server** (2 cold starts); client time to first byte 14.85 s → 2.51 s.
 - Upload via `POST /api/v1/documents`: 3 files → 55 chunks, all ready 7.8 s after the first upload.
 - A question from the RAG page: 3,055 ms (retrieve 243 ms, generate 2,811 ms), $0.001139,
   correct citation.
@@ -369,3 +372,17 @@ The worker is the only thing that costs money while the site is idle.
   that parses the doc.
 - Production sign-in used a GitHub App (not the OAuth app) that lacked the new callback;
   found by trying to sign in.
+- Cold start of 14.9 s on Cloud Run with `next start`; switched the web container to the
+  standalone server (1.94–3.71 s server-side).
+
+### Limitations as of 2026-11-17
+- Cloud Run (us-central1) and Neon (AWS us-east-1) are in different regions; most of the
+  258 ms ingest latency is database round trips across that distance.
+- One worker running one job at a time: a burst of traces waits behind the judges.
+- Worker cost is computed from list prices, not a measured bill; the Cloud Run free tier is
+  shared with other services in the same billing account.
+- HotpotQA corpus = only the sampled questions' paragraphs, so retrieval is near the
+  ceiling; one run per configuration; judge and generator are the same model.
+- Hybrid search lost on this benchmark; it was not tuned (e.g. weighted RRF) to avoid fitting
+  the test set, so whether it helps on other corpora is untested.
+- Embedding tokens are still estimated (chars / 4).

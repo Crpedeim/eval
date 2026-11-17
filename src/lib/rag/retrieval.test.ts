@@ -1,15 +1,24 @@
 /**
- * Integration tests against a real Postgres with pgvector (DATABASE_URL / DIRECT_URL).
- * Embeddings come from a deterministic feature-hashing embedder so the tests need no
- * API key and produce the same ranking every run. Skipped when no database is set.
+ * Integration tests against a real Postgres with pgvector. They write (and then delete) an
+ * organization, so they only run against a database named explicitly for tests:
+ *
+ *   TEST_DATABASE_URL=... TEST_DIRECT_URL=... npm test
+ *
+ * DATABASE_URL / DIRECT_URL from .env are never used here: in this repo .env points at
+ * production. Embeddings come from a deterministic feature-hashing embedder, so the tests
+ * need no API key and produce the same ranking every run.
  */
-import "dotenv/config";
 import { test, describe, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "crypto";
 import type { EmbeddingProvider, GenerationProvider } from "../providers/types";
 
-const HAS_DB = Boolean(process.env.DATABASE_URL && process.env.DIRECT_URL);
+const HAS_DB = Boolean(process.env.TEST_DATABASE_URL && process.env.TEST_DIRECT_URL);
+if (HAS_DB) {
+  // Set before ../db and ../queue are imported (lazily, in before()), which read these.
+  process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
+  process.env.DIRECT_URL = process.env.TEST_DIRECT_URL;
+}
 const DIM = 768;
 
 /** Bag-of-words feature hashing → L2-normalised 768-d vector. Lexical, but real cosine. */
@@ -53,7 +62,7 @@ const CSV = `path,purpose
 src/lib/errors.ts,classifies upstream errors as transient or permanent
 src/lib/pricing.ts,computes cost from token counts and a model price table`;
 
-describe("retrieval over pgvector", { skip: !HAS_DB && "no DATABASE_URL" }, () => {
+describe("retrieval over pgvector", { skip: !HAS_DB && "set TEST_DATABASE_URL and TEST_DIRECT_URL to a test database" }, () => {
   // Imported lazily so the suite can be skipped without a database.
   let db: typeof import("../db").db;
   let ingest: typeof import("./documents");

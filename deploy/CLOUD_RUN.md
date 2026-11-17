@@ -6,7 +6,7 @@ the Railway deployment used. Everything below is done by `deploy/deploy_cloud_ru
 | Piece | Cloud Run resource | Settings |
 |---|---|---|
 | Web (Next.js, UI + `/api/v1/*`) | service `eval-web` | min 0, max 3 instances, 1 vCPU, 1 GiB, concurrency 40, startup CPU boost, public |
-| Worker (pg-boss consumer, no HTTP) | **worker pool** `eval-worker` | exactly 1 instance, 512 MiB (CPU set by `WORKER_CPU`, see below) |
+| Worker (pg-boss consumer, no HTTP) | **worker pool** `eval-worker` | exactly 1 instance (manual scaling), 1 vCPU, 512 MiB |
 | Migrations | job `eval-migrate` | `prisma migrate deploy`, run on each deploy, then exits |
 | Image | Artifact Registry `eval/eval-platform:<git sha>` | one image, `ROLE=web|worker|migrate`; cleanup policy keeps the 3 newest |
 | Secrets | Secret Manager | `eval-database-url`, `eval-direct-url`, `eval-auth-secret`, `eval-auth-github-id`, `eval-auth-github-secret`; Gemini key from the existing `gemini-api-key` |
@@ -31,7 +31,7 @@ https://cloud.google.com/run/pricing (read 2026-11-17), for 30 days = 2,592,000 
 | Configuration | CPU | Memory | 30 days at list price |
 |---|---|---|---|
 | Worker pool, 1 vCPU, 512 MiB | 2,592,000 × $0.000011244 = $29.14 | 1,296,000 GiB-s × $0.000001235 = $1.60 | **$30.75** |
-| Worker pool, 0.5 vCPU, 512 MiB | $14.57 | $1.60 | **$16.17** |
+| Worker pool, 0.5 vCPU, 512 MiB | $14.57 | $1.60 | $16.17, **not allowed**: the API rejects it ("Total cpu < 1 is not supported ... with cpu always allocated") |
 | Fallback: service, min 1, CPU always allocated, 1 vCPU, 512 MiB | 2,592,000 × $0.000018 = $46.66 | 1,296,000 × $0.000002 = $2.59 | $49.25 |
 
 Cloud Run's monthly free tier for worker pools (384,204 vCPU-s and 728,744 GiB-s) would take
@@ -108,6 +108,25 @@ to run unless `RAILWAY_WORKER_STOPPED=yes`. Before setting it:
 
 Railway's web service can keep running during the move: it only enqueues jobs, it never
 consumes them.
+
+Redeploying the worker pool itself briefly overlaps two revisions (observed: the new one
+listening 9 s before the old one logged `worker.stopping` on SIGTERM). That is safe: pg-boss
+gives each job to one consumer (`SKIP LOCKED`) and every handler claims its row with a
+conditional update, so a job is never processed twice. The rule above is about a second,
+unmanaged worker on another host that you cannot see or stop from here.
+
+## Cold start (web, min 0)
+
+Measured on this deployment after 16+ minutes idle (details: PHASES.md, Phase 5):
+
+| Build | First request on a new instance (Cloud Run log) |
+|---|---|
+| `next start` | 14.09 s (6.6 s until the port opened, 2.1 s transpiling `next.config.ts`) |
+| standalone `server.js` (current), 2 cold starts | 3.71 s and 1.94 s (port open after 2.5 s / 1.3 s, config load 18–20 ms); 2.51 s to first byte from a client |
+
+The first API call on a new instance adds ~2 s for pg-boss start and database connections.
+`--min-instances=1` on `eval-web` would remove cold starts at the price of an idle instance;
+it is left at 0 to keep idle cost at the worker alone.
 
 ## GitHub sign-in
 

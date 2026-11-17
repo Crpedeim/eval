@@ -411,7 +411,20 @@ PROJECT=<gcp-project-id> RAILWAY_WORKER_STOPPED=yes ./deploy/deploy_cloud_run.sh
 ```
 
 Full procedure, why a worker pool, monthly cost and what costs money while idle:
-[deploy/CLOUD_RUN.md](deploy/CLOUD_RUN.md). The always-on worker is the only idle cost.
+[deploy/CLOUD_RUN.md](deploy/CLOUD_RUN.md). The always-on worker is the only idle cost
+(about $30.75 per 30 days at Cloud Run list prices for 1 vCPU / 512 MiB).
+
+### Measured on the live deployment (2026-11-17)
+
+| | |
+|---|---|
+| `POST /api/v1/traces`, server-side (Cloud Run request log) | p50 258 ms, p95 595 ms |
+| Trace stored → its evaluations settled (assertion + LLM judge) | p50 6.5 s, p95 12.2 s (idle worker) |
+| Web cold start, first request on a new instance | 1.94–3.71 s server-side, 2.51 s client TTFB (was 14.09 s / 14.85 s before switching to the Next.js standalone server) |
+| Document upload → chunked and embedded | 3 files, 55 chunks, 7.8 s |
+| RAG eval from the Run evaluation button, 34 questions | recall@5 1.000, judges 1.00, p50 2.2 s per answer, $0.0067 per evaluated answer, 488 s until every judge run settled |
+
+How each number was measured: [PHASES.md](PHASES.md), Phase 5.
 
 ---
 
