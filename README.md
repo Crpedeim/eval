@@ -362,6 +362,26 @@ was measured.
 
 ---
 
+## Deploying to Google Cloud Run
+
+One Docker image runs in three roles (`ROLE=web`, `ROLE=worker`, `ROLE=migrate`). Run
+`scripts/deploy-gcp.sh` from your machine with `gcloud` logged in. It does the following:
+- Enables the APIs and stores secrets in Secret Manager. Missing ones are prompted for;
+  `AUTH_SECRET` is generated.
+- Builds the image with Cloud Build.
+- Runs migrations as a Cloud Run job.
+- Deploys `eval-worker` (always-on, one instance, no CPU throttling) and `eval-web` (public).
+
+```bash
+gcloud auth login
+PROJECT=<gcp-project-id> REGION=<region-nearest-your-neon-db> ./scripts/deploy-gcp.sh
+```
+
+Afterwards, set your GitHub OAuth app's callback URL to the printed
+`<url>/api/auth/callback/github`. Most of the cost is the always-on worker instance.
+
+---
+
 ## Known limitations
 
 - **Evaluators are configured via seed script**; there's no management UI yet.

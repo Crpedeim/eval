@@ -122,6 +122,14 @@ await boss.work<EvalJobData>(EVAL_DLQ, { batchSize: 1 }, async (jobs) => {
   console.log(`[worker] listening on "${INGEST_QUEUE}" and "${RAG_EVAL_QUEUE}" (+ dead-letter queues)`);
 
   console.log(`[worker] listening on "${EVAL_QUEUE}"`);
+
+  // Hosts like Cloud Run require every service to answer HTTP on $PORT. The worker has no
+  // API, so it serves a bare health check there; locally (no PORT) nothing is opened.
+  if (process.env.PORT) {
+    const { createServer } = await import("http");
+    createServer((_req, res) => res.writeHead(200, { "content-type": "text/plain" }).end("ok"))
+      .listen(Number(process.env.PORT), () => console.log(`[worker] health check on :${process.env.PORT}`));
+  }
 }
 
 main().catch((err) => {

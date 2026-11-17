@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.env*
+src/generated
+*.png
+docs/*.png
+datasets/rag/results
+.agents
+.claude
+.windsurf
