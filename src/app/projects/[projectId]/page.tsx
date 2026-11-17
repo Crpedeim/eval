@@ -50,6 +50,9 @@ export default async function ProjectDashboard({
           <Link href={`/projects/${projectId}/rag`} className="rounded border border-gray-300 px-3 py-1">
             RAG →
           </Link>
+          <Link href={`/projects/${projectId}/keys`} className="rounded border border-gray-300 px-3 py-1">
+            API keys →
+          </Link>
         </div>
       </div>
 

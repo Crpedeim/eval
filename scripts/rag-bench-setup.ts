@@ -14,7 +14,7 @@ import { db } from "../src/lib/db";
 import { getBoss } from "../src/lib/queue";
 import { createDocumentAndEnqueue, kindFromFilename } from "../src/lib/rag/documents";
 import { RAG_TRACE_NAME } from "../src/lib/rag/pipeline";
-import { FAITHFULNESS_RUBRIC, RELEVANCE_RUBRIC } from "./rag-judges";
+import { FAITHFULNESS_RUBRIC, RELEVANCE_RUBRIC } from "../src/lib/rag/judges";
 
 async function main() {
   const [orgSlug, projectName, corpusDir] = process.argv.slice(2);

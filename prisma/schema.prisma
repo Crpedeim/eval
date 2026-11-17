@@ -188,7 +188,13 @@ model EvalRun {
 model Span {
   id               String   @id @default(cuid())
   traceId          String
+  /// Caller's span id (unique per trace) and its parent's, for nested / multi-agent runs.
+  spanKey          String?
+  parentKey        String?
   name             String
+  /// Free-form category: "agent", "llm", "tool", "retrieval", ...
+  kind             String?
+  status           String   @default("ok")
   model            String?
   startedAt        DateTime
   latencyMs        Int
@@ -199,6 +205,7 @@ model Span {
   createdAt        DateTime @default(now())
   trace            Trace    @relation(fields: [traceId], references: [id], onDelete: Cascade)
 
+  @@unique([traceId, spanKey])
   @@index([traceId])
 }
 

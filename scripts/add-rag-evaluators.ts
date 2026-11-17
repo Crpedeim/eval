@@ -8,7 +8,7 @@ import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { RAG_TRACE_NAME } from "../src/lib/rag/pipeline";
-import { FAITHFULNESS_RUBRIC, RELEVANCE_RUBRIC } from "./rag-judges";
+import { FAITHFULNESS_RUBRIC, RELEVANCE_RUBRIC } from "../src/lib/rag/judges";
 
 const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL! });
 const db = new PrismaClient({ adapter });

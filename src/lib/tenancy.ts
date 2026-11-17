@@ -9,6 +9,9 @@ import { answerQuestion } from "./rag/pipeline";
 import { ragEvalReport } from "./rag/report";
 import { createRagEvalRun, ragModelConfig, type RagDataset } from "./rag/eval";
 import type { RetrievalMode } from "./rag/retrieve";
+import { RAG_TRACE_NAME } from "./rag/pipeline";
+import { FAITHFULNESS_RUBRIC, RELEVANCE_RUBRIC } from "./rag/judges";
+import { generateApiKey } from "./api-key";
 
 export class UnauthorizedError extends Error {}
 export class ForbiddenError extends Error {}
@@ -34,6 +37,49 @@ export class TenantScope {
       where: { orgId: { in: this.orgIds } },
       orderBy: { createdAt: "desc" },
     });
+  }
+
+  /**
+   * Self-serve: a user with no organization gets a personal one (as owner) on their first
+   * project. New projects start with the two RAG judges, scoped to rag.answer traces.
+   */
+  async createProject(name: string) {
+    return db.$transaction(async (tx) => {
+      let orgId = this.orgIds[0];
+      if (!orgId) {
+        const org = await tx.organization.create({ data: { name: "Personal", slug: `user-${this.userId}` } });
+        await tx.membership.create({ data: { userId: this.userId, orgId: org.id, role: "owner" } });
+        orgId = org.id;
+      }
+      const project = await tx.project.create({ data: { orgId, name } });
+      await tx.evaluator.createMany({
+        data: [
+          { name: "rag-faithfulness", rubric: FAITHFULNESS_RUBRIC },
+          { name: "rag-answer-relevance", rubric: RELEVANCE_RUBRIC },
+        ].map((j) => ({
+          projectId: project.id, name: j.name, type: "llm_judge" as const,
+          config: { rubric: j.rubric, threshold: 0.7 }, traceName: RAG_TRACE_NAME, active: true,
+        })),
+      });
+      return project;
+    });
+  }
+
+  async apiKeys(projectId: string) {
+    await this.assertProject(projectId);
+    return db.apiKey.findMany({
+      where: { projectId },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, prefix: true, name: true, createdAt: true, lastUsedAt: true },
+    });
+  }
+
+  /** Returns the raw key; only its hash is stored, so this is the one time it exists. */
+  async createApiKey(projectId: string, name: string) {
+    await this.assertProject(projectId);
+    const { raw, hashedKey, prefix } = generateApiKey();
+    await db.apiKey.create({ data: { projectId, hashedKey, prefix, name: name || null } });
+    return raw;
   }
 
   async traces(projectId: string, take = 50) {
