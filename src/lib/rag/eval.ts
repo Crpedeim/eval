@@ -63,17 +63,21 @@ export async function createRagEvalRun(
       select: { id: true },
     });
     const boss = await getBoss();
-    for (const item of items) {
-      await boss.send(RAG_EVAL_QUEUE, { itemId: item.id, projectId } satisfies RagEvalJobData, {
-        db: fromPrisma(tx),
+    // One INSERT for all jobs: a send() per item is one round trip each, and 150 of them
+    // to a remote database outlived the 30 s transaction timeout.
+    await boss.insert(
+      RAG_EVAL_QUEUE,
+      items.map((item) => ({
+        data: { itemId: item.id, projectId } satisfies RagEvalJobData,
         retryLimit: 6,
         retryDelay: 5,
         retryBackoff: true,
         retryDelayMax: 120,
         expireInSeconds: 300,
         deadLetter: RAG_EVAL_DLQ,
-      });
-    }
+      })),
+      { db: fromPrisma(tx) }
+    );
     return { runId: run.id, items: items.length };
   });
 }

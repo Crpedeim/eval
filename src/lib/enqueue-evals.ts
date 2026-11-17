@@ -42,21 +42,20 @@ export async function createEvalRunsAndEnqueue(
 
   const boss = await getBoss();
 
-  for (const e of evaluators) {
-    await boss.send(
-      EVAL_QUEUE,
-      { traceId, evaluatorId: e.id, projectId } satisfies EvalJobData,
-      {
-        db: fromPrisma(tx),
-        retryLimit: 3,
-        retryDelay: 2,          // seconds — never leave this at the 0 default
-        retryBackoff: true,
-        retryDelayMax: 60,      // cap the exponential growth
-        expireInSeconds: 120,
-        deadLetter: EVAL_DLQ,
-      }
-    );
-  }
+  // One INSERT for all of this trace's jobs (a send() per evaluator is a round trip each).
+  await boss.insert(
+    EVAL_QUEUE,
+    evaluators.map((e) => ({
+      data: { traceId, evaluatorId: e.id, projectId } satisfies EvalJobData,
+      retryLimit: 3,
+      retryDelay: 2,          // seconds — never leave this at the 0 default
+      retryBackoff: true,
+      retryDelayMax: 60,      // cap the exponential growth
+      expireInSeconds: 120,
+      deadLetter: EVAL_DLQ,
+    })),
+    { db: fromPrisma(tx) }
+  );
 
   return evaluators.length;
 }
