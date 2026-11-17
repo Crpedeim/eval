@@ -127,13 +127,28 @@ await boss.work<EvalJobData>(EVAL_DLQ, { batchSize: 1 }, async (jobs) => {
   await boss.work<RagEvalJobData>(RAG_EVAL_DLQ, { batchSize: 1 },
     async (jobs) => handleRagEvalDeadLetter(jobs[0].data));
 
-  console.log(`[worker] listening on "${EVAL_QUEUE}" and "${EVAL_DLQ}"`);
-  console.log(`[worker] listening on "${INGEST_QUEUE}" and "${RAG_EVAL_QUEUE}" (+ dead-letter queues)`);
+  console.log(`[worker] listening on "${EVAL_QUEUE}", "${INGEST_QUEUE}", "${RAG_EVAL_QUEUE}" (+ dead-letter queues)`);
 
-  console.log(`[worker] listening on "${EVAL_QUEUE}"`);
+  // Cloud Run sends SIGTERM before replacing or stopping an instance and SIGKILLs ~10 s
+  // later. Stop polling and give in-flight jobs a few seconds; anything unfinished is
+  // retried by pg-boss after its expiry, and the idempotent claims make that safe.
+  let stopping = false;
+  for (const sig of ["SIGTERM", "SIGINT"] as const) {
+    process.on(sig, async () => {
+      if (stopping) return;
+      stopping = true;
+      log.info("worker.stopping", { signal: sig });
+      try {
+        await boss.stop({ graceful: true, timeout: 8000 });
+      } finally {
+        await db.$disconnect();
+        process.exit(0);
+      }
+    });
+  }
 
-  // Hosts like Cloud Run require every service to answer HTTP on $PORT. The worker has no
-  // API, so it serves a bare health check there; locally (no PORT) nothing is opened.
+  // A Cloud Run *service* must answer HTTP on $PORT (the fallback when worker pools are not
+  // available). Worker pools need no port; the bare health check is harmless there.
   if (process.env.PORT) {
     const { createServer } = await import("http");
     createServer((_req, res) => res.writeHead(200, { "content-type": "text/plain" }).end("ok"))

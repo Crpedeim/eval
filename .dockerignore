@@ -3,9 +3,10 @@ node_modules
 .git
 .env*
 src/generated
-*.png
+Screenshot*.png
 docs/*.png
 datasets/rag/results
 .agents
 .claude
 .windsurf
+deploy
