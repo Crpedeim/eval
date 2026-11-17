@@ -1,8 +1,14 @@
 # RESUME_FACTS
 
-Only facts verified from the code in this repository or from commands run on 2026-11-16.
+Only facts verified from the code in this repository or from commands run on 2026-11-16
+(sections 1–5) and 2026-11-17 (section 6, which supersedes earlier items where they differ).
 Each item says where it comes from: **[code]** = read in the source, **[ran]** = measured by
 a command, **[README]** = stated in README.md but not re-verified by me.
+
+**Where things run now (2026-11-17) [ran]:** web on Google Cloud Run (service `eval-web`,
+us-central1, https://eval-web-827630707333.us-central1.run.app), worker on a Cloud Run
+worker pool (`eval-worker`), migrations as a Cloud Run job, secrets in Secret Manager,
+database unchanged (the same Neon Postgres, AWS us-east-1). The Railway services are offline.
 
 ---
 
@@ -108,9 +114,11 @@ top-k chunks with numbered citations, records every answer as a trace with `retr
   waterfall and citations.
 
 ### Deployment
-- README states it runs on Railway as two services (web + worker) with Neon Postgres, at
-  `https://eval-production-fd70.up.railway.app`. **[README]** I could not reach that URL
-  from my sandbox, and the repo has no Railway config file, so this is not verified by me.
+- Until 2026-11-17: Railway, two services (web `impartial-charm/eval` at
+  `eval-production-fd70.up.railway.app`, worker `fabulous-freedom/eval` running
+  `npm run worker`), Neon Postgres. Both offline on 2026-11-17 (Railway trial expired; no
+  active deployment). **[ran: Railway dashboard]**
+- Since 2026-11-17: Google Cloud Run, see section 6. **[ran]**
 
 ---
 
@@ -244,7 +252,13 @@ always passes. Raw rows: `datasets/rag/results/judge-negative-control-cmwjing4s0
 
 ---
 
-## 5. Limitations
+## 5. Limitations (as of 2026-11-16; see section 6 for what changed)
+
+Resolved on 2026-11-17: judge calls are now costed; there is a Run evaluation button; the
+landing page, title and duplicate trace route are fixed; the `gemini-3.8-flash` price is
+confirmed on Google's own page; measurements now include Neon (Phase 2 benchmark on a Neon
+branch, live checks on production Neon); a public benchmark (HotpotQA) was added; spans can
+nest for multi-agent runs.
 
 **Of the measurement setup**
 - Measurements ran against a local PostgreSQL 16.15 with pgvector 0.6.0 (Ubuntu package),
@@ -294,3 +308,64 @@ always passes. Raw rows: `datasets/rag/results/judge-negative-control-cmwjing4s0
   is "Create Next App", and the trace detail page exists twice (`/traces/:id` and
   `/projects/:id/traces/:id`).
 - README says the dashboard screenshots use ~5,000 synthetic traces. **[README]**
+
+---
+
+## 6. 2026-11-17: what changed, measured
+
+### Deployed where **[ran]**
+| Piece | Where | Config |
+|---|---|---|
+| Web (Next.js UI + `/api/v1/*`) | Cloud Run service `eval-web`, us-central1 | min 0, max 3, 1 vCPU / 1 GiB, concurrency 40, startup CPU boost |
+| Worker (pg-boss, 3 queues + DLQs) | Cloud Run **worker pool** `eval-worker`, us-central1 | 1 instance (manual scaling), 1 vCPU / 512 MiB; 0.5 vCPU is rejected by the API |
+| Migrations | Cloud Run job `eval-migrate` | `prisma migrate deploy` |
+| Secrets | Secret Manager | 5 `eval-*` secrets + the project's existing `gemini-api-key` |
+| Database | Neon Postgres 18.7, AWS us-east-1 (same database as on Railway) | pgvector 0.8.7 enabled; 4 migrations applied on 2026-11-17, 0 rows lost (row counts of every pre-existing table identical before/after) |
+| Sign-in | GitHub App `eval-platform-dev` | Cloud Run callback added; sign-in on the live URL works |
+
+Worker cost, computed from Cloud Run list prices for us-central1 (not a measured bill):
+$30.75 per 30 days (1 vCPU $29.14 + 512 MiB $1.60); an always-on service would be $49.25.
+The worker is the only thing that costs money while the site is idle.
+
+### Before → after
+| | Before (2026-11-16) | After (2026-11-17) |
+|---|---|---|
+| Hosting | Railway (2 services), now offline | Cloud Run service + worker pool + job, Secret Manager |
+| Tests | 40 pass (pgvector suite on local Postgres 16) | **56 pass / 0 fail**, pgvector suite run on a Neon branch |
+| Code size (.ts/.tsx/.prisma/.sql in src, scripts, prisma) | 4,988 lines at `1ca4386` | 6,238 lines |
+| Lint | 4 errors + 1 warning | 0 / 0 |
+| RAG benchmark | 34 self-written questions, recall@5 1.000, judges 1.00 | + **150 HotpotQA questions** (CC BY-SA 4.0): recall@5 **0.974**, MRR **0.972**, faithfulness 0.997, relevance **0.913**, gold answer in 82.0% |
+| Cost per evaluated RAG answer | judges not costed ($0.000932 answer only) | **$0.004385 incl. 2 judge calls** (HotpotQA, $0.000828 answer + $0.003557 judges) |
+| Hybrid search | none | built (pgvector + Postgres FTS, RRF); lost on HotpotQA (recall@5 0.774 vs 0.974), so vector-only stays default |
+| Trace spans | flat list | tree (`id`/`parentId`), `kind`, `status`, per-span model/tokens/latency/cost; trace cost = sum of spans |
+| Tracing contract | none | `docs/TRACING_API.md`, tested against the code and run against the live URL |
+| Price table | 3.8 Flash from third-party pages | all Gemini rows checked on Google's page; 3.1 Pro long-context tier and 3.8 Flash's 2027-01-01 price change modelled |
+
+### Live measurements on Cloud Run **[ran: scripts/live-trace-bench.ts, Cloud Run request logs]**
+- `POST /api/v1/traces` server-side latency (Cloud Run request log, 31 requests): **p50 258 ms,
+  p95 595 ms**; max 1,574 ms on the first request of an instance. Client-side from this
+  machine: p50 547 ms back to back, 947 ms with 20 s gaps (new connection each time).
+- Trace stored → all its evaluations settled (DB timestamps, 2 evaluators: assertion + judge):
+  **p50 6.5 s, p95 12.2 s** with traces 20 s apart; with 30 traces sent back to back,
+  p50 89 s / max 180 s, because one worker runs one job at a time (judge calls 2.4–4.3 s each).
+  80 evaluator runs, 0 retries, 0 failures.
+- Upload via `POST /api/v1/documents`: 3 files → 55 chunks, all ready 7.8 s after the first upload.
+- A question from the RAG page: 3,055 ms (retrieve 243 ms, generate 2,811 ms), $0.001139,
+  correct citation.
+- An eval run from the **Run evaluation** button (project-docs-v1, 34 questions, 4 evaluators):
+  34/34 answered, 136/136 evaluator runs settled, 0 errors; recall@5 1.000, MRR 0.941 (same as
+  the 2026-11-16 local run), judges 1.00; request p50 / p95 2,211 / 2,906 ms, retrieve p50
+  204 ms (643 ms from a laptop); $0.000941 per answer, $0.006704 per evaluated answer incl.
+  3 LLM judge calls; answers done in 94 s, all evaluations in 488 s.
+- The documented multi-agent `curl` example returned exactly
+  `{"evalsQueued":2,"costUsd":0.0108,"spans":5}`; the documented 400 / 401 / 422 bodies
+  matched byte for byte.
+
+### Bugs found by running things **[ran]**
+- Enqueueing 150 eval jobs one by one inside one transaction exceeded the 30 s transaction
+  timeout against Neon (P2028) and rolled back; now one `boss.insert` per transaction (also
+  used for per-trace evaluator jobs).
+- The doc's first multi-agent cost example was wrong (0.0102 vs 0.0108); caught by the test
+  that parses the doc.
+- Production sign-in used a GitHub App (not the OAuth app) that lacked the new callback;
+  found by trying to sign in.

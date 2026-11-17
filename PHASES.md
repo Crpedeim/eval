@@ -181,3 +181,54 @@ Done:
 
 Checked: `npm test` 48 pass / 0 fail (pgvector suite skipped: no database on this machine
 yet); `tsc` and `eslint` clean. The curl example is run against the live deployment in Phase 5.
+
+## Phase 4: move production from Railway to Google Cloud Run (same Neon database)
+
+What ran, in order (2026-11-17, GCP project `gen-lang-client-0005933941`, region `us-central1`):
+
+1. **Backup.** The user created a branch of the production Neon branch in the Neon console
+   before anything touched the database, plus a separate `bench` branch for Phase 2. I then
+   took a read-only row-count snapshot of production: Postgres 18.7, pgvector 0.8.7
+   available but not installed, 3 migrations applied, 5,016 traces, 15,030 eval runs, 4 users,
+   3 organizations, 4 projects, 4 API keys, 7 evaluators, 0 queued jobs.
+2. **Secrets** in Secret Manager: `eval-database-url` (pooled), `eval-direct-url`,
+   `eval-auth-secret`, `eval-auth-github-id`, `eval-auth-github-secret`; the Gemini key comes
+   from the project's existing `gemini-api-key` secret. Values were checked for stray CR/LF
+   (none; byte lengths equal the `.env` values). Runtime identity: the project's default
+   compute service account, granted `secretAccessor` on exactly these secrets.
+3. **Image** built by Cloud Build into Artifact Registry `eval/eval-platform` (463 MB).
+4. **Migrations** on production by the Cloud Run job `eval-migrate` (`prisma migrate deploy`,
+   DIRECT_URL): applied `20261116120000_rag`, `20261117120000_judge_usage`,
+   `20261117130000_chunk_fts`, `20261117140000_span_tree`; it ran `CREATE EXTENSION vector`.
+   After: pgvector **0.8.7 installed**, 7 migrations, and **every pre-existing table has exactly
+   the same row count as before** (the only differences are the new, empty RAG tables).
+5. **Web**: service `eval-web`, min 0, max 3, 1 vCPU / 1 GiB, concurrency 40, startup CPU
+   boost, `AUTH_URL` = the deterministic URL https://eval-web-827630707333.us-central1.run.app.
+6. **Railway worker stopped first.** In the Railway dashboard the worker is project
+   `fabulous-freedom`, service `eval` (start command `npm run worker`); it showed "There is
+   no active deployment for this service", every past deployment REMOVED, and the trial is
+   expired, so it cannot deploy. I switched off its "Auto deploy" from `main`, so merging this
+   branch cannot restart it. The web service (`impartial-charm` / `eval`,
+   `eval-production-fd70.up.railway.app`) is offline too; its auto-deploy was already off.
+   With that confirmed, and the user's explicit go-ahead, the Cloud Run worker was started.
+7. **Worker**: Cloud Run **worker pool** `eval-worker`, manual scaling, 1 instance, 1 vCPU,
+   512 MiB. Worker pools are available in this project (GA `gcloud run worker-pools`; on this
+   Windows machine gcloud's default Python lacked `grpc`, the SDK's bundled Python has it, and
+   the script switches automatically). 0.5 vCPU was tried for cost and **rejected by the
+   API** ("Total cpu < 1 is not supported ... with cpu always allocated"), so 1 vCPU is the
+   floor. Monthly cost and the comparison with an always-on service: `deploy/CLOUD_RUN.md`
+   ($30.75 per 30 days at list price vs $49.25 for the service alternative).
+8. **GitHub sign-in.** The `.env` credentials belong to the GitHub App `eval-platform-dev`
+   (not the classic OAuth app, and not the `eval-platform` GitHub App). Signing in on Cloud
+   Run first failed with GitHub's "redirect_uri is not associated with this application",
+   as expected; I added `https://eval-web-827630707333.us-central1.run.app/api/auth/callback/github`
+   as a third redirect URI (localhost and Railway kept) and set its homepage to the Cloud Run
+   URL, with the user's choice of app. Sign-in on the live URL then worked.
+
+Files: `deploy/deploy_cloud_run.sh` (steps backup, apis, secrets, image, migrate, web, worker,
+status; the worker step refuses to run without `RAILWAY_WORKER_STOPPED=yes`),
+`deploy/CLOUD_RUN.md`, `Dockerfile` (roles web/worker/migrate, OpenSSL for the Prisma CLI),
+`.gitattributes` (LF), `.gcloudignore`, `.env.example`. The worker now stops pg-boss
+gracefully on SIGTERM; a redeploy showed the old revision log `worker.stopping` 9 s after the
+new one started listening (two Cloud Run revisions overlapping briefly is safe: pg-boss
+hands each job to one consumer and every handler claims its row idempotently).

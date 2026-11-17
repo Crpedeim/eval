@@ -5,7 +5,9 @@ traces to an ingestion API; a background worker runs configurable evaluators aga
 trace — deterministic assertions and LLM-as-judge — and the dashboard surfaces cost, latency
 percentiles, and quality trends per project.
 
-**Live:** https://eval-production-fd70.up.railway.app
+**Live:** https://eval-web-827630707333.us-central1.run.app (Google Cloud Run, us-central1;
+Neon Postgres). Sign in with GitHub, create a project, create an API key, and send traces as
+described in [docs/TRACING_API.md](docs/TRACING_API.md).
 
 **Dashboard overview**
 ---
@@ -39,21 +41,25 @@ belongs to.
 
 ```mermaid
 flowchart LR
-    Client[Customer app] -->|POST /api/v1/traces<br/>API key| Web[Next.js web service]
+    Client[Customer app] -->|POST /api/v1/traces<br/>API key| Web[eval-web<br/>Cloud Run service, min 0]
     User[User] -->|GitHub OAuth| Web
-    Web -->|one transaction:<br/>Trace + EvalRuns + jobs| DB[(Postgres)]
-    DB -.->|pgboss.job| Worker[Worker service]
+    Web -->|one transaction:<br/>Trace + Spans + EvalRuns + jobs| DB[(Neon Postgres<br/>+ pgvector + pg-boss)]
+    DB -.->|pgboss.job| Worker[eval-worker<br/>Cloud Run worker pool, 1 instance]
     Worker -->|claim / settle| DB
-    Worker -->|llm_judge| LLM[Judge provider]
+    Worker -->|llm_judge, RAG generate, embed| LLM[Gemini API]
     Worker -.->|retries exhausted| DLQ[Dead-letter queue]
     DLQ --> Worker
-    Web -->|aggregation queries| DB
+    Web -->|aggregations, RAG retrieval| DB
+    Job[eval-migrate<br/>Cloud Run job] -->|prisma migrate deploy| DB
 ```
 
-**Two services, one repository, different entry points.** The web service answers HTTP
-requests and must return quickly. The worker is a long-lived process that polls the queue —
-it has no HTTP surface at all. That split is why this runs on Railway as two services rather
-than on a serverless platform, which can host the first but not the second.
+**Two processes, one image, different entry points.** The web service answers HTTP requests
+and must return quickly. The worker is a long-lived process that polls the queue and has no
+HTTP surface at all. On Google Cloud Run the web app is a request-scaled service (scales to
+zero) and the worker is a **worker pool**, Cloud Run's resource for always-on background
+work without an endpoint; migrations run as a Cloud Run job. Secrets live in Secret Manager.
+Details, costs and the cutover procedure: [deploy/CLOUD_RUN.md](deploy/CLOUD_RUN.md).
+(Until 2026-11-17 it ran on Railway as two services; that deployment is offline.)
 
 The queue lives in the same Postgres as the application data (pg-boss), which is what makes
 transactional enqueue possible at all.
@@ -70,8 +76,8 @@ rather than something enforced query by query.
 
 ### Stack
 
-TypeScript · Next.js (App Router) · Postgres · Prisma · pg-boss · Auth.js · Recharts ·
-deployed on Railway with Neon Postgres
+TypeScript · Next.js 16 (App Router) · Postgres + pgvector · Prisma 7 · pg-boss · Auth.js ·
+Gemini · Recharts · Google Cloud Run (service + worker pool + job), Secret Manager, Neon
 
 ---
 
@@ -231,8 +237,10 @@ timed out waiting to acquire one.
 | `POST /api/v1/traces` | ~15s | <100ms |
 
 The lesson generalizes: chatty transactions over high-latency links are a trap, and the fix is
-either fewer round trips or a closer database. Batching the queue inserts into a single
-`boss.insert()` call would cut the statement count further and is on the roadmap regardless.
+either fewer round trips or a closer database. The queue inserts are now one `boss.insert()`
+per transaction. That change came from the same trap recurring: enqueueing a 150-question
+RAG eval run one job at a time inside one transaction exceeded the 30 s transaction timeout
+against Neon, and rolled back cleanly.
 
 ---
 
@@ -299,15 +307,21 @@ Prisma's migration engine and pg-boss's schema setup rely on.
 ### `POST /api/v1/traces`
 
 Bearer API key. Validates, computes cost from tokens and a model price table, stores the
-trace, and enqueues one evaluation job per active evaluator — all in one transaction.
+trace and its spans, and enqueues one evaluation job per matching evaluator, all in one
+transaction. Spans can nest (`id` / `parentId`), so one multi-agent run is one trace with
+per-agent and per-call model, tokens, latency, status and cost.
 
 ```json
-{ "id": "cmthc0agx0000msmk0834p0j1", "evalsQueued": 3 }
+{ "id": "cmwkpvxwg000401s6bgia722i", "evalsQueued": 2, "costUsd": 0.0108, "spans": 5 }
 ```
 
-Returns **202 Accepted**, not 200 — evaluations run asynchronously.
+Returns **202 Accepted**, not 200: evaluations run asynchronously. Cost is computed
+server-side from token counts; it is never accepted from the caller.
 
-Cost is computed server-side from token counts; it is never accepted from the caller.
+The full contract (every field, types, defaults, error bodies, curl examples) is
+[docs/TRACING_API.md](docs/TRACING_API.md). A test parses the doc's examples with the real
+schema, and the multi-agent example was run against the live deployment, which returned the
+response above.
 
 ### `GET /api/projects/:projectId/metrics?days=14`
 
@@ -339,7 +353,8 @@ evaluation harness, built on the same queue, worker and judge machinery. Design:
   It is chunked and embedded by the worker (`ingest-document` queue).
 - `POST /api/v1/rag/query` `{ "question": "...", "k": 5 }`: answer with citations, recorded as a
   `rag.answer` trace with `retrieve` and `generate` spans.
-- `/projects/:id/rag`: upload, ask, per-step latency / tokens/sec / cost, eval runs.
+- `/projects/:id/rag`: upload, ask, per-step latency / tokens/sec / cost, and **Run
+  evaluation** (bundled dataset or uploaded JSON, k, vector or hybrid retrieval).
 
 ```bash
 npx prisma migrate deploy                    # needs the pgvector extension (Neon has it)
@@ -349,42 +364,59 @@ npm run rag:eval -- <projectId> datasets/rag/questions.json 5
 npm test
 ```
 
-First run (34 questions over this repo's docs, k=5, `gemini-3.8-flash`): recall@5 1.000,
-MRR 0.941, faithfulness 1.00, relevance 1.00, p95 latency 3.4s, 21 tok/s median,
-$0.00093 per request. The set is small and easy; see RESUME_FACTS.md for how each number
-was measured.
+### Results on a public benchmark
+
+150 questions from **HotpotQA** (dev set, distractor setting, CC BY-SA 4.0; multi-hop
+questions whose 8 distractor paragraphs were chosen to look similar to the question), over
+1,561 chunks, k = 5, `gemini-3.8-flash` as generator and judge, `gemini-embedding-001`:
+
+| | Vector-only (default) | Hybrid (pgvector + Postgres FTS, RRF) |
+|---|---|---|
+| Recall@5 | **0.974** | 0.774 |
+| MRR@5 | **0.972** | 0.784 |
+| Faithfulness (LLM judge) | 0.997 | 1.000 |
+| Answer relevance (LLM judge) | **0.913** | 0.647 |
+| Answer contains the gold answer | 0.820 | 0.587 |
+| Request latency p50 / p95 | 2,693 / 3,758 ms | 2,746 / 4,062 ms |
+| Cost per answer / **incl. the 2 judge calls** | $0.000828 / **$0.004385** | $0.000892 / $0.004640 |
+
+Hybrid search was built, measured and **not** made the default: full-text search ranks the
+second-hop paragraph low and the look-alike distractors high, and rank fusion lets that pull
+distractors into the top 5. Method, per-question reports and the diagnosis:
+[PHASES.md](PHASES.md) (Phase 2) and `datasets/rag/results/`. On the earlier 34
+self-written questions every metric was at or near 1.0 (recall@5 1.000, judges 1.00), which
+is why a public, harder set was added.
 
 | Variable | Purpose |
 |---|---|
 | `RAG_MODEL` | Generator model (defaults to `JUDGE_MODEL`) |
 | `RAG_THINKING_LEVEL` / `RAG_THINKING_BUDGET` | Thinking for Gemini 3 (default `LOW`) / Gemini 2.x (default `0`) |
 | `EMBEDDING_MODEL` | Default `gemini-embedding-001` (768-d, fixed by the schema) |
+| `RAG_RETRIEVAL` | `vector` (default, chosen by the benchmark) or `hybrid` |
 
 ---
 
 ## Deploying to Google Cloud Run
 
-One Docker image runs in three roles (`ROLE=web`, `ROLE=worker`, `ROLE=migrate`). Run
-`scripts/deploy-gcp.sh` from your machine with `gcloud` logged in. It does the following:
-- Enables the APIs and stores secrets in Secret Manager. Missing ones are prompted for;
-  `AUTH_SECRET` is generated.
-- Builds the image with Cloud Build.
-- Runs migrations as a Cloud Run job.
-- Deploys `eval-worker` (always-on, one instance, no CPU throttling) and `eval-web` (public).
+One Docker image runs in three roles (`ROLE=web`, `ROLE=worker`, `ROLE=migrate`).
+`deploy/deploy_cloud_run.sh` backs up the database, stores secrets in Secret Manager, builds
+with Cloud Build, migrates with a Cloud Run job, and deploys `eval-web` (service, min 0) and
+`eval-worker` (worker pool, 1 instance). It refuses to start the worker until the previous
+host's worker is confirmed stopped, since two consumers must never share the queues.
 
 ```bash
-gcloud auth login
-PROJECT=<gcp-project-id> REGION=<region-nearest-your-neon-db> ./scripts/deploy-gcp.sh
+set -a; . ./.env; set +a
+PROJECT=<gcp-project-id> ./deploy/deploy_cloud_run.sh backup apis secrets image migrate web
+PROJECT=<gcp-project-id> RAILWAY_WORKER_STOPPED=yes ./deploy/deploy_cloud_run.sh worker status
 ```
 
-Afterwards, set your GitHub OAuth app's callback URL to the printed
-`<url>/api/auth/callback/github`. Most of the cost is the always-on worker instance.
+Full procedure, why a worker pool, monthly cost and what costs money while idle:
+[deploy/CLOUD_RUN.md](deploy/CLOUD_RUN.md). The always-on worker is the only idle cost.
 
 ---
 
 ## Known limitations
 
-- **Evaluators are configured via seed script**; there's no management UI yet.
 - **Tenant isolation is application-layer.** Row-Level Security would move the filter into
   Postgres so a missed `WHERE` fails closed rather than open. Sketch:
 
@@ -409,7 +441,17 @@ Afterwards, set your GitHub OAuth app's callback URL to the printed
   daily rollup table is the obvious next step.
 - **Dashboard screenshots use synthetic data** (~5,000 generated traces) alongside real
   judged traces. Synthetic rows are marked in the database.
-- **Flat traces only** — no nested spans for multi-step chains.
+- **Region distance.** Cloud Run runs in `us-central1` and Neon in AWS `us-east-1`; trace
+  ingestion makes several sequential database round trips, so `POST /api/v1/traces` takes
+  258 ms p50 server-side. `us-east4` is the nearby Cloud Run region.
+- **One worker, one job at a time.** A burst of traces queues behind the judges: 30 traces
+  sent back to back settled their evaluations in 89 s p50 (6.5 s p50 when spaced out).
+- **Judge = generator model** (`gemini-3.8-flash`), so self-preference bias is possible; a
+  negative control shows the judges do reject bad answers.
+- **Benchmark scope.** The HotpotQA corpus is only the paragraphs attached to the sampled
+  questions, not all of Wikipedia, so retrieval is still close to the ceiling; one run per
+  configuration, no confidence intervals.
+- **Evaluators** have no management UI (scripts; new projects get the two RAG judges).
 
 ---
 
