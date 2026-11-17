@@ -1,6 +1,7 @@
 import { z } from "zod";
-import type { EvaluatorImpl } from "./types";
+import type { EvalUsage, EvaluatorImpl } from "./types";
 import { getJudgeProvider } from "../providers";
+import { computeCostUsd } from "../pricing";
 
 const JudgeConfig = z.object({
   rubric: z.string().min(1),
@@ -26,6 +27,21 @@ Judge ONLY against the rubric provided. Ignore length and style unless the rubri
 Write your reasoning FIRST, then assign a score from 0.0 to 1.0.
 Be calibrated: 1.0 means fully satisfies the rubric, 0.5 means partially, 0.0 means fails.`;
 
+export function judgeUsage(
+  model: string,
+  u: { promptTokens: number; completionTokens: number; thoughtsTokens: number },
+  latencyMs: number
+): EvalUsage {
+  const billedOutput = u.completionTokens + u.thoughtsTokens;
+  return {
+    model,
+    promptTokens: u.promptTokens,
+    completionTokens: billedOutput,
+    costUsd: computeCostUsd(model, u.promptTokens, billedOutput),
+    latencyMs,
+  };
+}
+
 export const llmJudgeEvaluator: EvaluatorImpl<z.infer<typeof JudgeConfig>> = {
   type: "llm_judge",
   configSchema: JudgeConfig,
@@ -39,8 +55,8 @@ export const llmJudgeEvaluator: EvaluatorImpl<z.infer<typeof JudgeConfig>> = {
       `OUTPUT TO EVALUATE:\n${ctx.output}`,
     ].join("\n\n---\n\n");
 
-    const raw = await provider.complete({ system: SYSTEM, prompt, schema: RESPONSE_SCHEMA });
-    const parsed = JudgeResponse.safeParse(raw);
+    const { data, usage, latencyMs } = await provider.complete({ system: SYSTEM, prompt, schema: RESPONSE_SCHEMA });
+    const parsed = JudgeResponse.safeParse(data);
 
     if (!parsed.success) {
       throw new Error(`judge returned unparseable response: ${parsed.error.message}`);
@@ -50,6 +66,7 @@ export const llmJudgeEvaluator: EvaluatorImpl<z.infer<typeof JudgeConfig>> = {
       score: parsed.data.score,
       passed: parsed.data.score >= config.threshold,
       reasoning: parsed.data.reasoning,
+      usage: judgeUsage(provider.model, usage, latencyMs),
     };
   },
 };

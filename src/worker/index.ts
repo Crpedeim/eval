@@ -35,14 +35,23 @@ async function handleJob(data: EvalJobData) {
     const { result, evaluatorName } = await runEvaluator(traceId, evaluatorId);
     const durationMs = Date.now() - startedAt;
 
+    const { usage, ...verdict } = result;
     await db.evalRun.updateMany({
       where: { traceId, evaluatorId, status: "running" },
-      data: { status: "done", ...result, error: null },
+      data: {
+        status: "done", ...verdict, error: null,
+        model: usage?.model ?? null,
+        promptTokens: usage?.promptTokens ?? null,
+        completionTokens: usage?.completionTokens ?? null,
+        costUsd: usage?.costUsd ?? null,
+        latencyMs: usage?.latencyMs ?? null,
+      },
     });
 
     log.info("eval.done", {
       traceId, evaluatorId, evaluator: evaluatorName,
       score: result.score, passed: result.passed, attempt, durationMs,
+      ...(usage && { model: usage.model, tokens: usage.promptTokens + usage.completionTokens, costUsd: usage.costUsd }),
     });
   } catch (raw) {
     const err = classify(raw);

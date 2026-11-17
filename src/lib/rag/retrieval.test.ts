@@ -132,6 +132,30 @@ describe("retrieval over pgvector", { skip: !HAS_DB && "no DATABASE_URL" }, () =
     assert.equal(foreign, 0);
   });
 
+  test("hybrid: fuses vector and full-text ranks with RRF, scoped to the project", async () => {
+    const r = await retrieval.retrieve(projectA, "how do transient failures retry with backoff", 3, fakeEmbedder, "hybrid");
+    assert.equal(r.mode, "hybrid");
+    assert.equal(r.chunks.length, 3);
+    const top = r.chunks[0];
+    assert.match(top.content, /jittered exponential backoff/);
+    assert.equal(top.vectorRank, 1);
+    assert.equal(top.textRank, 1);
+    assert.ok(Math.abs(top.rrf! - 2 / (retrieval.RRF_K + 1)) < 1e-9);
+    const rrf = r.chunks.map((c) => c.rrf!);
+    assert.deepEqual(rrf, [...rrf].sort((a, b) => b - a));
+
+    const all = await retrieval.retrieve(projectA, "postgres queue database", 50, fakeEmbedder, "hybrid");
+    assert.equal(all.chunks.length, 5);
+    const foreign = await db.chunk.count({ where: { id: { in: all.chunks.map((c) => c.id) }, projectId: projectB } });
+    assert.equal(foreign, 0);
+  });
+
+  test("hybrid: a stopword-only query falls back to the vector list", async () => {
+    const r = await retrieval.retrieve(projectA, "the of and", 2, fakeEmbedder, "hybrid");
+    assert.equal(r.chunks.length, 2);
+    assert.ok(r.chunks.every((c) => c.textRank === null && c.vectorRank !== null));
+  });
+
   test("pipeline records a trace with retrieve + generate spans, citations, and scoped evals", async () => {
     await db.evaluator.createMany({
       data: [

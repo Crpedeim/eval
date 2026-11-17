@@ -3,6 +3,7 @@
  * settled, then write the report (JSON + Markdown) to datasets/rag/results/.
  *
  *   npx tsx scripts/rag-eval.ts <projectId> datasets/rag/questions.json [k=5]
+ *   RAG_RETRIEVAL=hybrid npx tsx scripts/rag-eval.ts ...   (vector | hybrid)
  */
 import "dotenv/config";
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
@@ -19,6 +20,7 @@ function markdown(r: RagEvalReport, wallSeconds: number, models: Record<string, 
     "",
     `- Date: ${r.run.createdAt.toISOString()}`,
     `- Models: generator \`${models.generator}\`, embedder \`${models.embedder}\`, judge \`${models.judge}\``,
+    `- Retrieval: ${(r.run.config as { retrieval?: string } | null)?.retrieval ?? "vector"}`,
     `- k = ${r.run.k}; questions: ${r.items.total} (${r.items.done} answered, ${r.items.failed} failed)`,
     `- Wall clock from enqueue to all items + judges settled: ${wallSeconds.toFixed(0)}s`,
     "",
@@ -37,7 +39,11 @@ function markdown(r: RagEvalReport, wallSeconds: number, models: Record<string, 
     `| Generate prompt / output tokens (mean) | ${f(r.tokens.meanPrompt, 0)} / ${f(r.tokens.meanOutput, 1)} |`,
     `| Generate tokens/sec (median / mean / aggregate) | ${f(r.tokens.tokensPerSecMedian, 1)} / ${f(r.tokens.tokensPerSecMean, 1)} / ${f(r.tokens.tokensPerSecAggregate, 1)} |`,
     `| Cost per request (retrieve + generate, mean) | $${f(r.cost.meanPerRequestFromSpansUsd, 6)} |`,
-    `| Total cost of answered requests | $${f(r.cost.totalUsd, 6)} |`,
+    `| Total cost of answered requests | ${f(r.cost.totalUsd, 6)} |`,
+    `| Judge cost per answer (mean, ${r.cost.judgeCalls} judge calls costed) | ${f(r.cost.meanJudgePerAnswerUsd, 6)} |`,
+    `| **Cost per eval answer incl. judges (mean)** | ${f(r.cost.meanPerEvalAnswerUsd, 6)} |`,
+    `| Judge tokens in / out (total, out incl. thinking) | ${r.cost.judgePromptTokens} / ${r.cost.judgeOutputTokens} |`,
+    `| Total cost incl. judges | ${f(r.cost.totalWithJudgesUsd, 6)} |`,
     "",
     "## Per question",
     "",
@@ -87,11 +93,7 @@ async function main() {
   const started = Date.now();
   const { runId, items } = await createRagEvalRun(projectId, dataset, {
     k,
-    config: {
-      ...models,
-      thinkingBudget: process.env.RAG_THINKING_BUDGET ?? null,
-      thinkingLevel: process.env.RAG_THINKING_LEVEL ?? null,
-    },
+    config: { ...ragModelConfig(), via: "cli" }, // retrieval mode from RAG_RETRIEVAL
   });
   console.log(`run ${runId}: enqueued ${items} questions (k=${k}) — the worker must be running`);
 

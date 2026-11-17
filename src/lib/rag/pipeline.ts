@@ -5,7 +5,7 @@ import { computeCostUsd } from "../pricing";
 import { createEvalRunsAndEnqueue } from "../enqueue-evals";
 import { getEmbeddingProvider, getGenerationProvider } from "../providers";
 import type { EmbeddingProvider, GenerationProvider } from "../providers/types";
-import { retrieve, type RetrievedChunk } from "./retrieve";
+import { retrieve, retrievalMode, type RetrievalMode, type RetrievedChunk } from "./retrieve";
 import { parseCitations, tokensPerSecond } from "./metrics";
 
 export const RAG_TRACE_NAME = "rag.answer";
@@ -63,6 +63,8 @@ export type RagAnswer = {
 
 export type AnswerOptions = {
   k?: number;
+  /** vector-only or hybrid (vector + full-text, RRF); defaults to RAG_RETRIEVAL / DEFAULT_RETRIEVAL. */
+  retrieval?: RetrievalMode;
   traceName?: string;
   metadata?: Record<string, unknown>;
   /** Extra writes committed atomically with the trace (e.g. settling an eval item). */
@@ -88,7 +90,7 @@ export async function answerQuestion(
 
   // --- retrieve
   const retrieveStartedAt = new Date();
-  const r = await retrieve(projectId, question, k, embedder);
+  const r = await retrieve(projectId, question, k, embedder, opts.retrieval ?? retrievalMode());
   const retrieveSpan: SpanRecord = {
     name: "retrieve",
     model: r.embedModel,
@@ -99,10 +101,15 @@ export async function answerQuestion(
     costUsd: computeCostUsd(r.embedModel, r.queryTokensEst, 0),
     metadata: {
       k,
+      mode: r.mode,
       embedMs: Math.round(r.embedMs),
       searchMs: Math.round(r.searchMs * 10) / 10,
       chunkIds: r.chunks.map((c) => c.id),
       scores: r.chunks.map((c) => Math.round(c.score * 1e4) / 1e4),
+      ...(r.mode === "hybrid" && {
+        vectorRanks: r.chunks.map((c) => c.vectorRank ?? null),
+        textRanks: r.chunks.map((c) => c.textRank ?? null),
+      }),
       // Gemini's embedding API returns no usage, so query tokens are chars/4.
       tokensEstimated: true,
     },
@@ -157,6 +164,7 @@ export async function answerQuestion(
         metadata: {
           question,
           k,
+          retrieval: r.mode,
           retrievedChunkIds: r.chunks.map((c) => c.id),
           citations,
           ...opts.metadata,

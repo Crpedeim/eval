@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { getScope, UnauthorizedError, ForbiddenError } from "@/lib/tenancy";
 import { Badge, Card, Stat } from "@/components/ui";
 import { bundledDatasets } from "@/lib/rag/datasets";
+import { retrievalMode, RETRIEVAL_MODES } from "@/lib/rag/retrieve";
 import { uploadDocumentAction, askAction, runEvalAction } from "./actions";
 
 const num = (v: number | null, d = 2) => (v === null ? "—" : v.toFixed(d));
@@ -91,6 +92,12 @@ export default async function RagPage({
             k
             <input name="k" type="number" min={1} max={20} defaultValue={5} className="w-14 rounded border px-2 py-1" />
           </label>
+          <label className="flex items-center gap-2">
+            Retrieval
+            <select name="retrieval" className="rounded border px-2 py-1" defaultValue={retrievalMode()}>
+              {RETRIEVAL_MODES.map((m) => <option key={m} value={m}>{m}</option>)}
+            </select>
+          </label>
           <button type="submit" className="rounded bg-black px-3 py-1 text-white">Run evaluation</button>
         </form>
         <p className="mt-2 text-xs text-gray-500">
@@ -132,7 +139,7 @@ export default async function RagPage({
           <thead>
             <tr className="border-b text-left text-gray-500">
               <th className="py-2">Dataset</th><th>k</th><th>Questions</th><th>Recall@k</th><th>MRR</th>
-              <th>Judges (mean score)</th><th>p95</th><th>Cost / req</th><th></th>
+              <th>Judges (mean score)</th><th>p95</th><th>Cost / answer</th><th>incl. judges</th><th></th>
             </tr>
           </thead>
           <tbody>
@@ -150,11 +157,12 @@ export default async function RagPage({
                 </td>
                 <td>{ms(r.latency.request.p95Ms)}</td>
                 <td>{usd(r.cost.meanPerRequestFromSpansUsd)}</td>
+                <td>{usd(r.cost.meanPerEvalAnswerUsd)}</td>
                 <td><Link href={`/projects/${projectId}/rag/evals/${r.run.id}`} className="underline">view</Link></td>
               </tr>
             ))}
             {overview.evalRuns.length === 0 && (
-              <tr><td colSpan={9} className="py-2 text-gray-500">No eval runs yet. Start one with Run evaluation above.</td></tr>
+              <tr><td colSpan={10} className="py-2 text-gray-500">No eval runs yet. Start one with Run evaluation above.</td></tr>
             )}
           </tbody>
         </table>

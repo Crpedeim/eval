@@ -11,6 +11,10 @@ export type JudgeSummary = {
   pending: number;
   meanScore: number | null;
   passRate: number | null;
+  /** Sum of recorded judge-call cost for this evaluator's settled runs. */
+  costUsd: number;
+  /** Settled runs that carry usage (runs settled before usage was recorded have none). */
+  costed: number;
 };
 
 export type SpanSummary = { p50Ms: number | null; p95Ms: number | null; meanMs: number | null };
@@ -61,6 +65,8 @@ export async function ragEvalReport(runId: string) {
       pending: runs.filter((r) => r.status === "queued" || r.status === "running").length,
       meanScore: mean(settled.map((r) => r.score ?? 0)),
       passRate: settled.length ? settled.filter((r) => r.passed).length / settled.length : null,
+      costUsd: settled.reduce((a, r) => a + Number(r.costUsd ?? 0), 0),
+      costed: settled.filter((r) => r.costUsd !== null).length,
     };
   });
 
@@ -87,6 +93,13 @@ export async function ragEvalReport(runId: string) {
 
   const costs = traces.map((t) => Number(t.costUsd));
   const spanCosts = spans.reduce((a, s) => a + Number(s.costUsd), 0);
+  // Every evaluator run on an answer's trace is part of what evaluating that answer cost.
+  const judgeCosts = traces.flatMap((t) => t.evalRuns.filter((r) => r.costUsd !== null).map((r) => Number(r.costUsd)));
+  const judgeTotal = judgeCosts.reduce((a, c) => a + c, 0);
+  const judgeTokens = traces.flatMap((t) => t.evalRuns).reduce(
+    (a, r) => ({ prompt: a.prompt + (r.promptTokens ?? 0), output: a.output + (r.completionTokens ?? 0) }),
+    { prompt: 0, output: 0 }
+  );
 
   return {
     run: { id: run.id, dataset: run.dataset, k: run.k, createdAt: run.createdAt, config: run.config },
@@ -126,6 +139,14 @@ export async function ragEvalReport(runId: string) {
       // Span-level sum (8 dp) — Trace.costUsd is rounded to 6 dp by its column type.
       totalUsd: spanCosts,
       meanPerRequestFromSpansUsd: traces.length ? spanCosts / traces.length : null,
+      judgeCalls: judgeCosts.length,
+      judgeTotalUsd: judgeTotal,
+      judgePromptTokens: judgeTokens.prompt,
+      judgeOutputTokens: judgeTokens.output,
+      meanJudgePerAnswerUsd: traces.length && judgeCosts.length ? judgeTotal / traces.length : null,
+      /** Answer (retrieve + generate) plus every judge call on it, per eval answer. */
+      meanPerEvalAnswerUsd: traces.length && judgeCosts.length ? (spanCosts + judgeTotal) / traces.length : null,
+      totalWithJudgesUsd: spanCosts + judgeTotal,
     },
     rows: run.items.map((i) => ({
       id: i.id,
@@ -140,6 +161,7 @@ export async function ragEvalReport(runId: string) {
       relevantRanks: (i.relevantRanks as number[] | null) ?? [],
       latencyMs: i.trace?.latencyMs ?? null,
       costUsd: i.trace ? Number(i.trace.costUsd) : null,
+      judgeCostUsd: i.trace ? i.trace.evalRuns.reduce((a, r) => a + Number(r.costUsd ?? 0), 0) : null,
       judges: Object.fromEntries(
         (i.trace?.evalRuns ?? []).map((r) => [r.evaluator.name, { status: r.status, score: r.score, passed: r.passed }])
       ) as Record<string, { status: string; score: number | null; passed: boolean | null }>,

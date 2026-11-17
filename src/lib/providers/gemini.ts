@@ -1,9 +1,19 @@
 import { GoogleGenAI, ThinkingLevel, type ThinkingConfig } from "@google/genai";
 import type {
-  JudgeProvider, JudgeRequest,
+  JudgeProvider, JudgeRequest, JudgeResult, Usage,
   GenerationProvider, GenerationRequest, GenerationResult,
   EmbeddingProvider, EmbeddingTask,
 } from "./types";
+
+type UsageMetadata = { promptTokenCount?: number; candidatesTokenCount?: number; thoughtsTokenCount?: number };
+
+function usageOf(u: UsageMetadata | undefined): Usage {
+  return {
+    promptTokens: u?.promptTokenCount ?? 0,
+    completionTokens: u?.candidatesTokenCount ?? 0,
+    thoughtsTokens: u?.thoughtsTokenCount ?? 0,
+  };
+}
 
 let sharedClient: GoogleGenAI | null = null;
 function client() {
@@ -15,7 +25,8 @@ export class GeminiProvider implements JudgeProvider {
   readonly name = "gemini";
   readonly model = process.env.JUDGE_MODEL ?? "gemini-2.5-flash";
 
-  async complete(req: JudgeRequest): Promise<unknown> {
+  async complete(req: JudgeRequest): Promise<JudgeResult> {
+    const started = performance.now();
     const res = await client().models.generateContent({
       model: this.model,
       contents: `${req.system}\n\n${req.prompt}`,
@@ -26,9 +37,10 @@ export class GeminiProvider implements JudgeProvider {
       },
     });
 
+    const latencyMs = Math.round(performance.now() - started);
     const text = res.text;
     if (!text) throw new Error("empty response from judge");
-    return JSON.parse(text);
+    return { data: JSON.parse(text), usage: usageOf(res.usageMetadata), latencyMs };
   }
 }
 
@@ -64,13 +76,7 @@ export class GeminiGenerator implements GenerationProvider {
 
     const text = res.text;
     if (!text) throw new Error("empty response from generator");
-    const u = res.usageMetadata;
-    return {
-      text,
-      promptTokens: u?.promptTokenCount ?? 0,
-      completionTokens: u?.candidatesTokenCount ?? 0,
-      thoughtsTokens: u?.thoughtsTokenCount ?? 0,
-    };
+    return { text, ...usageOf(res.usageMetadata) };
   }
 }
 

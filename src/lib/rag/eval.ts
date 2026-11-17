@@ -7,6 +7,7 @@ import { PermanentError } from "../errors";
 import type { EmbeddingProvider, GenerationProvider } from "../providers/types";
 import { getEmbeddingProvider, getGenerationProvider, getJudgeProvider } from "../providers";
 import { answerQuestion, DEFAULT_K, RAG_TRACE_NAME } from "./pipeline";
+import { retrievalMode, type RetrievalMode } from "./retrieve";
 import { recallAtK, reciprocalRank, relevantRanks } from "./metrics";
 
 export const RagDataset = z.object({
@@ -27,8 +28,9 @@ export const RagDataset = z.object({
 export type RagDataset = z.infer<typeof RagDataset>;
 
 /** Models and settings recorded on every run, so a report says exactly what produced it. */
-export function ragModelConfig() {
+export function ragModelConfig(retrieval?: RetrievalMode) {
   return {
+    retrieval: retrievalMode(retrieval),
     generator: getGenerationProvider().model,
     embedder: getEmbeddingProvider().model,
     judge: getJudgeProvider().model,
@@ -95,6 +97,8 @@ export async function evaluateItem(
     item.question,
     {
       k: item.run.k,
+      // The run's recorded mode, not the worker's env: one worker can serve runs in both modes.
+      retrieval: retrievalMode((item.run.config as { retrieval?: unknown } | null)?.retrieval),
       traceName: RAG_TRACE_NAME,
       metadata: { ragEvalRunId: item.runId, questionId: item.questionId },
       inTransaction: async (tx, r) => {

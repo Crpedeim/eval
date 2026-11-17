@@ -7,6 +7,7 @@ import { documentFromFile, UploadError } from "@/lib/rag/documents";
 import { classify } from "@/lib/errors";
 import { RagDataset } from "@/lib/rag/eval";
 import { bundledDataset } from "@/lib/rag/datasets";
+import { retrievalMode } from "@/lib/rag/retrieve";
 
 const MAX_DATASET_BYTES = 1024 * 1024;
 const MAX_QUESTIONS = 500;
@@ -80,7 +81,7 @@ export async function runEvalAction(projectId: string, formData: FormData) {
       if (!dataset) throw new DatasetError(`unknown dataset "${name}"`);
     }
     if (dataset.questions.length > MAX_QUESTIONS) throw new DatasetError(`at most ${MAX_QUESTIONS} questions per run`);
-    const { runId } = await scope.startRagEval(projectId, dataset, k);
+    const { runId } = await scope.startRagEval(projectId, dataset, k, retrievalMode(formData.get("retrieval")));
     revalidatePath(`/projects/${projectId}/rag`);
     target = `/projects/${projectId}/rag/evals/${runId}`;
   } catch (e) {
