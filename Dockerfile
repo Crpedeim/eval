@@ -2,8 +2,13 @@
 #   web     Next.js on $PORT                      -> Cloud Run service
 #   worker  pg-boss consumer, no HTTP             -> Cloud Run worker pool
 #   migrate prisma migrate deploy, then exit      -> Cloud Run job
-FROM node:22-slim AS build
+FROM node:22-slim AS base
+# Prisma's CLI (migrate) looks for OpenSSL; node:*-slim does not ship it.
+RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
+
+FROM base AS build
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./
@@ -15,8 +20,7 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 RUN npx prisma generate && npx next build
 
-FROM node:22-slim
-WORKDIR /app
+FROM base
 ENV NODE_ENV=production PORT=8080 NEXT_TELEMETRY_DISABLED=1
 COPY --from=build /app /app
 # Real URLs come from Secret Manager at runtime; these only exist in the build stage.

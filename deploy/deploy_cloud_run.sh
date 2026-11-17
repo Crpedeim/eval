@@ -144,6 +144,11 @@ step_image() {
   log "image $IMAGE"
   gcloud artifacts repositories describe "$REPO" --location="$REGION" >/dev/null 2>&1 ||
     gcloud artifacts repositories create "$REPO" --repository-format=docker --location="$REGION"
+  # Keep the 3 newest images; each is ~460 MB and storage beyond 0.5 GB is billed.
+  local policy; policy="$(mktemp)"
+  printf '%s' '[{"name":"keep-3-newest","action":{"type":"Keep"},"mostRecentVersions":{"keepCount":3}},{"name":"delete-older","action":{"type":"Delete"},"condition":{"olderThan":"1d"}}]' >"$policy"
+  gcloud artifacts repositories set-cleanup-policies "$REPO" --location="$REGION" --policy="$policy" --no-dry-run >/dev/null
+  rm -f "$policy"
   gcloud builds submit --tag "$IMAGE" --region="$REGION" .
 }
 
@@ -176,7 +181,7 @@ step_worker() {
     # at a lower rate than an always-on service. Exactly one instance: pg-boss is safe with
     # more, but one keeps the queue order and the bill predictable.
     gcloud run worker-pools deploy "$WORKER" --image="$IMAGE" --region="$REGION" \
-      --set-env-vars="$env" --set-secrets="$sec" --instances=1 --cpu=1 --memory=512Mi
+      --set-env-vars="$env" --set-secrets="$sec" --instances=1 --cpu="${WORKER_CPU:-1}" --memory=512Mi
   else
     # Fallback: a service with a health endpoint, one instance always on, CPU always allocated.
     gcloud run deploy "$WORKER" --image="$IMAGE" --region="$REGION" \

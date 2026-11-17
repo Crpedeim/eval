@@ -44,11 +44,11 @@ export default async function RagEvalRunPage({ params }: { params: Promise<{ run
         <Stat label="Latency p95" value={ms(r.latency.request.p95Ms)} sub={`p50 ${ms(r.latency.request.p50Ms)}`} />
         <Stat label="Generate tok/s" value={num(r.tokens.tokensPerSecMedian, 1)} sub="median per request" />
         <Stat label="Cost / answer"
-              value={r.cost.meanPerRequestFromSpansUsd === null ? "—" : `${r.cost.meanPerRequestFromSpansUsd.toFixed(6)}`}
-              sub={`retrieve + generate · total ${r.cost.totalUsd.toFixed(4)}`} />
+              value={r.cost.meanPerRequestFromSpansUsd === null ? "—" : `$${r.cost.meanPerRequestFromSpansUsd.toFixed(6)}`}
+              sub={`retrieve + generate · total $${r.cost.totalUsd.toFixed(4)}`} />
         <Stat label="Cost / eval answer"
-              value={r.cost.meanPerEvalAnswerUsd === null ? "—" : `${r.cost.meanPerEvalAnswerUsd.toFixed(6)}`}
-              sub={`incl. ${r.cost.judgeCalls} judge calls · total ${r.cost.totalWithJudgesUsd.toFixed(4)}`} />
+              value={r.cost.meanPerEvalAnswerUsd === null ? "—" : `$${r.cost.meanPerEvalAnswerUsd.toFixed(6)}`}
+              sub={`incl. ${r.cost.judgeCalls} judge calls · total $${r.cost.totalWithJudgesUsd.toFixed(4)}`} />
         <Stat label="Citations" value={num(r.citations.citationRate, 2)}
               sub={`precision ${num(r.citations.citationPrecision, 2)} · ${r.citations.idk} "don't know"`} />
       </div>
